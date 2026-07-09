@@ -97,7 +97,11 @@ const jsonLd = {
       }
     </style>
 
-    <script is:inline>
+    <script>
+      import Lenis from 'lenis';
+
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
       // Reveal on scroll
       const io = new IntersectionObserver(
         (entries) => {
@@ -110,18 +114,46 @@ const jsonLd = {
         },
         { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
       );
-      const reveal = () =>
-        document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
-      if (document.readyState !== 'loading') reveal();
-      else document.addEventListener('DOMContentLoaded', reveal);
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
 
       // Header state on scroll
       const header = document.querySelector('[data-header]');
-      if (header) {
-        const onScroll = () =>
-          header.classList.toggle('is-scrolled', window.scrollY > 40);
-        onScroll();
-        window.addEventListener('scroll', onScroll, { passive: true });
+      const setHeader = () =>
+        header && header.classList.toggle('is-scrolled', window.scrollY > 40);
+
+      // Parallax leve de portadas
+      const parEls = Array.from(document.querySelectorAll('[data-parallax]'));
+      let ticking = false;
+      const updateParallax = () => {
+        const vh = window.innerHeight || 1;
+        for (const el of parEls) {
+          const r = el.getBoundingClientRect();
+          const p = (r.top + r.height / 2 - vh / 2) / vh; // -0.5..0.5
+          const amp = parseFloat(el.dataset.parallax) || 8; // en %
+          el.style.setProperty('--py', (-p * amp).toFixed(2) + '%');
+        }
+        ticking = false;
+      };
+      const onScroll = () => {
+        setHeader();
+        if (!reduce && parEls.length && !ticking) {
+          ticking = true;
+          requestAnimationFrame(updateParallax);
+        }
+      };
+      setHeader();
+      if (!reduce) updateParallax();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+
+      // Smooth scroll (Lenis) — solo si no hay reduce-motion
+      if (!reduce) {
+        const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+        const raf = (t) => {
+          lenis.raf(t);
+          requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
       }
     </script>
   </body>

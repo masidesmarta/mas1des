@@ -45,7 +45,8 @@ const [galLead, ...galRest] = data.galeria;
             alt={data.titulo}
             widths={[600, 1000, 1600, 2000]}
             sizes="100vw"
-            priority
+            loading="eager"
+            data-parallax="6"
           />
         </figure>
       )
@@ -167,8 +168,11 @@ const [galLead, ...galRest] = data.galeria;
     background: var(--paper-soft);
   }
   .cover img {
+    position: absolute;
+    top: -8%;
+    left: 0;
     width: 100%;
-    height: 100%;
+    height: 116%;
     object-fit: cover;
   }
 

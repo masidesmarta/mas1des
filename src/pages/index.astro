@@ -10,6 +10,7 @@ const proyectos = (await getCollection('proyectos')).sort(
 );
 const destacados = proyectos.filter((p) => p.data.destacado);
 const preview = (destacados.length >= 4 ? destacados : proyectos).slice(0, 5);
+const total = proyectos.length;
 ---
 
 <Layout>
@@ -45,8 +46,13 @@ const preview = (destacados.length >= 4 ? destacados : proyectos).slice(0, 5);
   <!-- PREVIEW DE PROYECTOS -->
   <section class="preview">
     <div class="wrap preview-head" data-reveal>
-      <p class="eyebrow">Selección</p>
-      <h2 class="dot-title">Proyectos</h2>
+      <div>
+        <p class="eyebrow">Selección · {total} proyectos</p>
+        <h2 class="dot-title">Proyectos</h2>
+      </div>
+      <span class="preview-count">
+        <span class="pc-shown">{preview.length}</span> de {total}
+      </span>
     </div>
 
     <div class="wrap">
@@ -165,13 +171,29 @@ const preview = (destacados.length >= 4 ? destacados : proyectos).slice(0, 5);
   }
   .preview-head {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
     margin-bottom: clamp(1.25rem, 0.8rem + 1.5vw, 2.25rem);
+  }
+  .preview-head .eyebrow {
+    margin-bottom: 0.6rem;
   }
   .preview-head h2 {
     font-size: var(--step-3);
     letter-spacing: -0.03em;
+  }
+  .preview-count {
+    flex: none;
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .preview-count .pc-shown {
+    color: var(--ink);
+    font-weight: 600;
   }
 
   .all-row {
