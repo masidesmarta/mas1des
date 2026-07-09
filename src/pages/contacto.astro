@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Contacto — Marta Masides"
+  description="Ponte en contacto con Marta Masides para tu proyecto de arquitectura o interiorismo."
+>
+  <section class="head wrap wrap--narrow">
+    <p class="eyebrow">Contacto</p>
+    <h1>Hablemos de tu proyecto</h1>
+    <p class="lead">
+      Cuéntame qué tienes en mente. Reformas, obra nueva, interiorismo o solo
+      una idea que quieres explorar.
+    </p>
+  </section>
+
+  <section class="section wrap wrap--narrow">
+    <div class="channels">
+      <!-- Datos PROVISIONALES — sustituir por los reales de Marta -->
+      <a href="mailto:hola@masides.es" class="channel">
+        <span class="eyebrow">Email</span>
+        <span class="value link-underline">hola@masides.es</span>
+      </a>
+      <a href="https://instagram.com/" class="channel">
+        <span class="eyebrow">Instagram</span>
+        <span class="value link-underline">@masides</span>
+      </a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .head {
+    padding-block: clamp(3rem, 2rem + 5vw, 6rem) 0;
+  }
+  .head h1 {
+    margin: 1rem 0 1.2rem;
+  }
+  .lead {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    line-height: 1.4;
+    max-width: 46ch;
+  }
+  .channels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.5rem, 1rem + 4vw, 4rem);
+  }
+  .channel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .value {
+    font-size: var(--step-1);
+  }
+</style>

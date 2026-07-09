@@ -1,0 +1,194 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const proyectos = await getCollection('proyectos');
+  return proyectos.map((p) => ({
+    params: { slug: p.id },
+    props: { proyecto: p },
+  }));
+}
+
+const { proyecto } = Astro.props;
+const { data } = proyecto;
+const { Content } = await render(proyecto);
+
+const ficha = [
+  ['Año', data.ano],
+  ['Ubicación', data.ubicacion],
+  ['Tipo', data.tipo],
+  ['Rol', data.rol],
+].filter(([, v]) => Boolean(v));
+---
+
+<Layout title={`${data.titulo} — Marta Masides`} description={data.resumen}>
+  <article>
+    <header class="head wrap wrap--narrow">
+      <a href="/proyectos" class="back link-underline">← Proyectos</a>
+      <h1>{data.titulo}</h1>
+      {data.resumen && <p class="lead">{data.resumen}</p>}
+    </header>
+
+    {
+      data.portada && (
+        <figure class="cover">
+          <Image
+            src={data.portada}
+            alt={data.titulo}
+            widths={[600, 1000, 1600, 2000]}
+            sizes="100vw"
+            priority
+          />
+        </figure>
+      )
+    }
+
+    <div class="body wrap wrap--narrow">
+      {
+        ficha.length > 0 && (
+          <dl class="ficha">
+            {ficha.map(([k, v]) => (
+              <div class="ficha-row">
+                <dt>{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+
+    {
+      data.galeria.length > 0 && (
+        <section class="galeria wrap">
+          {data.galeria.map((img, i) => (
+            <figure>
+              <Image
+                src={img}
+                alt={`${data.titulo} — imagen ${i + 1}`}
+                widths={[600, 1000, 1600]}
+                sizes="(max-width: 720px) 100vw, 80vw"
+              />
+            </figure>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      data.planos.length > 0 && (
+        <section class="section wrap wrap--narrow">
+          <h2 class="planos-title">Planos</h2>
+          <div class="planos">
+            {data.planos.map((img, i) => (
+              <figure class="plano">
+                <Image
+                  src={img}
+                  alt={`${data.titulo} — plano ${i + 1}`}
+                  widths={[600, 1000, 1600]}
+                  sizes="100vw"
+                />
+              </figure>
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </article>
+</Layout>
+
+<style>
+  .head {
+    padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem) clamp(1.5rem, 1rem + 2vw, 3rem);
+  }
+  .back {
+    color: var(--muted);
+    font-size: var(--step--1);
+    display: inline-block;
+    margin-bottom: 1.5rem;
+  }
+  .lead {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    margin-top: 1rem;
+    line-height: 1.4;
+  }
+  .cover {
+    margin: 0;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--paper-soft);
+  }
+  .cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .body {
+    padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: clamp(1.5rem, 1rem + 3vw, 4rem);
+    align-items: start;
+  }
+  .ficha {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: 90px;
+  }
+  .ficha-row dt {
+    font-size: var(--step--1);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.15rem;
+  }
+  .ficha-row dd {
+    margin: 0;
+    color: var(--ink);
+  }
+  .prose {
+    max-width: var(--measure);
+    color: var(--ink-soft);
+  }
+  .prose :global(p) {
+    margin: 0 0 1.2rem;
+  }
+  .galeria {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+    padding-bottom: 2rem;
+  }
+  .galeria figure {
+    margin: 0;
+  }
+  .planos-title {
+    margin-bottom: 1.5rem;
+  }
+  .plano {
+    margin: 0 0 1.5rem;
+    padding: clamp(1rem, 3vw, 2.5rem);
+    background: #fff;
+    border: 1px solid var(--line);
+  }
+  @media (max-width: 720px) {
+    .body {
+      grid-template-columns: 1fr;
+    }
+    .ficha {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+  }
+</style>

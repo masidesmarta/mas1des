@@ -1,0 +1,61 @@
+---
+const year = 2026; // se actualiza en cada build cuando lo pasemos a dinámico
+---
+
+<footer class="site-footer">
+  <div class="wrap grid">
+    <div>
+      <p class="name">Marta Masides</p>
+      <p class="muted">Arquitectura · Interiorismo</p>
+    </div>
+    <nav class="cols" aria-label="Pie">
+      <a href="/proyectos" class="link-underline">Proyectos</a>
+      <a href="/estudio" class="link-underline">Estudio</a>
+      <a href="/contacto" class="link-underline">Contacto</a>
+    </nav>
+    <div class="cols">
+      <a href="mailto:hola@masides.es" class="link-underline">hola@masides.es</a>
+      <a href="https://instagram.com/" class="link-underline">Instagram</a>
+    </div>
+  </div>
+  <div class="wrap legal">
+    <span class="muted">© {year} Marta Masides. Todos los derechos reservados.</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding-block: clamp(2.5rem, 1.5rem + 3vw, 4rem) 1.5rem;
+    margin-top: 2rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 2rem;
+  }
+  .name {
+    font-size: var(--step-1);
+    margin: 0 0 0.2rem;
+  }
+  .muted {
+    color: var(--muted);
+    margin: 0;
+  }
+  .cols {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  .legal {
+    margin-top: 2.5rem;
+    font-size: var(--step--1);
+  }
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>
