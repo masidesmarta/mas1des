@@ -131,7 +131,12 @@ const proyectos = (await getCollection('proyectos')).sort(
     font-size: var(--step-1);
     font-weight: 500;
     letter-spacing: -0.02em;
+    line-height: 1.1;
     transition: color 0.3s var(--ease);
+  }
+  /* las celdas de una misma fila alinean su meta reservando 2 líneas */
+  .g-item:not(.feature) .g-title {
+    min-height: 2.2em;
   }
   .g-item a:hover .g-title {
     color: var(--accent);
