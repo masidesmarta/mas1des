@@ -1,0 +1,174 @@
+---
+import { Image } from 'astro:assets';
+import ProvisionalBadge from './ProvisionalBadge.astro';
+
+interface Props {
+  proyectos: any[];
+  start?: number; // número inicial (por defecto 1)
+}
+const { proyectos, start = 1 } = Astro.props;
+---
+
+<ul class="proj-list" role="list">
+  {
+    proyectos.map((p, i) => (
+      <li class="proj-row" data-reveal style={`--i:${i}`}>
+        <a href={`/proyectos/${p.id}`}>
+          <span class="pr-num">{String(start + i).padStart(2, '0')}</span>
+          <span class="pr-title">{p.data.titulo}</span>
+          <span class="pr-meta">
+            {[p.data.tipo, p.data.ubicacion].filter(Boolean).join(' · ')}
+          </span>
+          <span class="pr-arrow" aria-hidden="true">→</span>
+          <span class="pr-thumb">
+            <ProvisionalBadge show={p.data.provisional} />
+            {p.data.portada && (
+              <Image
+                src={p.data.portada}
+                alt={p.data.titulo}
+                widths={[300, 500]}
+                sizes="300px"
+              />
+            )}
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .proj-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .proj-row {
+    border-top: 1px solid color-mix(in srgb, var(--ink) 11%, transparent);
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+  .proj-row:last-child {
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 11%, transparent);
+  }
+  .proj-row a {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 1.2rem;
+    padding: clamp(1.1rem, 0.7rem + 1.7vw, 2rem) 0.2rem;
+    transition: padding-left 0.45s var(--ease);
+  }
+  .proj-row a:hover {
+    padding-left: 1.4rem;
+  }
+  .pr-num {
+    font-size: var(--step--1);
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.3s var(--ease);
+  }
+  .proj-row a:hover .pr-num {
+    color: var(--accent);
+  }
+  .pr-title {
+    font-size: var(--step-2);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    transition: color 0.3s var(--ease);
+  }
+  .proj-row a:hover .pr-title {
+    color: var(--accent);
+  }
+  .pr-meta {
+    font-size: var(--step--1);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: right;
+  }
+  .pr-arrow {
+    font-size: var(--step-1);
+    color: var(--muted);
+    transition:
+      transform 0.4s var(--ease),
+      color 0.3s var(--ease);
+  }
+  .proj-row a:hover .pr-arrow {
+    transform: translateX(6px);
+    color: var(--accent);
+  }
+  /* miniatura flotante en hover (desktop) */
+  .pr-thumb {
+    position: absolute;
+    right: 11%;
+    top: 50%;
+    z-index: 6;
+    width: 260px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 3px;
+    box-shadow: 0 24px 60px rgba(20, 16, 10, 0.24);
+    opacity: 0;
+    transform: translate(28px, -50%) scale(0.95) rotate(-3deg);
+    transition:
+      opacity 0.4s var(--ease),
+      transform 0.5s var(--ease);
+    pointer-events: none;
+  }
+  .pr-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (hover: hover) {
+    .proj-row a:hover .pr-thumb {
+      opacity: 1;
+      transform: translate(0, -50%) scale(1) rotate(-3deg);
+    }
+  }
+
+  @media (max-width: 820px) {
+    .proj-row a {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: clamp(1rem, 0.8rem + 1.5vw, 1.5rem) 0;
+    }
+    .proj-row a:hover {
+      padding-left: 0;
+    }
+    .pr-num {
+      order: 1;
+      text-align: left;
+      margin-bottom: 0.3rem;
+    }
+    .pr-title {
+      order: 2;
+      font-size: var(--step-1);
+      text-align: left;
+      margin-bottom: 0.9rem;
+    }
+    .pr-thumb {
+      order: 3;
+      position: relative;
+      inset: auto;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      opacity: 1;
+      transform: none;
+      box-shadow: none;
+      margin-bottom: 0.8rem;
+    }
+    .pr-meta {
+      order: 4;
+      text-align: left;
+    }
+    .pr-arrow {
+      display: none;
+    }
+  }
+</style>

@@ -55,7 +55,7 @@ const destrezas = [
 >
   <section class="head wrap">
     <p class="eyebrow">Estudio</p>
-    <h1>Marta Masides</h1>
+    <h1 class="dot-title">Marta Masides</h1>
     <p class="lead">
       Arquitecta por la Escuela Técnica Superior de Arquitectura de Madrid
       (ETSAM). Diseño espacios atenta a la luz, la materia y el uso real de
@@ -82,35 +82,37 @@ const destrezas = [
 
   <hr class="hr wrap" />
 
-  <section class="section wrap cols">
-    <div class="col">
-      <h2>Experiencia</h2>
-      <ul class="entries" role="list">
-        {
-          experiencia.map((e) => (
-            <li>
-              <span class="entry-fecha">{e.fechas}</span>
-              <span class="entry-puesto">{e.puesto}</span>
-              <span class="entry-lugar">{e.lugar}</span>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+  <section class="section wrap">
+    <div class="cols">
+      <div class="col">
+        <h2>Experiencia</h2>
+        <ul class="entries" role="list">
+          {
+            experiencia.map((e) => (
+              <li>
+                <span class="entry-fecha">{e.fechas}</span>
+                <span class="entry-puesto">{e.puesto}</span>
+                <span class="entry-lugar">{e.lugar}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
 
-    <div class="col">
-      <h2>Formación</h2>
-      <ul class="entries" role="list">
-        {
-          formacion.map((f) => (
-            <li>
-              <span class="entry-fecha">{f.fechas}</span>
-              <span class="entry-puesto">{f.titulo}</span>
-              <span class="entry-lugar">{f.lugar}</span>
-            </li>
-          ))
-        }
-      </ul>
+      <div class="col">
+        <h2>Formación</h2>
+        <ul class="entries" role="list">
+          {
+            formacion.map((f) => (
+              <li>
+                <span class="entry-fecha">{f.fechas}</span>
+                <span class="entry-puesto">{f.titulo}</span>
+                <span class="entry-lugar">{f.lugar}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </section>
 

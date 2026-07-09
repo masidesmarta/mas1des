@@ -1,8 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
-import ProvisionalBadge from '../../components/ProvisionalBadge.astro';
+import ProjectIndex from '../../components/ProjectIndex.astro';
 
 const proyectos = (await getCollection('proyectos')).sort(
   (a, b) => a.data.orden - b.data.orden,
@@ -15,46 +14,19 @@ const proyectos = (await getCollection('proyectos')).sort(
 >
   <section class="head wrap">
     <p class="eyebrow">Trabajo</p>
-    <h1>Proyectos</h1>
+    <h1 class="dot-title">Proyectos</h1>
+    <p class="count">{proyectos.length} proyectos</p>
   </section>
 
-  <section class="section wrap">
+  <section class="wrap listado">
     {
       proyectos.length === 0 ? (
         <p class="empty">
-          Todavía no hay proyectos publicados. En cuanto tengamos el material
-          de cada obra, irán apareciendo aquí.
+          Todavía no hay proyectos publicados. En cuanto tengamos el material de
+          cada obra, irán apareciendo aquí.
         </p>
       ) : (
-        <ul class="grid" role="list">
-          {proyectos.map((p) => (
-            <li class="card">
-              <a href={`/proyectos/${p.id}`}>
-                <div class="thumb">
-                  <ProvisionalBadge show={p.data.provisional} />
-                  {p.data.portada ? (
-                    <Image
-                      src={p.data.portada}
-                      alt={p.data.titulo}
-                      widths={[400, 800, 1200]}
-                      sizes="(max-width: 720px) 100vw, 33vw"
-                    />
-                  ) : (
-                    <div class="placeholder" aria-hidden="true" />
-                  )}
-                </div>
-                <div class="meta">
-                  <h2 class="card-title">{p.data.titulo}</h2>
-                  <span class="card-info">
-                    {[p.data.tipo, p.data.ubicacion, p.data.ano]
-                      .filter(Boolean)
-                      .join(' · ')}
-                  </span>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
+        <ProjectIndex proyectos={proyectos} />
       )
     }
   </section>
@@ -62,74 +34,23 @@ const proyectos = (await getCollection('proyectos')).sort(
 
 <style>
   .head {
-    padding-block: clamp(3rem, 2rem + 5vw, 6rem) 0;
+    padding-block: clamp(3rem, 2rem + 5vw, 6rem) clamp(1rem, 0.5rem + 1.5vw, 2rem);
   }
   .head h1 {
-    margin-top: 1rem;
+    margin: 1rem 0 0.6rem;
+    font-size: var(--step-4);
   }
-  .grid {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(1.5rem, 1rem + 2vw, 2.5rem);
-  }
-  .thumb {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-    background: var(--paper-soft);
-  }
-  .thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.7s var(--ease);
-  }
-  .card a:hover .thumb img {
-    transform: scale(1.04);
-  }
-  .card-title {
-    transition: color 0.3s var(--ease);
-  }
-  .card a:hover .card-title {
-    color: var(--accent);
-  }
-  .placeholder {
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(
-      45deg,
-      var(--paper-soft),
-      var(--paper-soft) 14px,
-      var(--line) 14px,
-      var(--line) 15px
-    );
-  }
-  .meta {
-    padding-top: 0.8rem;
-  }
-  .card-title {
-    font-size: var(--step-1);
-    margin-bottom: 0.2rem;
-  }
-  .card-info {
+  .count {
     color: var(--muted);
     font-size: var(--step--1);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .listado {
+    padding-bottom: clamp(4rem, 3rem + 5vw, 8rem);
   }
   .empty {
     color: var(--muted);
     max-width: var(--measure);
-  }
-  @media (max-width: 900px) {
-    .grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (max-width: 560px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
   }
 </style>
