@@ -70,11 +70,13 @@ import mascota from '../assets/mascota.png';
     gap: 1.4rem;
   }
   .email {
-    font-size: clamp(1.8rem, 1rem + 3.5vw, 4rem);
+    font-size: clamp(1.3rem, 0.6rem + 4vw, 4rem);
     font-weight: 500;
     letter-spacing: -0.03em;
-    line-height: 1;
+    line-height: 1.05;
     width: fit-content;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     transition: color 0.3s var(--ease);
   }
   .email:hover {
