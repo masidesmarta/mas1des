@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
-import ProjectIndex from '../../components/ProjectIndex.astro';
+import ProvisionalBadge from '../../components/ProvisionalBadge.astro';
 
 const proyectos = (await getCollection('proyectos')).sort(
   (a, b) => a.data.orden - b.data.orden,
@@ -26,7 +27,33 @@ const proyectos = (await getCollection('proyectos')).sort(
           cada obra, irán apareciendo aquí.
         </p>
       ) : (
-        <ProjectIndex proyectos={proyectos} />
+        <ul class="gallery" role="list">
+          {proyectos.map((p, i) => (
+            <li class:list={['g-item', { feature: i === 0 }]} data-reveal>
+              <a href={`/proyectos/${p.id}`}>
+                <div class="g-media">
+                  <ProvisionalBadge show={p.data.provisional} />
+                  {p.data.portada ? (
+                    <Image
+                      src={p.data.portada}
+                      alt={p.data.titulo}
+                      widths={[500, 900, 1400]}
+                      sizes={i === 0 ? '100vw' : '(max-width: 760px) 100vw, 50vw'}
+                    />
+                  ) : (
+                    <div class="g-ph" aria-hidden="true" />
+                  )}
+                </div>
+                <div class="g-cap">
+                  <h2 class="g-title">{p.data.titulo}</h2>
+                  <span class="g-meta">
+                    {[p.data.tipo, p.data.ubicacion].filter(Boolean).join(' · ')}
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
       )
     }
   </section>
@@ -52,5 +79,80 @@ const proyectos = (await getCollection('proyectos')).sort(
   .empty {
     color: var(--muted);
     max-width: var(--measure);
+  }
+
+  .gallery {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(2rem, 1.5rem + 2vw, 3.5rem) clamp(1rem, 0.5rem + 1.5vw, 2rem);
+  }
+  .g-item.feature {
+    grid-column: 1 / -1;
+  }
+  .g-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--paper-soft);
+  }
+  .g-item.feature .g-media {
+    aspect-ratio: 16 / 7;
+  }
+  .g-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s var(--ease);
+  }
+  .g-item a:hover .g-media img {
+    transform: scale(1.04);
+  }
+  .g-ph {
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      45deg,
+      var(--paper-soft),
+      var(--paper-soft) 14px,
+      var(--line) 14px,
+      var(--line) 15px
+    );
+  }
+  .g-cap {
+    padding-top: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .g-title {
+    font-size: var(--step-1);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    transition: color 0.3s var(--ease);
+  }
+  .g-item a:hover .g-title {
+    color: var(--accent);
+  }
+  .g-meta {
+    font-size: var(--step--1);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 760px) {
+    .gallery {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .g-item.feature .g-media {
+      aspect-ratio: 4 / 3;
+    }
+    .head h1 {
+      font-size: var(--step-3);
+    }
   }
 </style>

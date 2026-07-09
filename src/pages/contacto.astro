@@ -6,39 +6,54 @@ import Layout from '../layouts/Layout.astro';
   title="Contacto — Marta Masides"
   description="Ponte en contacto con Marta Masides para tu proyecto de arquitectura o interiorismo."
 >
-  <section class="head wrap">
-    <p class="eyebrow">Contacto</p>
-    <h1 class="dot-title">Hablemos de tu proyecto</h1>
-    <p class="lead">
-      Con base en Madrid y posibilidad de trabajo en remoto. Cuéntame qué
-      tienes en mente.
-    </p>
-  </section>
-
-  <section class="section wrap">
-    <div class="channels">
-      <a href="mailto:masidesmarta@gmail.com" class="channel">
-        <span class="eyebrow">Email</span>
-        <span class="value link-underline">masidesmarta@gmail.com</span>
-      </a>
-      <a
-        href="https://instagram.com/mas1des"
-        class="channel"
-        target="_blank"
-        rel="noopener"
-      >
-        <span class="eyebrow">Instagram</span>
-        <span class="value link-underline">@mas1des</span>
-      </a>
+  <section class="contacto wrap">
+    <div class="intro" data-reveal>
+      <p class="eyebrow">Contacto</p>
+      <h1 class="dot-title">Hablemos de tu proyecto</h1>
+      <p class="lead">
+        Con base en Madrid y posibilidad de trabajo en remoto. Cuéntame qué
+        tienes en mente.
+      </p>
     </div>
+
+    <div class="channels" data-reveal>
+      <a href="mailto:masidesmarta@gmail.com" class="email link-underline">
+        masidesmarta@gmail.com
+      </a>
+      <div class="secondary">
+        <a
+          href="https://instagram.com/mas1des"
+          class="sec-link link-underline"
+          target="_blank"
+          rel="noopener">Instagram · @mas1des</a
+        >
+      </div>
+    </div>
+
+    <img
+      class="mascota-firma"
+      src="/mascota.png"
+      alt=""
+      aria-hidden="true"
+      width="900"
+      height="875"
+      loading="lazy"
+    />
   </section>
 </Layout>
 
 <style>
-  .head {
-    padding-block: clamp(3rem, 2rem + 5vw, 6rem) 0;
+  .contacto {
+    position: relative;
+    min-height: calc(78svh - 72px);
+    padding-block: clamp(3rem, 2rem + 5vw, 6rem) clamp(3rem, 2rem + 4vw, 6rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5rem);
   }
-  .head h1 {
+  .head h1,
+  .intro h1 {
     margin: 1rem 0 1.2rem;
   }
   .lead {
@@ -49,15 +64,44 @@ import Layout from '../layouts/Layout.astro';
   }
   .channels {
     display: flex;
-    flex-wrap: wrap;
-    gap: clamp(1.5rem, 1rem + 4vw, 4rem);
-  }
-  .channel {
-    display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 1.4rem;
   }
-  .value {
-    font-size: var(--step-1);
+  .email {
+    font-size: clamp(1.8rem, 1rem + 3.5vw, 4rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    width: fit-content;
+    transition: color 0.3s var(--ease);
+  }
+  .email:hover {
+    color: var(--accent);
+  }
+  .secondary {
+    display: flex;
+    gap: 2rem;
+  }
+  .sec-link {
+    font-size: var(--step-0);
+    color: var(--ink-soft);
+  }
+  .mascota-firma {
+    position: absolute;
+    right: 2%;
+    bottom: clamp(2rem, 1rem + 3vw, 5rem);
+    width: clamp(90px, 12vw, 170px);
+    height: auto;
+    opacity: 0.92;
+    pointer-events: none;
+  }
+  @media (max-width: 760px) {
+    .contacto {
+      min-height: 0;
+      justify-content: flex-start;
+    }
+    .mascota-firma {
+      display: none;
+    }
   }
 </style>

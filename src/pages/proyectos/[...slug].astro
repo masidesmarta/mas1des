@@ -221,23 +221,25 @@ const [galLead, ...galRest] = data.galeria;
     display: block;
   }
   .galeria {
-    columns: 2;
-    column-gap: clamp(0.75rem, 0.4rem + 1.5vw, 1.75rem);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(0.75rem, 0.4rem + 1.5vw, 1.75rem);
   }
   .galeria figure {
-    margin: 0 0 clamp(0.75rem, 0.4rem + 1.5vw, 1.75rem);
-    break-inside: avoid;
+    margin: 0;
+    aspect-ratio: 4 / 3;
     background: var(--paper-soft);
     overflow: hidden;
   }
   .galeria figure img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     display: block;
     transition: transform 0.7s var(--ease);
   }
   .galeria figure:hover img {
-    transform: scale(1.02);
+    transform: scale(1.03);
   }
 
   .planos-title {
@@ -283,6 +285,8 @@ const [galLead, ...galRest] = data.galeria;
   }
   .np-title .arrow {
     display: inline-block;
+    margin-left: 0.35em;
+    color: var(--accent);
     transition: transform 0.4s var(--ease);
   }
   .next-proj:hover .arrow {
@@ -291,7 +295,10 @@ const [galLead, ...galRest] = data.galeria;
 
   @media (max-width: 600px) {
     .galeria {
-      columns: 1;
+      grid-template-columns: 1fr;
+    }
+    .head h1 {
+      font-size: var(--step-3);
     }
   }
 </style>
