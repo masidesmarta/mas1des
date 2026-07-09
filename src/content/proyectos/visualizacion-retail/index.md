@@ -4,7 +4,10 @@ orden: 8
 tipo: "Visualización arquitectónica"
 rol: "Renders · colaboración en estudio"
 resumen: "Renders exteriores para un evento de retail, modelado en Revit y renderizado con Enscape."
-# Imágenes pendientes de recibir.
+provisional: true
+portada: ./portada.provisional.jpg
+galeria:
+  - ./gal-01.provisional.jpg
 ---
 
 Desarrollo de imágenes fotorrealistas para un evento de retail.

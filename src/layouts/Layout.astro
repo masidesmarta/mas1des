@@ -1,21 +1,24 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import '@fontsource-variable/inter';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  transparentHeader?: boolean;
 }
 
 const {
   title = 'Marta Masides — Arquitecta',
   description = 'Portfolio de Marta Masides, arquitecta por la ETSAM. Proyectos académicos y profesionales de arquitectura, interiorismo y visualización.',
+  transparentHeader = false,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class="no-js">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -26,14 +29,19 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#f5f3ef" />
+    <script is:inline>
+      document.documentElement.classList.remove('no-js');
+    </script>
   </head>
   <body>
     <a class="skip" href="#main">Saltar al contenido</a>
-    <Header />
+    <Header transparent={transparentHeader} />
     <main id="main">
       <slot />
     </main>
     <Footer />
+
     <style>
       .skip {
         position: absolute;
@@ -42,11 +50,39 @@ const {
         background: var(--ink);
         color: var(--paper);
         padding: 0.6rem 1rem;
-        z-index: 100;
+        z-index: 200;
       }
       .skip:focus {
         left: 0;
       }
     </style>
+
+    <script is:inline>
+      // Reveal on scroll
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-in');
+              io.unobserve(e.target);
+            }
+          }
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+      );
+      const reveal = () =>
+        document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+      if (document.readyState !== 'loading') reveal();
+      else document.addEventListener('DOMContentLoaded', reveal);
+
+      // Header state on scroll
+      const header = document.querySelector('[data-header]');
+      if (header) {
+        const onScroll = () =>
+          header.classList.toggle('is-scrolled', window.scrollY > 40);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+    </script>
   </body>
 </html>

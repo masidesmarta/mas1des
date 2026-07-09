@@ -5,7 +5,12 @@ ubicacion: "Costa Rica"
 tipo: "Visualización arquitectónica"
 rol: "Renders · colaboración en estudio"
 resumen: "Renders fotorrealistas, exteriores e interiores, para comunicar una vivienda unifamiliar en un entorno boscoso."
-# Imágenes pendientes de recibir.
+provisional: true
+portada: ./portada.provisional.jpg
+galeria:
+  - ./gal-01.provisional.jpg
+  - ./gal-02.provisional.jpg
+  - ./gal-03.provisional.jpg
 ---
 
 Desarrollo de imágenes fotorrealistas para una vivienda unifamiliar ubicada en

@@ -17,6 +17,9 @@ const proyectos = defineCollection({
       tipo: z.string().optional(), // vivienda, reforma, local, interiorismo…
       rol: z.string().optional(),
       resumen: z.string().optional(), // una frase para el listado
+      // true mientras la portada/galería sean recortes provisionales del PDF.
+      // El script `npm run check:provisionales` avisa de las que falten sustituir.
+      provisional: z.boolean().default(false),
       // Imágenes: opcionales para que el build no rompa antes de tener material.
       portada: image().optional(),
       galeria: z.array(image()).default([]),

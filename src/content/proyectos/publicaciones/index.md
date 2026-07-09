@@ -4,7 +4,11 @@ orden: 9
 tipo: "Dibujo · postproducción"
 rol: "Colaboración en estudio"
 resumen: "Postproducción de dibujos de proyecto para su publicación en revistas y plataformas especializadas."
-# Imágenes pendientes de recibir.
+provisional: true
+portada: ./portada.provisional.jpg
+galeria:
+  - ./gal-01.provisional.jpg
+  - ./gal-02.provisional.jpg
 ---
 
 Dibujos realizados durante mis prácticas de empresa: la postproducción de

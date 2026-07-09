@@ -4,7 +4,10 @@ orden: 7
 tipo: "Visualización arquitectónica"
 rol: "Renders · colaboración en estudio"
 resumen: "Renders exteriores e interiores de una vivienda unifamiliar con piscina y patio ajardinado."
-# Imágenes pendientes de recibir.
+provisional: true
+portada: ./portada.provisional.jpg
+galeria:
+  - ./gal-01.provisional.jpg
 ---
 
 Desarrollo de imágenes fotorrealistas para una vivienda unifamiliar durante mi

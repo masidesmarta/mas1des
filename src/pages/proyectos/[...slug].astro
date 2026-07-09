@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
+import ProvisionalBadge from '../../components/ProvisionalBadge.astro';
 
 export async function getStaticPaths() {
   const proyectos = await getCollection('proyectos');
@@ -25,7 +26,7 @@ const ficha = [
 
 <Layout title={`${data.titulo} — Marta Masides`} description={data.resumen}>
   <article>
-    <header class="head wrap wrap--narrow">
+    <header class="head wrap">
       <a href="/proyectos" class="back link-underline">← Proyectos</a>
       <h1>{data.titulo}</h1>
       {data.resumen && <p class="lead">{data.resumen}</p>}
@@ -34,6 +35,7 @@ const ficha = [
     {
       data.portada && (
         <figure class="cover">
+          <ProvisionalBadge show={data.provisional} />
           <Image
             src={data.portada}
             alt={data.titulo}
@@ -45,7 +47,7 @@ const ficha = [
       )
     }
 
-    <div class="body wrap wrap--narrow">
+    <div class="body wrap">
       {
         ficha.length > 0 && (
           <dl class="ficha">
@@ -82,7 +84,7 @@ const ficha = [
 
     {
       data.planos.length > 0 && (
-        <section class="section wrap wrap--narrow">
+        <section class="section wrap">
           <h2 class="planos-title">Planos</h2>
           <div class="planos">
             {data.planos.map((img, i) => (
@@ -119,6 +121,7 @@ const ficha = [
     line-height: 1.4;
   }
   .cover {
+    position: relative;
     margin: 0;
     aspect-ratio: 16 / 9;
     overflow: hidden;
@@ -163,13 +166,29 @@ const ficha = [
     margin: 0 0 1.2rem;
   }
   .galeria {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
-    padding-bottom: 2rem;
+    columns: 2;
+    column-gap: clamp(0.75rem, 0.4rem + 1.5vw, 1.75rem);
+    padding-bottom: clamp(1rem, 0.5rem + 2vw, 2.5rem);
   }
   .galeria figure {
-    margin: 0;
+    margin: 0 0 clamp(0.75rem, 0.4rem + 1.5vw, 1.75rem);
+    break-inside: avoid;
+    background: var(--paper-soft);
+    overflow: hidden;
+  }
+  .galeria figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.7s var(--ease);
+  }
+  .galeria figure:hover img {
+    transform: scale(1.02);
+  }
+  @media (max-width: 600px) {
+    .galeria {
+      columns: 1;
+    }
   }
   .planos-title {
     margin-bottom: 1.5rem;

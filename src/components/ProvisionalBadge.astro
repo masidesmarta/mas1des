@@ -1,0 +1,44 @@
+---
+// Cinta "provisional" sobre imágenes que aún son recortes del PDF.
+// Se muestra solo cuando el proyecto tiene provisional: true.
+interface Props {
+  show?: boolean;
+}
+const { show = false } = Astro.props;
+---
+
+{
+  show && (
+    <span class="prov" title="Imagen provisional — pendiente de sustituir por el original">
+      <span class="dot" /> Provisional
+    </span>
+  )
+}
+
+<style>
+  .prov {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.3em 0.6em;
+    background: color-mix(in srgb, #111 82%, transparent);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+  }
+  .dot {
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+</style>

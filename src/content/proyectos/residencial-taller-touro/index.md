@@ -6,7 +6,14 @@ ubicacion: "Touro, A Coruña"
 tipo: "Proyecto académico"
 rol: "Autora"
 resumen: "Cajas-casa semitransparentes que se elevan sobre las ruinas dejando paso al paisaje y la vegetación."
-# Imágenes pendientes de recibir.
+provisional: true
+portada: ./portada.provisional.jpg
+galeria:
+  - ./gal-01.provisional.jpg
+  - ./gal-02.provisional.jpg
+  - ./gal-03.provisional.jpg
+  - ./gal-04.provisional.jpg
+  - ./gal-05.provisional.jpg
 ---
 
 Proyecto residencial-taller ubicado en las ruinas de Touro (Ribeira, A Coruña).

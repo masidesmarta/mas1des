@@ -6,7 +6,16 @@ ubicacion: "Corea del Sur (referencia)"
 tipo: "Máster BIM · Revit"
 rol: "Autora"
 resumen: "Reconstrucción paramétrica en Revit de un edificio de oficinas y retail, levantando el modelo desde planos."
-# Imágenes pendientes de recibir.
+provisional: true
+portada: ./portada.provisional.jpg
+galeria:
+  - ./gal-01.provisional.jpg
+  - ./gal-02.provisional.jpg
+  - ./gal-03.provisional.jpg
+  - ./gal-04.provisional.jpg
+  - ./gal-05.provisional.jpg
+  - ./gal-06.provisional.jpg
+  - ./gal-07.provisional.jpg
 ---
 
 Proyecto final del Máster en BIM, basado en el edificio West Glow (oficinas y

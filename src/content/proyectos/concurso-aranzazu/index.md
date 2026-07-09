@@ -7,7 +7,8 @@ ubicacion: "Arantzazu, Oñati (Gipuzkoa)"
 tipo: "Concurso Pladur 2025 · Accésit"
 rol: "Coautora"
 resumen: "Un taller con viviendas que dialoga con el santuario de Arantzazu sin competir con él. Premio Accésit del concurso Pladur."
-# Imágenes pendientes de recibir.
+provisional: true
+portada: ./portada.provisional.jpg
 ---
 
 Proyecto elaborado para el concurso Pladur 2025: un taller con viviendas en

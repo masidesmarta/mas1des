@@ -5,7 +5,12 @@ ubicacion: "Finca Vista Alegre"
 tipo: "Proyecto académico"
 rol: "Autora"
 resumen: "Reactivación de unas naves preexistentes a partir de sus esqueletos metálicos, con las escaleras como protagonistas."
-# Imágenes pendientes de recibir.
+provisional: true
+portada: ./portada.provisional.jpg
+galeria:
+  - ./gal-01.provisional.jpg
+  - ./gal-02.provisional.jpg
+  - ./gal-03.provisional.jpg
 ---
 
 Proyecto residencial-taller ubicado en la finca Vista Alegre, donde se
