@@ -1,7 +1,7 @@
 ---
 titulo: "Intervención en Vista Alegre"
 orden: 4
-ubicacion: "Finca Vista Alegre"
+ubicacion: "Finca de Vista Alegre, Madrid"
 tipo: "Proyecto académico"
 rol: "Autora"
 resumen: "Reactivación de unas naves preexistentes a partir de sus esqueletos metálicos, con las escaleras como protagonistas."
