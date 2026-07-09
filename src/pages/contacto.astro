@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import mascota from '../assets/mascota.png';
 ---
 
 <Layout
@@ -30,13 +32,13 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </div>
 
-    <img
+    <Image
       class="mascota-firma"
-      src="/mascota.png"
+      src={mascota}
       alt=""
       aria-hidden="true"
-      width="900"
-      height="875"
+      widths={[180, 360]}
+      sizes="180px"
       loading="lazy"
     />
   </section>

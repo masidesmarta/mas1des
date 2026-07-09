@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mas1des.vercel.app/sitemap-index.xml

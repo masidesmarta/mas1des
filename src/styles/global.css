@@ -10,7 +10,7 @@
   --paper-soft: #eae7e0;
   --ink: #171612;
   --ink-soft: #4a473f;
-  --muted: #8f8b80;
+  --muted: #6e6b62; /* gris que pasa contraste AA (4.5:1) sobre el papel */
   --line: #dedad0;
   --line-soft: #e7e3da;
   --accent: #8a2b34; /* granate/tinto — toque muy puntual (marca, números, detalles) */
