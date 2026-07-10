@@ -6,16 +6,16 @@ ubicacion: "South Korea (reference)"
 tipo: "BIM Master's · Revit"
 rol: "Author"
 resumen: "Parametric reconstruction in Revit of an office and retail building, modelled from plans."
-provisional: true
-portada: ./portada.provisional.jpg
+provisional: false
+portada: ./portada.webp
 galeria:
-  - ./gal-01.provisional.jpg
-  - ./gal-02.provisional.jpg
-  - ./gal-03.provisional.jpg
-  - ./gal-04.provisional.jpg
-  - ./gal-05.provisional.jpg
-  - ./gal-06.provisional.jpg
-  - ./gal-07.provisional.jpg
+  - ./gal-01.webp
+  - ./gal-02.webp
+  - ./gal-03.webp
+  - ./gal-04.webp
+  - ./gal-05.webp
+  - ./gal-06.webp
+  - ./gal-07.webp
 ---
 
 Final project of the BIM Master's, based on the West Glow building (offices and

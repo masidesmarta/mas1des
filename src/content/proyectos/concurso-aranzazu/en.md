@@ -7,8 +7,12 @@ ubicacion: "Arantzazu, Oñati (Gipuzkoa)"
 tipo: "Pladur 2025 Competition · Honourable mention"
 rol: "Co-author"
 resumen: "A workshop with housing that dialogues with the Sanctuary of Arantzazu without competing with it. Honourable mention at the Pladur competition."
-provisional: true
-portada: ./portada.provisional.jpg
+provisional: false
+portada: ./portada.webp
+galeria:
+  - ./gal-01.webp
+  - ./gal-02.webp
+  - ./gal-03.webp
 ---
 
 Project developed for the Pladur 2025 competition: a workshop with housing in

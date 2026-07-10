@@ -5,12 +5,11 @@ ubicacion: "Finca Vista Alegre, Madrid"
 tipo: "Academic project"
 rol: "Author"
 resumen: "Reactivation of existing sheds through their metal skeletons, with the staircases as the protagonists."
-provisional: true
-portada: ./portada.provisional.jpg
+provisional: false
+portada: ./portada.webp
 galeria:
-  - ./gal-01.provisional.jpg
-  - ./gal-02.provisional.jpg
-  - ./gal-03.provisional.jpg
+  - ./gal-01.webp
+  - ./gal-02.webp
 ---
 
 Residential-workshop project located on the Vista Alegre estate, intervening on

@@ -10,19 +10,32 @@ Seguimiento de qué imágenes son **originales** (de Marta) y cuáles siguen sie
 
 ## Estado
 
-| Proyecto | Portada | Galería | Originales recibidos | Falta / pedir a Marta |
+| Proyecto | Portada | Galería | Fuente usada | Falta / pedir a Marta |
 |---|---|---|---|---|
-| pfm-riotinto | ⏳ provisional | ⏳ provisional | Láminas SVG (panels) + JPGs | Rasterizar SVG y sustituir |
-| concurso-aranzazu | ⏳ provisional | — | Solo páginas JPG del portfolio | Originales de las láminas si los tiene |
-| residencial-taller-touro | ⏳ provisional | ⏳ provisional | Solo páginas JPG | Originales propios si los tiene |
-| intervencion-vista-alegre | ⏳ provisional | ⏳ provisional | Solo páginas JPG | Originales propios si los tiene |
-| modelado-bim-seul | ⏳ provisional | ⏳ provisional | Solo páginas JPG | Renders originales (Lumion/Enscape) |
-| visualizacion-costa-rica | ⏳ provisional | ⏳ provisional | Solo páginas JPG | Renders originales |
-| visualizacion-vivienda-patio | ⏳ provisional | ⏳ provisional | Solo páginas JPG | Renders originales |
-| visualizacion-retail | ⏳ provisional | ⏳ provisional | Solo páginas JPG | Renders originales |
-| publicaciones | ⏳ provisional | ⏳ provisional | Solo páginas JPG | Dibujos originales |
+| pfm-riotinto | ✅ original | ✅ original | Láminas SVG rasterizadas a webp | — |
+| concurso-aranzazu | ✅ | ✅ | Páginas portfolio (jpg24 recortada + 25-27) | Láminas en alta si las tiene |
+| residencial-taller-touro | ✅ | ✅ | Páginas portfolio (jpg5-9) | Láminas en alta si las tiene |
+| intervencion-vista-alegre | ✅ | ✅ | Páginas portfolio (jpg11-13) | Láminas en alta si las tiene |
+| modelado-bim-seul | ✅ | ✅ | Páginas portfolio (jpg15-23) | Renders originales (Lumion/Enscape) si mejor calidad |
+| publicaciones | ✅ | ✅ | 3 axonométricas WhatsApp | Dibujos en alta si los tiene |
+| visualizacion-costa-rica | ⏳ provisional | ⏳ provisional | Recorte del PDF | **Faltan los renders originales** |
+| visualizacion-vivienda-patio | ⏳ provisional | ⏳ provisional | Recorte del PDF | **Faltan los renders originales** |
+| visualizacion-retail | ⏳ provisional | ⏳ provisional | Recorte del PDF | **Faltan los renders originales** |
 
 Al sustituir cada uno: quitar `.provisional`, `provisional: false`, `npm run check:provisionales`.
+
+## Pendiente de pedir a Marta (bloqueante para quitar el aviso "provisional")
+
+Los tres proyectos de **visualización arquitectónica** (Costa Rica, vivienda con
+patio, evento de retail) no venían en el material del Drive — solo existen como
+recorte del PDF. Hay que pedirle los **renders originales** (los que hizo en
+Lumion / Enscape) para poder sustituirlos. Hasta entonces se quedan con el aviso
+de imagen provisional en la web.
+
+Opcional (mejora de calidad, no bloqueante): si Marta conserva las láminas
+originales en alta de Aranzazu, Touro, Vista Alegre, BIM y los dibujos de
+publicaciones, sustituirían con más nitidez a las páginas del portfolio que
+usamos ahora.
 
 ## Pendiente de decidir
 - **Panel 14 como portada del hero** (en vez de la muñeca): explorar con delicadeza

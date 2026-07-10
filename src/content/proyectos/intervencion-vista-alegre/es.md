@@ -5,12 +5,11 @@ ubicacion: "Finca Vista Alegre, Madrid"
 tipo: "Proyecto académico"
 rol: "Autora"
 resumen: "Reactivación de unas naves preexistentes a partir de sus esqueletos metálicos, con las escaleras como protagonistas."
-provisional: true
-portada: ./portada.provisional.jpg
+provisional: false
+portada: ./portada.webp
 galeria:
-  - ./gal-01.provisional.jpg
-  - ./gal-02.provisional.jpg
-  - ./gal-03.provisional.jpg
+  - ./gal-01.webp
+  - ./gal-02.webp
 ---
 
 Proyecto residencial-taller ubicado en la finca Vista Alegre, donde se
