@@ -1,11 +1,11 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// Cada proyecto es una carpeta dentro de src/content/proyectos/<slug>/
-// con un index.md y sus imágenes al lado. Esta estructura es la que
-// Keystatic podrá editar más adelante sin migrar nada.
+// Cada proyecto es una carpeta src/content/proyectos/<slug>/ con un archivo
+// por idioma (es.md, en.md) y sus imágenes al lado (compartidas entre idiomas).
+// El id queda como "<slug>/<lang>" (p. ej. "pfm-riotinto/en").
 const proyectos = defineCollection({
-  loader: glob({ pattern: '**/index.md', base: './src/content/proyectos' }),
+  loader: glob({ pattern: '**/{es,en}.md', base: './src/content/proyectos' }),
   schema: ({ image }) =>
     z.object({
       titulo: z.string(),

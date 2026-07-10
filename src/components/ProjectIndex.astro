@@ -1,39 +1,40 @@
 ---
 import { Image } from 'astro:assets';
 import ProvisionalBadge from './ProvisionalBadge.astro';
+import { localeUrl } from '../i18n/utils';
+import type { Lang } from '../i18n/ui';
 
 interface Props {
-  proyectos: any[];
-  start?: number; // número inicial (por defecto 1)
+  items: { entry: any; slug: string }[];
+  lang: Lang;
+  start?: number;
 }
-const { proyectos, start = 1 } = Astro.props;
+const { items, lang, start = 1 } = Astro.props;
 ---
 
 <ul class="proj-list" role="list">
   {
-    proyectos.map((p, i) => (
-      <li class="proj-row" data-reveal style={`--i:${i}`}>
-        <a href={`/proyectos/${p.id}`}>
-          <span class="pr-num">{String(start + i).padStart(2, '0')}</span>
-          <span class="pr-title">{p.data.titulo}</span>
-          <span class="pr-meta">
-            {[p.data.tipo, p.data.ubicacion].filter(Boolean).join(' · ')}
-          </span>
-          <span class="pr-arrow" aria-hidden="true">→</span>
-          <span class="pr-thumb">
-            <ProvisionalBadge show={p.data.provisional} />
-            {p.data.portada && (
-              <Image
-                src={p.data.portada}
-                alt={p.data.titulo}
-                widths={[300, 500]}
-                sizes="300px"
-              />
-            )}
-          </span>
-        </a>
-      </li>
-    ))
+    items.map(({ entry, slug }, i) => {
+      const p = entry.data;
+      return (
+        <li class="proj-row" data-reveal style={`--i:${i}`}>
+          <a href={localeUrl(lang, `/proyectos/${slug}`)}>
+            <span class="pr-num">{String(start + i).padStart(2, '0')}</span>
+            <span class="pr-title">{p.titulo}</span>
+            <span class="pr-meta">
+              {[p.tipo, p.ubicacion].filter(Boolean).join(' · ')}
+            </span>
+            <span class="pr-arrow" aria-hidden="true">→</span>
+            <span class="pr-thumb">
+              <ProvisionalBadge show={p.provisional} />
+              {p.portada && (
+                <Image src={p.portada} alt={p.titulo} widths={[300, 500]} sizes="300px" />
+              )}
+            </span>
+          </a>
+        </li>
+      );
+    })
   }
 </ul>
 
@@ -100,7 +101,6 @@ const { proyectos, start = 1 } = Astro.props;
     transform: translateX(6px);
     color: var(--accent);
   }
-  /* miniatura flotante en hover (desktop) */
   .pr-thumb {
     position: absolute;
     right: 11%;

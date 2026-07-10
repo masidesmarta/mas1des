@@ -1,4 +1,12 @@
 ---
+import { useTranslations, type Lang } from '../i18n/ui';
+import { localeUrl } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
 
@@ -6,12 +14,12 @@ const year = new Date().getFullYear();
   <div class="wrap grid">
     <div>
       <p class="name">Marta Masides</p>
-      <p class="muted">Arquitectura · Interiorismo</p>
+      <p class="muted">{t('foot.rol')}</p>
     </div>
-    <nav class="cols" aria-label="Pie">
-      <a href="/proyectos" class="link-underline">Proyectos</a>
-      <a href="/estudio" class="link-underline">Estudio</a>
-      <a href="/contacto" class="link-underline">Contacto</a>
+    <nav class="cols" aria-label={t('nav.principal')}>
+      <a href={localeUrl(lang, '/proyectos')} class="link-underline">{t('nav.proyectos')}</a>
+      <a href={localeUrl(lang, '/estudio')} class="link-underline">{t('nav.estudio')}</a>
+      <a href={localeUrl(lang, '/contacto')} class="link-underline">{t('nav.contacto')}</a>
     </nav>
     <div class="cols">
       <a href="mailto:masidesmarta@gmail.com" class="link-underline"
@@ -26,9 +34,9 @@ const year = new Date().getFullYear();
     </div>
   </div>
   <div class="wrap legal">
-    <span class="muted">© {year} Marta Masides. Todos los derechos reservados.</span>
+    <span class="muted">© {year} Marta Masides. {t('foot.rights')}</span>
     <span class="credit muted">
-      Diseño y desarrollo ·{' '}
+      {t('foot.credit')} ·{' '}
       <a href="https://ebecerra.es" target="_blank" rel="noopener" class="credit-link link-underline">ebecerra.es</a>
     </span>
   </div>

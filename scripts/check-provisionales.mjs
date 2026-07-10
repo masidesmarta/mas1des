@@ -10,15 +10,18 @@ const DIR = 'src/content/proyectos';
 const pendientes = [];
 
 for (const slug of readdirSync(DIR)) {
-  const md = join(DIR, slug, 'index.md');
-  if (!existsSync(md)) continue;
-  const raw = readFileSync(md, 'utf8');
-  const fm = raw.split(/^---$/m)[1] ?? '';
-  const esProvisional = /^\s*provisional:\s*true\s*$/m.test(fm);
-  const usaArchivoProvisional = /provisional\.(jpg|jpeg|png|webp)/i.test(raw);
-  if (esProvisional || usaArchivoProvisional) {
-    pendientes.push(slug);
+  // Cada proyecto tiene un archivo por idioma (es.md, en.md). Revisamos todos.
+  let flagged = false;
+  for (const file of ['es.md', 'en.md']) {
+    const md = join(DIR, slug, file);
+    if (!existsSync(md)) continue;
+    const raw = readFileSync(md, 'utf8');
+    const fm = raw.split(/^---$/m)[1] ?? '';
+    const esProvisional = /^\s*provisional:\s*true\s*$/m.test(fm);
+    const usaArchivoProvisional = /provisional\.(jpg|jpeg|png|webp)/i.test(raw);
+    if (esProvisional || usaArchivoProvisional) flagged = true;
   }
+  if (flagged) pendientes.push(slug);
 }
 
 if (pendientes.length === 0) {
@@ -30,6 +33,6 @@ console.log(`\n⚠  ${pendientes.length} proyecto(s) con imágenes PROVISIONALES
 for (const p of pendientes) console.log(`   · ${p}`);
 console.log(
   '\nSustituye portada.provisional.jpg por el original definitivo y pon "provisional: false"\n' +
-    'en el index.md de cada uno. Luego vuelve a ejecutar: npm run check:provisionales\n',
+    'en el es.md/en.md de cada uno. Luego vuelve a ejecutar: npm run check:provisionales\n',
 );
 process.exit(1);

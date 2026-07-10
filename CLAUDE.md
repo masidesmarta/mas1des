@@ -42,13 +42,25 @@ de Marta). Web hecha gratis; lleva un crédito discreto a `ebecerra.es` en el fo
   galería visual. Ficha = portada full-bleed + spec-sheet + galería + "siguiente
   proyecto".
 
+## Idiomas (i18n)
+
+Sitio **bilingüe ES + EN**. Español en la raíz (`/proyectos`), inglés en `/en/`
+(`/en/proyectos`). Config en `astro.config.mjs` (`i18n`, `prefixDefaultLocale: false`).
+- **UI**: diccionario en `src/i18n/ui.ts` + helper `useTranslations(lang)`. Helpers
+  de rutas en `src/i18n/utils.ts` (`localeUrl`, `switchLocalePath`, `projectsFor`).
+- **Páginas**: la lógica vive en componentes (`src/components/pages/*.astro`) que
+  reciben `lang`; las rutas (`src/pages/*` y `src/pages/en/*`) solo delegan.
+- **Selector ES/EN** en el header (siempre visible). `hreflang` + `og:locale` en el Layout.
+
 ## Contenido (Content Collections)
 
-Cada proyecto es una carpeta `src/content/proyectos/<slug>/` con un `index.md`:
-frontmatter (`titulo`, `orden`, `destacado`, `ano`, `ubicacion`, `tipo`, `rol`,
-`resumen`, `provisional`, `portada`, `galeria[]`, `planos[]`) + cuerpo markdown
-(descripción). Imágenes al lado del `index.md`, referenciadas con `./archivo`.
-Schema en `src/content.config.ts`.
+Cada proyecto es una carpeta `src/content/proyectos/<slug>/` con **un archivo por
+idioma**: `es.md` y `en.md` (id de la collection = `<slug>/<lang>`). Frontmatter
+(`titulo`, `orden`, `destacado`, `ano`, `ubicacion`, `tipo`, `rol`, `resumen`,
+`provisional`, `portada`, `galeria[]`, `planos[]`) + cuerpo markdown (descripción).
+Las **imágenes se comparten** entre idiomas (van en la carpeta, referenciadas con
+`./archivo`). Los campos de imagen/orden se replican igual en `es.md` y `en.md`;
+solo cambian los textos. Schema en `src/content.config.ts`.
 
 ## ⚠️ Imágenes provisionales
 

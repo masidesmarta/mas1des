@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import ProjectDetail from '../../components/pages/ProjectDetail.astro';
-import { projectsFor } from '../../i18n/utils';
+import ProjectDetail from '../../../components/pages/ProjectDetail.astro';
+import { projectsFor } from '../../../i18n/utils';
 
 export async function getStaticPaths() {
-  const list = projectsFor(await getCollection('proyectos'), 'es');
+  const list = projectsFor(await getCollection('proyectos'), 'en');
   return list.map((item, i) => ({
     params: { slug: item.slug },
     props: { entry: item.entry, next: list[(i + 1) % list.length] },
@@ -14,4 +14,4 @@ export async function getStaticPaths() {
 const { entry, next } = Astro.props;
 ---
 
-<ProjectDetail lang="es" entry={entry} next={next} />
+<ProjectDetail lang="en" entry={entry} next={next} />

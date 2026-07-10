@@ -1,0 +1,169 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import ProvisionalBadge from '../ProvisionalBadge.astro';
+import { useTranslations, type Lang } from '../../i18n/ui';
+import { localeUrl, projectsFor } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const items = projectsFor(await getCollection('proyectos'), lang);
+---
+
+<Layout
+  lang={lang}
+  title={`${t('proyectos.titulo')} — Marta Masides`}
+  description={t('meta.homeDesc')}
+>
+  <section class="head wrap">
+    <p class="eyebrow">{t('proyectos.kicker')}</p>
+    <h1 class="dot-title">{t('proyectos.titulo')}</h1>
+    <p class="count">{items.length} {t('proyectos.count')}</p>
+  </section>
+
+  <section class="wrap listado">
+    {
+      items.length === 0 ? (
+        <p class="empty">{t('proyectos.empty')}</p>
+      ) : (
+        <ul class="gallery" role="list">
+          {items.map(({ entry, slug }, i) => {
+            const p = entry.data;
+            return (
+              <li class:list={['g-item', { feature: i === 0 }]} data-reveal>
+                <a href={localeUrl(lang, `/proyectos/${slug}`)}>
+                  <div class="g-media">
+                    <ProvisionalBadge show={p.provisional} />
+                    {p.portada ? (
+                      <Image
+                        src={p.portada}
+                        alt={p.titulo}
+                        widths={[500, 900, 1400]}
+                        sizes={i === 0 ? '100vw' : '(max-width: 760px) 100vw, 50vw'}
+                      />
+                    ) : (
+                      <div class="g-ph" aria-hidden="true" />
+                    )}
+                  </div>
+                  <div class="g-cap">
+                    <h2 class="g-title">{p.titulo}</h2>
+                    <span class="g-meta">
+                      {[p.tipo, p.ubicacion].filter(Boolean).join(' · ')}
+                    </span>
+                  </div>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      )
+    }
+  </section>
+</Layout>
+
+<style>
+  .head {
+    padding-block: clamp(3rem, 2rem + 5vw, 6rem) clamp(1rem, 0.5rem + 1.5vw, 2rem);
+  }
+  .head h1 {
+    margin: 1rem 0 0.6rem;
+    font-size: var(--step-4);
+  }
+  .count {
+    color: var(--muted);
+    font-size: var(--step--1);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .listado {
+    padding-bottom: clamp(4rem, 3rem + 5vw, 8rem);
+  }
+  .empty {
+    color: var(--muted);
+    max-width: var(--measure);
+  }
+
+  .gallery {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(2rem, 1.5rem + 2vw, 3.5rem) clamp(1rem, 0.5rem + 1.5vw, 2rem);
+  }
+  .g-item.feature {
+    grid-column: 1 / -1;
+  }
+  .g-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--paper-soft);
+  }
+  .g-item.feature .g-media {
+    aspect-ratio: 16 / 7;
+  }
+  .g-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s var(--ease);
+  }
+  .g-item a:hover .g-media img {
+    transform: scale(1.04);
+  }
+  .g-ph {
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      45deg,
+      var(--paper-soft),
+      var(--paper-soft) 14px,
+      var(--line) 14px,
+      var(--line) 15px
+    );
+  }
+  .g-cap {
+    padding-top: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .g-title {
+    font-size: var(--step-1);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    transition: color 0.3s var(--ease);
+  }
+  .g-item:not(.feature) .g-title {
+    min-height: 2.2em;
+  }
+  .g-item a:hover .g-title {
+    color: var(--accent);
+  }
+  .g-meta {
+    font-size: var(--step--1);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 760px) {
+    .gallery {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .g-item.feature .g-media {
+      aspect-ratio: 4 / 3;
+    }
+    .head h1 {
+      font-size: var(--step-3);
+    }
+  }
+</style>

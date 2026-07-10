@@ -24,7 +24,8 @@ Para `src/content/proyectos/<slug>/`:
    - Planos → **SVG** (ideal, vectorial) o PNG grande.
    - Nómbralos limpio: `portada.jpg`, `01.jpg`, `02.jpg`, `planta.svg`…
 2. **Borra** los `*.provisional.jpg` de esa carpeta.
-3. **Edita `index.md`** de ese proyecto:
+3. **Edita `es.md` Y `en.md`** de ese proyecto (los campos de imagen se replican
+   igual en ambos idiomas):
    - `portada: ./portada.jpg`
    - `galeria:` → lista de los nuevos archivos.
    - `planos:` → si hay.

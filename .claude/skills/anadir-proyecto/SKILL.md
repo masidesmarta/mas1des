@@ -11,7 +11,8 @@ Los proyectos son **Content Collections** de Astro. Cada uno es una carpeta.
 
 1. Crea `src/content/proyectos/<slug>/` (el `<slug>` es la URL: minúsculas,
    guiones, sin acentos — p. ej. `casa-en-madrid`).
-2. Dentro, un `index.md`:
+2. Dentro, **`es.md` y `en.md`** (mismo frontmatter salvo los textos, que se
+   traducen; los campos de imagen/orden son idénticos en ambos). Ejemplo (`es.md`):
 ```md
 ---
 titulo: "Casa entre patios"
