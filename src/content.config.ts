@@ -23,6 +23,9 @@ const proyectos = defineCollection({
       // Imágenes: opcionales para que el build no rompa antes de tener material.
       portada: image().optional(),
       galeria: z.array(image()).default([]),
+      // Vídeo opcional (p. ej. una performance). Ruta absoluta a un archivo en
+      // public/ (p. ej. "/videos/performance.mp4"); no pasa por astro:assets.
+      video: z.string().optional(),
       // Planos en SVG/PNG (van en la misma carpeta del proyecto).
       planos: z.array(image()).default([]),
     }),

@@ -48,6 +48,7 @@ export const ui = {
     'detail.next': 'Siguiente proyecto',
     'detail.imageAlt': 'imagen',
     'detail.planAlt': 'plano',
+    'detail.video': 'vídeo',
 
     'estudio.kicker': 'Estudio',
     'estudio.lead':
@@ -112,6 +113,7 @@ export const ui = {
     'detail.next': 'Next project',
     'detail.imageAlt': 'image',
     'detail.planAlt': 'plan',
+    'detail.video': 'video',
 
     'estudio.kicker': 'Studio',
     'estudio.lead':

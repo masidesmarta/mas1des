@@ -71,6 +71,22 @@ const [galLead, ...galRest] = data.galeria;
     </div>
 
     {
+      data.video && (
+        <section class="video-wrap wrap">
+          <video
+            controls
+            preload="none"
+            playsinline
+            poster={data.portada?.src}
+            aria-label={`${data.titulo} — ${t('detail.video')}`}
+          >
+            <source src={data.video} type="video/mp4" />
+          </video>
+        </section>
+      )
+    }
+
+    {
       data.galeria.length > 0 && (
         <section class="galeria-wrap wrap">
           {galLead && (
@@ -207,6 +223,20 @@ const [galLead, ...galRest] = data.galeria;
   }
   .prose :global(p) {
     margin: 0 0 1.3rem;
+  }
+
+  .video-wrap {
+    padding-bottom: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+    display: flex;
+    justify-content: center;
+  }
+  .video-wrap video {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    max-height: 82vh;
+    background: var(--ink);
+    border-radius: 2px;
   }
 
   .galeria-wrap {
