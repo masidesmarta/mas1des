@@ -66,6 +66,7 @@ export const ui = {
       'Con base en Madrid y posibilidad de trabajo en remoto. Cuéntame qué tienes en mente.',
 
     'prov.label': 'Provisional',
+    'prov.title': 'Imagen provisional — pendiente de sustituir por el original',
   },
   en: {
     'meta.homeDesc':
@@ -129,6 +130,7 @@ export const ui = {
       'Based in Madrid, open to remote work. Tell me what you have in mind.',
 
     'prov.label': 'Provisional',
+    'prov.title': 'Placeholder image — to be replaced by the final one',
   },
 } as const;
 

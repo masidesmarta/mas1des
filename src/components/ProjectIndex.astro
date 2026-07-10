@@ -26,7 +26,7 @@ const { items, lang, start = 1 } = Astro.props;
             </span>
             <span class="pr-arrow" aria-hidden="true">→</span>
             <span class="pr-thumb">
-              <ProvisionalBadge show={p.provisional} />
+              <ProvisionalBadge show={p.provisional} lang={lang} />
               {p.portada && (
                 <Image src={p.portada} alt={p.titulo} widths={[300, 500]} sizes="300px" />
               )}

@@ -1,16 +1,19 @@
 ---
 // Cinta "provisional" sobre imágenes que aún son recortes del PDF.
 // Se muestra solo cuando el proyecto tiene provisional: true.
+import { useTranslations, type Lang } from '../i18n/ui';
 interface Props {
   show?: boolean;
+  lang?: Lang;
 }
-const { show = false } = Astro.props;
+const { show = false, lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 {
   show && (
-    <span class="prov" title="Imagen provisional — pendiente de sustituir por el original">
-      <span class="dot" /> Provisional
+    <span class="prov" title={t('prov.title')}>
+      <span class="dot" /> {t('prov.label')}
     </span>
   )
 }

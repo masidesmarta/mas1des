@@ -34,13 +34,15 @@ const nav = [
         <a
           href={switchLocalePath(path, 'es')}
           class:list={['lang', { active: lang === 'es' }]}
-          hreflang="es">ES</a
+          hreflang="es"
+          aria-current={lang === 'es' ? 'true' : undefined}>ES</a
         >
         <span class="sep" aria-hidden="true">/</span>
         <a
           href={switchLocalePath(path, 'en')}
           class:list={['lang', { active: lang === 'en' }]}
-          hreflang="en">EN</a
+          hreflang="en"
+          aria-current={lang === 'en' ? 'true' : undefined}>EN</a
         >
       </div>
 
@@ -145,6 +147,7 @@ const nav = [
     letter-spacing: 0.06em;
     font-weight: 500;
     z-index: 130;
+    order: 2; /* desktop: a la derecha de los enlaces del nav */
   }
   .lang-switch .lang {
     color: currentColor;

@@ -23,7 +23,7 @@ export function switchLocalePath(path: string, toLang: Lang): string {
   return localeUrl(toLang, stripLocale(path));
 }
 
-type Entry = { id: string; data: { orden: number } };
+type Entry = { id: string; data: { orden: number; [k: string]: any } };
 
 /** Proyectos de un idioma, ordenados, con su slug (carpeta) resuelto. */
 export function projectsFor<T extends Entry>(entries: T[], lang: Lang) {

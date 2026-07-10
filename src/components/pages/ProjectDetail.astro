@@ -39,7 +39,7 @@ const [galLead, ...galRest] = data.galeria;
     {
       data.portada && (
         <figure class="cover">
-          <ProvisionalBadge show={data.provisional} />
+          <ProvisionalBadge show={data.provisional} lang={lang} />
           <Image
             src={data.portada}
             alt={data.titulo}

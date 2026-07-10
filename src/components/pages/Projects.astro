@@ -38,7 +38,7 @@ const items = projectsFor(await getCollection('proyectos'), lang);
               <li class:list={['g-item', { feature: i === 0 }]} data-reveal>
                 <a href={localeUrl(lang, `/proyectos/${slug}`)}>
                   <div class="g-media">
-                    <ProvisionalBadge show={p.provisional} />
+                    <ProvisionalBadge show={p.provisional} lang={lang} />
                     {p.portada ? (
                       <Image
                         src={p.portada}
