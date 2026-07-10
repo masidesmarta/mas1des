@@ -4,6 +4,16 @@
    Mucho aire, tipografía Inter, chrome mínimo.
    ============================================================ */
 
+/* SciFly Sans — display "tipo arquitecto" del hero (elección de Marta).
+   Freeware (Flyerzone), self-host en public/fonts/. */
+@font-face {
+  font-family: 'SciFly Sans';
+  src: url('/fonts/scifly-sans.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Paleta — blanco cálido de galería + tinta */
   --paper: #f5f3ef;
@@ -13,11 +23,14 @@
   --muted: #6e6b62; /* gris que pasa contraste AA (4.5:1) sobre el papel */
   --line: #dedad0;
   --line-soft: #e7e3da;
-  --accent: #8a2b34; /* granate/tinto — toque muy puntual (marca, números, detalles) */
-  --accent-soft: #a9414a;
+  --accent: #c8342b; /* ROJO DE MARCA cálido — único acento en toda la web (hero, marca, números, flechas, activos) */
+  --accent-soft: #a82a22; /* rojo más profundo para hover/fondo de reserva */
+  --red: #c8342b; /* alias: el campo del hero usa el MISMO rojo de marca */
+  --red-deep: #a82a22;
 
   /* Tipografía */
   --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'SciFly Sans', 'Inter Variable', system-ui, sans-serif;
 
   /* Escala tipográfica fluida */
   --step--1: clamp(0.78rem, 0.75rem + 0.14vw, 0.85rem);

@@ -22,9 +22,10 @@ export const ui = {
     'foot.credit': 'Diseño y desarrollo',
 
     'hero.kicker': 'Arquitecta · Madrid',
-    'hero.tagline':
-      'Arquitectura atenta a la luz, la materia y el uso real de cada lugar.',
+    'hero.tagline': 'Pensar el espacio de otra manera.',
     'hero.cta': 'Ver proyectos',
+    'hero.imageAlt':
+      'Render de un mercado cubierto por una estructura textil roja — Proyecto Fin de Máster, Riotinto',
     'hero.mascotaAlt':
       'Ilustración de Marta asomando tras un libro abierto que dice «Portfolio»',
 
@@ -87,9 +88,10 @@ export const ui = {
     'foot.credit': 'Design & development',
 
     'hero.kicker': 'Architect · Madrid',
-    'hero.tagline':
-      'Architecture attentive to light, materials and the real use of each place.',
+    'hero.tagline': 'Thinking space differently.',
     'hero.cta': 'View projects',
+    'hero.imageAlt':
+      'Render of a market covered by a red textile structure — Master’s Final Project, Riotinto',
     'hero.mascotaAlt':
       'Illustration of Marta peeking out from behind an open book reading “Portfolio”',
 

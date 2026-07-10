@@ -58,10 +58,11 @@ const { items, lang, start = 1 } = Astro.props;
     align-items: center;
     gap: 1.2rem;
     padding: clamp(1.1rem, 0.7rem + 1.7vw, 2rem) 0.2rem;
-    transition: padding-left 0.45s var(--ease);
+    transition: transform 0.45s var(--ease);
   }
+  /* Indenta con transform (no padding) para no reducir el ancho del título ni partir línea */
   .proj-row a:hover {
-    padding-left: 1.4rem;
+    transform: translateX(1.4rem);
   }
   .pr-num {
     font-size: var(--step--1);
@@ -139,7 +140,7 @@ const { items, lang, start = 1 } = Astro.props;
       padding: clamp(1rem, 0.8rem + 1.5vw, 1.5rem) 0;
     }
     .proj-row a:hover {
-      padding-left: 0;
+      transform: none;
     }
     .pr-num {
       order: 1;
