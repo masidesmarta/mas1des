@@ -32,10 +32,13 @@ recorte del PDF. Hay que pedirle los **renders originales** (los que hizo en
 Lumion / Enscape) para poder sustituirlos. Hasta entonces se quedan con el aviso
 de imagen provisional en la web.
 
-Opcional (mejora de calidad, no bloqueante): si Marta conserva las láminas
-originales en alta de Aranzazu, Touro, Vista Alegre, BIM y los dibujos de
-publicaciones, sustituirían con más nitidez a las páginas del portfolio que
-usamos ahora.
+Opcional (mejora de calidad, no bloqueante): las páginas del portfolio que
+usamos como fuente son de **baja resolución (1191×842 px, A4 a ~150 dpi)**. Al
+recortar el margen blanco, algunos dibujos quedan pequeños. El caso más visible
+es la **portada de Vista Alegre** (la axonometría ocupa poca página → ~509 px →
+se ve algo blanda en pantallas grandes). Si Marta conserva las **láminas
+originales en alta** de Aranzazu, Touro, Vista Alegre, BIM y los dibujos de
+publicaciones, sustituirían con más nitidez. Prioridad: Vista Alegre.
 
 ## Pendiente de decidir
 - **Panel 14 como portada del hero** (en vez de la muñeca): explorar con delicadeza
