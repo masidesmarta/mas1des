@@ -7,16 +7,18 @@ ubicacion: "Minas de Riotinto, Huelva"
 tipo: "Proyecto Fin de Máster · ETSAM"
 rol: "Autora"
 resumen: "Intervención arquitectónica en el paisaje minero, entendida como herramienta para la regeneración ambiental del territorio."
-provisional: true
-portada: ./portada.provisional.jpg
+provisional: false
+portada: ./portada.webp
 galeria:
-  - ./gal-01.provisional.jpg
-  - ./gal-02.provisional.jpg
-  - ./gal-03.provisional.jpg
-  - ./gal-04.provisional.jpg
-  - ./gal-05.provisional.jpg
-# Cuando lleguen los originales: sustituir *.provisional.jpg por los definitivos,
-# añadir planos y poner provisional: false.
+  - ./gal-01.webp
+  - ./gal-02.webp
+  - ./gal-03.webp
+  - ./gal-04.webp
+  - ./gal-05.webp
+  - ./gal-06.webp
+  - ./gal-07.webp
+  - ./gal-08.webp
+  - ./gal-09.webp
 ---
 
 Proyecto Fin de Máster planteado sobre el paisaje minero de las Minas de

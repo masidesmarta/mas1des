@@ -7,14 +7,18 @@ ubicacion: "Minas de Riotinto, Huelva"
 tipo: "Master's Final Project · ETSAM"
 rol: "Author"
 resumen: "An architectural intervention in the mining landscape, conceived as a tool for the environmental regeneration of the territory."
-provisional: true
-portada: ./portada.provisional.jpg
+provisional: false
+portada: ./portada.webp
 galeria:
-  - ./gal-01.provisional.jpg
-  - ./gal-02.provisional.jpg
-  - ./gal-03.provisional.jpg
-  - ./gal-04.provisional.jpg
-  - ./gal-05.provisional.jpg
+  - ./gal-01.webp
+  - ./gal-02.webp
+  - ./gal-03.webp
+  - ./gal-04.webp
+  - ./gal-05.webp
+  - ./gal-06.webp
+  - ./gal-07.webp
+  - ./gal-08.webp
+  - ./gal-09.webp
 ---
 
 Master's Final Project set on the mining landscape of the Riotinto Mines
