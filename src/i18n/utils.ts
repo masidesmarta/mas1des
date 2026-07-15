@@ -23,21 +23,69 @@ export function switchLocalePath(path: string, toLang: Lang): string {
   return localeUrl(toLang, stripLocale(path));
 }
 
-type Entry = { id: string; data: { orden: number; [k: string]: any } };
+type Raw = { id: string; data: Record<string, any> };
 
-/** Proyectos de un idioma, ordenados, con su slug (carpeta) resuelto. */
-export function projectsFor<T extends Entry>(entries: T[], lang: Lang) {
-  const suffix = `/${lang}`;
+/** Resuelve los campos ES/EN de una ficha bilingüe a nombres planos del idioma. */
+function localize(data: Record<string, any>, lang: Lang) {
+  const suf = lang === 'en' ? 'En' : 'Es';
+  // Los campos de texto caen a español si el inglés está vacío.
+  const pick = (base: string) => {
+    const v = data[base + suf];
+    return v != null && v !== '' ? v : data[base + 'Es'];
+  };
+  return {
+    titulo: pick('titulo'),
+    resumen: pick('resumen'),
+    ubicacion: pick('ubicacion'),
+    tipo: pick('tipo'),
+    rol: pick('rol'),
+    descripcion: pick('descripcion'),
+    orden: data.orden,
+    destacado: data.destacado,
+    ano: data.ano,
+    provisional: data.provisional,
+    portada: data.portada,
+    galeria: data.galeria ?? [],
+    planos: data.planos ?? [],
+    video: data.video || undefined,
+  };
+}
+
+/**
+ * Proyectos de un idioma, ordenados, con su slug (carpeta).
+ * Devuelve `{ entry, slug }` donde `entry.data` ya está localizado al idioma,
+ * para que los componentes lo consuman igual que antes.
+ */
+export function projectsFor<T extends Raw>(entries: T[], lang: Lang) {
   return entries
-    .filter((e) => e.id.endsWith(suffix))
-    .map((entry) => ({ entry, slug: entry.id.slice(0, -suffix.length) }))
+    .map((e) => ({ entry: { id: e.id, data: localize(e.data, lang) }, slug: e.id }))
     .sort((a, b) => a.entry.data.orden - b.entry.data.orden);
 }
 
-/** Un proyecto por slug+idioma, con fallback a español. */
-export function getProject<T extends Entry>(entries: T[], slug: string, lang: Lang) {
-  return (
-    entries.find((e) => e.id === `${slug}/${lang}`) ??
-    entries.find((e) => e.id === `${slug}/es`)
-  );
+/** Un proyecto por slug+idioma (datos ya localizados). */
+export function getProject<T extends Raw>(entries: T[], slug: string, lang: Lang) {
+  const e = entries.find((x) => x.id === slug);
+  return e ? { entry: { id: e.id, data: localize(e.data, lang) }, slug: e.id } : undefined;
+}
+
+/**
+ * Texto largo → HTML seguro con formato ligero: **negrita**, *cursiva*,
+ * párrafos (línea en blanco) y saltos de línea simples. Para las descripciones
+ * que Marta edita en el CMS como texto plano.
+ */
+export function richText(text?: string): string {
+  if (!text) return '';
+  const esc = (s: string) =>
+    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return text
+    .split(/\r?\n\s*\r?\n/)
+    .map((para) => {
+      let h = esc(para.trim());
+      h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      h = h.replace(/(^|[^*])\*(?!\*)([^*]+?)\*(?!\*)/g, '$1<em>$2</em>');
+      h = h.replace(/\r?\n/g, '<br />');
+      return `<p>${h}</p>`;
+    })
+    .filter(Boolean)
+    .join('\n');
 }

@@ -1,10 +1,9 @@
 ---
-import { render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import ProvisionalBadge from '../ProvisionalBadge.astro';
 import { useTranslations, type Lang } from '../../i18n/ui';
-import { localeUrl } from '../../i18n/utils';
+import { localeUrl, richText } from '../../i18n/utils';
 
 interface Props {
   lang: Lang;
@@ -14,7 +13,6 @@ interface Props {
 const { lang, entry, next } = Astro.props;
 const t = useTranslations(lang);
 const { data } = entry;
-const { Content } = await render(entry);
 
 const ficha = [
   [t('detail.year'), data.ano],
@@ -65,9 +63,7 @@ const [galLead, ...galRest] = data.galeria;
           </dl>
         )
       }
-      <div class="prose">
-        <Content />
-      </div>
+      {data.descripcion && <div class="prose" set:html={richText(data.descripcion)} />}
     </div>
 
     {

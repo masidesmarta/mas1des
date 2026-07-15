@@ -1,38 +1,40 @@
 ---
 name: keystatic-cms
-description: Activar o trabajar con el CMS Keystatic (para que Marta edite el contenido). Úsalo al querer habilitar la edición visual, pasar al modo GitHub, o entender por qué el CMS no afecta al build actual.
+description: Trabajar con el CMS Keystatic (para que Marta edite el contenido). Úsalo al tocar el modelo de contenido de proyectos, el asistente de edición, el paso a modo GitHub/Cloud, o al entender cómo se lee el contenido.
 ---
 
 # Keystatic (CMS)
 
-Se eligió **Keystatic** (git-based) frente a Sanity para este sitio estático:
-0 cuentas, 0 env vars en local, 0 lock-in (el contenido son los ficheros del repo).
-Razonamiento completo y pasos detallados en **`docs/cms.md`**.
+CMS **git-based** (frente a Sanity) para este sitio estático. Razonamiento y pasos
+completos en **`docs/cms.md`**. Guía de uso para Marta en **`docs/editar-la-web.md`**.
 
-## Estado actual
-- `keystatic.config.ts` existe (mapea la colección `proyectos`) pero la
-  integración **NO** está cableada en `astro.config.mjs`.
-- Por eso el sitio **compila, despliega y se ve en GitHub igual**, con **0 env vars**.
-  El config es inerte hasta activarlo.
+## Estado: ACTIVADO
 
-## Activar edición en LOCAL (0 env vars)
-```bash
-npm i @keystatic/astro @astrojs/react react react-dom @astrojs/vercel
-```
-En `astro.config.mjs`: `output: 'hybrid'`, `adapter: vercel()`, integraciones
-`react()` y `keystatic()`. `npm run dev` → editar en `/keystatic`.
+- `astro.config.mjs` tiene adaptador de Vercel + integraciones `react()` y
+  `keystatic()`. El sitio sigue siendo **estático**; solo `/keystatic` y su API van
+  server (funciones serverless).
+- `keystatic.config.ts` está en **modo GitHub** (`storage: { kind: 'github', repo:
+  'masidesmarta/mas1des' }`). La primera vez, `/keystatic` en producción muestra un
+  asistente que crea la GitHub App y da 3 env vars para Vercel
+  (`KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET`).
+- **Para editar en LOCAL** sin nada de eso: cambiar temporalmente a
+  `storage: { kind: 'local' }` y `npm run dev` → `/keystatic`.
+- Alternativa sin env vars: **Keystatic Cloud** (`storage: { kind: 'cloud', … }`).
 
-> ⚠️ Keystatic guarda el cuerpo como Markdoc (`.mdoc`), no `.md`. Al activar hay
-> que alinear el content collection (opción A: `@astrojs/markdoc` + leer
-> `index.mdoc`; opción B, más simple: mover la descripción a un campo de texto y
-> renderizarlo en la ficha en vez de `<Content />`). Ver `docs/cms.md`.
+## Modelo de contenido
 
-## Activar edición ONLINE para Marta (modo GitHub)
-Cambiar `storage` a `{ kind: 'github', repo: 'masidesmarta/mas1des' }`. Crea una
-GitHub App → ahí entran env vars → seguir el **proceso de env vars** (paso 3-4 de
-`docs/cms.md`; los secretos no van hardcodeados en repo público). Alternativa sin
-env propias: **Keystatic Cloud** (gratis).
+Cada proyecto = carpeta `src/content/proyectos/<slug>/` con **`index.yaml`** (ficha
+bilingüe: campos `…Es`/`…En` + compartidos) e **imágenes al lado** (por nombre).
+`content.config.ts` lee `**/index.yaml` (imágenes vía `image()` de astro:assets).
+`projectsFor()` en `i18n/utils.ts` resuelve `Es`/`En` al idioma y mantiene la forma
+`{ entry: { id, data }, slug }` para no tocar componentes. La **descripción** es
+texto con formato ligero (`**negrita**`, `*cursiva*`, párrafos) vía `richText()`.
+
+> Al añadir un campo nuevo: schema en `keystatic.config.ts` (cómo se edita) +
+> `content.config.ts` (cómo se lee, con `Es`/`En` si es bilingüe) + `localize()` en
+> `utils.ts` (si es bilingüe) + el componente que lo pinte.
 
 ## Regla de variables de entorno
-Cero mientras se pueda. Orden: hardcode → env+fallback → pasar a Marta (Vercel) →
-quitar hardcode. Secreto sensible → directo al paso "pasar a Marta".
+
+Cero mientras se pueda. Secretos (client secret, KEYSTATIC_SECRET) → directos a
+Vercel, nunca al repo (es público). Detalle en `docs/cms.md`.

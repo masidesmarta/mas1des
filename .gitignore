@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # material de trabajo (PDF, originales sin procesar) — no se sube al repo
 _material/
+
+# Vercel adapter build output
+.vercel/

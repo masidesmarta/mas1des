@@ -1,0 +1,31 @@
+tituloEs: Intervención en Vista Alegre
+tituloEn: Intervention in Vista Alegre
+orden: 4
+destacado: false
+ubicacionEs: Finca Vista Alegre, Madrid
+ubicacionEn: Finca Vista Alegre, Madrid
+tipoEs: Proyecto académico
+tipoEn: Academic project
+rolEs: Autora
+rolEn: Author
+resumenEs: Reactivación de unas naves preexistentes a partir de sus esqueletos metálicos, con las escaleras como protagonistas.
+resumenEn: Reactivation of existing sheds through their metal skeletons, with the staircases as the protagonists.
+descripcionEs: |-
+  Proyecto residencial-taller ubicado en la finca Vista Alegre, donde se interviene sobre unas naves preexistentes. El trabajo se centra en los esqueletos metálicos del interior y en la importancia de las escaleras como elemento de la intervención puntual.
+
+  Los materiales son ligeros y las estructuras se plantean como un esqueleto difícil de definir, con pilares inclinados que representan un germen que se introduce en el edificio existente.
+
+  Gestionado por completo en AutoCAD y Rhinoceros.
+descripcionEn: |-
+  Residential-workshop project located on the Vista Alegre estate, intervening on some existing sheds. The work focuses on the interior metal skeletons and on the importance of the staircases as the element of a targeted intervention.
+
+  The materials are light and the structures are conceived as a hard-to-define skeleton, with inclined columns that represent a seed introduced into the existing building.
+
+  Managed entirely in AutoCAD and Rhinoceros.
+provisional: false
+portada: portada.webp
+galeria:
+  - gal-01.webp
+  - gal-02.webp
+planos: []
+video: ""

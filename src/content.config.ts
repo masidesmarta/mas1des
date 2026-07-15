@@ -1,33 +1,41 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// Cada proyecto es una carpeta src/content/proyectos/<slug>/ con un archivo
-// por idioma (es.md, en.md) y sus imágenes al lado (compartidas entre idiomas).
-// El id queda como "<slug>/<lang>" (p. ej. "pfm-riotinto/en").
+// Cada proyecto es una carpeta src/content/proyectos/<slug>/ con un `index.yaml`
+// (editable desde el CMS Keystatic) y sus imágenes al lado. Los campos de texto
+// van emparejados ES/EN dentro de la misma ficha bilingüe. El id = <slug>.
 const proyectos = defineCollection({
-  loader: glob({ pattern: '**/{es,en}.md', base: './src/content/proyectos' }),
+  loader: glob({
+    pattern: '**/index.yaml',
+    base: './src/content/proyectos',
+    generateId: ({ entry }) => entry.replace(/\/index\.ya?ml$/i, ''),
+  }),
   schema: ({ image }) =>
     z.object({
-      titulo: z.string(),
+      tituloEs: z.string(),
+      tituloEn: z.string().default(''),
       // Orden en el listado (menor = primero). Los destacados van arriba.
       orden: z.number().default(100),
       destacado: z.boolean().default(false),
       ano: z.number().optional(),
-      ubicacion: z.string().optional(),
-      tipo: z.string().optional(), // vivienda, reforma, local, interiorismo…
-      rol: z.string().optional(),
-      resumen: z.string().optional(), // una frase para el listado
-      // true mientras la portada/galería sean recortes provisionales del PDF.
-      // El script `npm run check:provisionales` avisa de las que falten sustituir.
+      ubicacionEs: z.string().optional(),
+      ubicacionEn: z.string().optional(),
+      tipoEs: z.string().optional(),
+      tipoEn: z.string().optional(),
+      rolEs: z.string().optional(),
+      rolEn: z.string().optional(),
+      resumenEs: z.string().optional(),
+      resumenEn: z.string().optional(),
+      descripcionEs: z.string().optional(),
+      descripcionEn: z.string().optional(),
+      // true mientras la portada/galería sean recortes provisionales.
       provisional: z.boolean().default(false),
       // Imágenes: opcionales para que el build no rompa antes de tener material.
       portada: image().optional(),
       galeria: z.array(image()).default([]),
-      // Vídeo opcional (p. ej. una performance). Ruta absoluta a un archivo en
-      // public/ (p. ej. "/videos/performance.mp4"); no pasa por astro:assets.
-      video: z.string().optional(),
-      // Planos en SVG/PNG (van en la misma carpeta del proyecto).
       planos: z.array(image()).default([]),
+      // Vídeo opcional (ruta a un archivo en public/, p. ej. /videos/x.mp4).
+      video: z.string().optional(),
     }),
 });
 

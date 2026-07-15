@@ -1,0 +1,26 @@
+tituloEs: Vivienda unifamiliar con patio
+tituloEn: Single-family house with courtyard
+orden: 7
+destacado: false
+ubicacionEs: ""
+ubicacionEn: ""
+tipoEs: Visualización arquitectónica
+tipoEn: Architectural visualization
+rolEs: Renders · colaboración en estudio
+rolEn: Renders · studio collaboration
+resumenEs: Renders exteriores e interiores de una vivienda unifamiliar con piscina y patio ajardinado.
+resumenEn: Exterior and interior renders of a single-family house with a pool and landscaped courtyard.
+descripcionEs: |-
+  Desarrollo de imágenes fotorrealistas para una vivienda unifamiliar durante mi colaboración en el estudio.
+
+  El trabajo se llevó a cabo con Lumion sobre modelos en Revit, elaborando renders exteriores e interiores para comunicar el proyecto, potenciar la calidad espacial de la propuesta y apoyar su presentación al cliente.
+descripcionEn: |-
+  Development of photorealistic images for a single-family house during my collaboration at the studio.
+
+  The work was carried out with Lumion on Revit models, producing exterior and interior renders to communicate the project, enhance the spatial quality of the proposal and support its presentation to the client.
+provisional: true
+portada: portada.provisional.jpg
+galeria:
+  - gal-01.provisional.jpg
+planos: []
+video: ""

@@ -1,0 +1,27 @@
+tituloEs: Dibujos y postproducción para publicación
+tituloEn: Drawings and post-production for publication
+orden: 9
+destacado: false
+ubicacionEs: ""
+ubicacionEn: ""
+tipoEs: Dibujo · postproducción
+tipoEn: Drawing · post-production
+rolEs: Colaboración en estudio
+rolEn: Studio collaboration
+resumenEs: Postproducción de dibujos de proyecto para su publicación en revistas y plataformas especializadas.
+resumenEn: Post-production of project drawings for publication in specialized magazines and platforms.
+descripcionEs: |-
+  Dibujos realizados durante mis prácticas de empresa: la postproducción de proyectos para su posterior publicación en plataformas y revistas especializadas.
+
+  Realizados con AutoCAD, Rhinoceros e Illustrator.
+descripcionEn: |-
+  Drawings made during my work placement: the post-production of projects for their later publication in specialized platforms and magazines.
+
+  Made with AutoCAD, Rhinoceros and Illustrator.
+provisional: false
+portada: portada.webp
+galeria:
+  - gal-01.webp
+  - gal-02.webp
+planos: []
+video: ""

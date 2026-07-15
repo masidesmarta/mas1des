@@ -1,0 +1,37 @@
+tituloEs: Modelado BIM — West Glow, Seúl
+tituloEn: BIM modelling — West Glow, Seoul
+orden: 5
+destacado: false
+ano: 2025
+ubicacionEs: Corea del Sur (referencia)
+ubicacionEn: South Korea (reference)
+tipoEs: Máster BIM · Revit
+tipoEn: BIM Master's · Revit
+rolEs: Autora
+rolEn: Author
+resumenEs: Reconstrucción paramétrica en Revit de un edificio de oficinas y retail, levantando el modelo desde planos.
+resumenEn: Parametric reconstruction in Revit of an office and retail building, modelled from plans.
+descripcionEs: |-
+  Proyecto final del Máster en BIM, basado en el edificio West Glow (oficinas y retail) de Society of Architecture, en Corea del Sur.
+
+  A partir de los planos originales se levantó el modelo completo en Revit, con detalles y familias de elementos propios —muros, ventanas, barandillas y escaleras. El ejercicio permitió parametrizar y reconstruir un espacio real mediante el sistema BIM.
+
+  Gestionado íntegramente en Revit, con imágenes elaboradas en Lumion y Enscape.
+descripcionEn: |-
+  Final project of the BIM Master's, based on the West Glow building (offices and retail) by Society of Architecture, in South Korea.
+
+  From the original drawings, the complete model was built in Revit, with custom details and element families —walls, windows, railings and staircases. The exercise made it possible to parametrise and reconstruct a real space through the BIM system.
+
+  Managed entirely in Revit, with images produced in Lumion and Enscape.
+provisional: false
+portada: portada.webp
+galeria:
+  - gal-01.webp
+  - gal-02.webp
+  - gal-03.webp
+  - gal-04.webp
+  - gal-05.webp
+  - gal-06.webp
+  - gal-07.webp
+planos: []
+video: ""

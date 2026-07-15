@@ -1,71 +1,85 @@
-# CMS — Keystatic (preparado, sin activar)
+# CMS — Keystatic (activado en local)
 
 ## Decisión: Keystatic (no Sanity)
 
-Para este portfolio el CMS recomendado es **[Keystatic](https://keystatic.com)**, no Sanity.
+Para este portfolio el CMS es **[Keystatic](https://keystatic.com)**, no Sanity.
 
 | | Keystatic | Sanity |
 |---|---|---|
-| Dónde vive el contenido | En el **repo** (los mismos `.md` que ya usa el sitio) | Servicio **hosteado** aparte |
+| Dónde vive el contenido | En el **repo** (los ficheros que ya usa el sitio) | Servicio **hosteado** aparte |
 | Coste / cuenta | Gratis, sin cuenta que gestionar | Cuenta + proyecto + plan |
 | Variables de entorno | **0** en modo local | projectId + dataset (+ token) |
 | Publicar | Edita → commit a git → Vercel redeploy | API + webhooks |
 | Encaje | 1 sitio estático → ideal | Varias apps compartiendo contenido |
 
-En ebecerra-web usamos Sanity porque **varias apps comparten el mismo contenido**; aquí es **un solo sitio estático**, así que Sanity sería sobredimensionado y añadiría dependencia hosteada + env vars. Keystatic edita directamente el markdown del repo.
+En ebecerra-web usamos Sanity porque varias apps comparten contenido; aquí es un
+solo sitio estático, así que Keystatic edita directamente los ficheros del repo.
 
-**Sobre las cuentas:** con Keystatic **no hay cuenta de CMS que traspasar**. En modo local edita quien tenga el proyecto. Para que **Marta edite online** se usa el modo GitHub (una GitHub App conectada a *su* repo; ella lo autoriza con su GitHub). No hay que crear/traspasar cuentas de Sanity.
+## Modelo de contenido (IMPORTANTE)
+
+Cada proyecto es **una ficha bilingüe** en la carpeta `src/content/proyectos/<slug>/`:
+
+- **`index.yaml`** — todos los datos. Los campos de texto van emparejados ES/EN
+  (`tituloEs`/`tituloEn`, `resumenEs`/`resumenEn`, `descripcionEs`/`descripcionEn`,
+  `ubicacionEs`/`ubicacionEn`, `tipo`, `rol`…) + los compartidos (`orden`,
+  `destacado`, `ano`, `provisional`, `portada`, `galeria`, `planos`, `video`).
+- **Las imágenes** (`portada.webp`, `gal-*.webp`…) viven **al lado**, en la misma
+  carpeta. Keystatic las guarda ahí por nombre.
+- **Descripción**: campo de texto. Admite **negrita** (`**así**`) y *cursiva*
+  (`*así*`); los párrafos se separan con una línea en blanco. Se renderiza con el
+  helper `richText()` de `src/i18n/utils.ts` (no usa Markdown/Markdoc completo, a
+  propósito, para que sea simple de editar).
+
+`src/content.config.ts` lee `**/index.yaml` (id = slug, imágenes vía `image()` de
+astro:assets → siguen optimizándose como webp responsive). `projectsFor()` en
+`utils.ts` resuelve los campos `Es`/`En` al idioma y devuelve la misma forma que
+antes, así que los componentes no cambian.
+
+> Migración histórica: el contenido venía como `es.md` + `en.md` por carpeta. Se
+> fusionó en `index.yaml` (script one-off, ya ejecutado y retirado).
 
 ## Estado actual
 
-- `keystatic.config.ts` está en la raíz con el esquema de `proyectos` mapeado, pero **la integración NO está cableada** en `astro.config.mjs`.
-- Resultado: el sitio **compila, despliega y se ve en GitHub igual que ahora**, con **cero env vars**. El config es inerte hasta activarlo.
+- **Activado en modo LOCAL** (`storage: { kind: 'local' }` en `keystatic.config.ts`).
+- `astro.config.mjs` tiene el adaptador de Vercel + las integraciones `react()` y
+  `keystatic()`. El sitio **sigue siendo estático**; solo `/keystatic` y su API se
+  renderizan on-demand (funciones serverless en Vercel).
+- Edición en local: `npm run dev` → **http://localhost:4321/keystatic**. Los
+  cambios se guardan en los ficheros del repo; se commitean a git.
+- **Cero env vars** en este modo.
 
-## Cómo activarlo (cuando toque)
+## Activar edición ONLINE para Marta (modo GitHub) — PENDIENTE
 
-### Paso 1 — Edición en LOCAL (0 env vars)
-```bash
-npm i @keystatic/astro @astrojs/react react react-dom
-```
-En `astro.config.mjs` añadir el adaptador y las integraciones:
-```js
-import react from '@astrojs/react';
-import keystatic from '@keystatic/astro';
-import vercel from '@astrojs/vercel';
+Para que Marta edite desde el navegador sin tocar código, hay que pasar a modo
+GitHub. Requiere una **GitHub App** (acciones en la cuenta de GitHub de Marta):
 
-export default defineConfig({
-  // ...
-  output: 'hybrid',          // Keystatic necesita rutas server para /keystatic
-  adapter: vercel(),
-  integrations: [sitemap(), react(), keystatic()],
-});
-```
-`npm run dev` → editar en **http://localhost:4321/keystatic**. Los cambios se guardan en los ficheros del repo; se commitean a mano.
+1. En `keystatic.config.ts`, cambiar el `storage`:
+   ```ts
+   storage: { kind: 'github', repo: 'masidesmarta/mas1des' },
+   ```
+2. Arrancar el sitio e ir a `/keystatic`: Keystatic **guía la creación de la GitHub
+   App** conectada al repo. Al terminar da tres valores:
+   - `KEYSTATIC_GITHUB_CLIENT_ID`
+   - `KEYSTATIC_GITHUB_CLIENT_SECRET`  ← **secreto**
+   - `KEYSTATIC_SECRET`               ← **secreto**
+3. Añadir esos tres en **Vercel** (proyecto de Marta) → Settings → Environment
+   Variables. **NO** se hardcodean en el repo (son secretos y el repo es público).
+4. Redeploy. Marta entra en `su-web/keystatic`, se loguea con GitHub y edita; cada
+   cambio abre un commit/PR en el repo → Vercel redeploya solo.
 
-> ⚠️ **Gotcha del cuerpo de texto:** Keystatic guarda la *Descripción* como Markdoc (`index.mdoc`), no `.md`. Dos opciones al activarlo:
-> - **(A)** Pasar el content collection a Markdoc: `npm i @astrojs/markdoc`, añadir la integración, y que `src/content.config.ts` lea `**/index.mdoc`. Migrar los 9 `index.md` → `index.mdoc` (el frontmatter no cambia; el cuerpo es Markdoc, casi idéntico para prosa simple).
-> - **(B)** Más simple para Marta: quitar el cuerpo markdown y usar el campo `resumen`/un nuevo campo de texto largo como descripción (todo pasa a ser datos YAML, sin `.mdoc`). Ajustar la ficha para renderizar ese texto en vez de `<Content />`.
-> Recomendado: **(B)** si las descripciones son prosa corta; **(A)** si se quiere formato rico.
+**Alternativa sin gestionar env vars propias:** [Keystatic Cloud](https://keystatic.cloud)
+(plan gratuito) hostea el auth. Se crea un proyecto en su panel, se conecta el
+repo, y el `storage` pasa a `{ kind: 'cloud', project: 'team/proyecto' }`. Menos
+piezas que la GitHub App; puede ser la opción más cómoda.
 
-### Paso 2 — Edición ONLINE para Marta (modo GitHub)
-Cambiar en `keystatic.config.ts`:
-```ts
-storage: {
-  kind: 'github',
-  repo: 'masidesmarta/mas1des',
-},
-```
-Esto crea una **GitHub App** (Keystatic guía el proceso). Ahí aparecen 2 secretos → seguir el **proceso de env vars** de abajo. Marta entra en `su-web.vercel.app/keystatic`, se loguea con GitHub y edita; cada cambio abre un commit/PR en su repo → Vercel redeploya.
+> Mientras no se active el modo online, `/keystatic` en producción existe pero
+> solo funciona en local (no puede guardar en un servidor de solo-lectura). No es
+> peligroso —el repo ya es público— pero no sirve para que Marta edite hasta el
+> paso GitHub/Cloud.
 
-Alternativa sin env vars propias: **Keystatic Cloud** (plan gratuito) hostea el auth; se conecta el repo desde su panel.
+## Regla de variables de entorno
 
-## Proceso de variables de entorno (regla del proyecto)
-
-Mientras se pueda, **cero env vars**. Cuando una feature las necesite (p. ej. el modo GitHub de Keystatic), el orden es:
-
-1. **Hardcodeado** en el código (para poder probarlo sin depender de Vercel).
-2. **Env var + hardcodeado** como fallback (`import.meta.env.X ?? 'valor'`).
-3. **Pasar las env vars a Marta** para que las añada en Vercel.
-4. Cuando ya estén creadas en Vercel, **quitar el hardcode** del código (por seguridad no deben quedar secretos en el repo).
-
-> Los secretos de la GitHub App (client secret) **no** deben quedar hardcodeados en un repo público ni de forma temporal — para esos, saltar directo al paso 3 o usar Keystatic Cloud. El hardcode temporal es solo para valores no sensibles (IDs públicos, dominios, projectId…).
+Cero mientras se pueda. Cuando una feature las necesite: hardcode (valores no
+sensibles) → env + fallback → pasar a Marta (Vercel) → quitar hardcode. Los
+**secretos** (client secret, KEYSTATIC_SECRET) van **directos a Vercel**, nunca al
+repo.
