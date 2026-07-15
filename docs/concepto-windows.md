@@ -21,6 +21,28 @@ propios mensajes) y el plan, para arrancar el rediseño con contexto.
 > Nota: sus referencias de tipografía anteriores (UNIK2, SciFly, "tech-futurista")
 > encajan con esta estética retro-ordenador — probablemente era el norte real.
 
+## Referencias (reunidas con Marta)
+
+**El más cercano a lo que buscamos: Ejemplo 5** (concepto + vintage), pero con
+mejor organización (carpetas por categoría).
+
+- **[estudiopachel.com/windows](https://windows.estudiopachel.com/)** — Win95 muy
+  vintage, no tan completo. **NORTE en concepto y estética.**
+- **[vovacodes.ca](https://www.vovacodes.ca/)** — Win11; sus "documentos que abren
+  un formato web" ES nuestro **modo lectura** (icono Portfolio/CV → ventana con la
+  web normal dentro). Clave conceptual. (Carga algo lenta → evitar eso.)
+- **[donchia.tech](https://www.donchia.tech/)** + repo
+  **[github.com/dhs17y2adonchia/win95](https://github.com/dhs17y2adonchia/win95)**
+  — Win95 open-source muy completo. No queremos tanto, pero **mina de patrones de
+  implementación**.
+- **[mitchivin.com](https://mitchivin.com/)** y
+  **[pauljaguin.com](https://pauljaguin.com/)** — XP completísimos (boot, login,
+  Paint…). Nivel de ambición que NO buscamos; inspiran detalles.
+- **[amorciegocupido.com](https://www.amorciegocupido.com/)** — estilo Mac; lo dio
+  Marta como referencia aunque quiere **Windows retro** (no Mac).
+- Contexto: en el Reddit del Ejemplo 1 le critican la **accesibilidad** → es
+  justo **nuestra ventaja** con el modo lectura + SSR (ver abajo).
+
 ## Decisiones de diseño
 
 - **Responsive temático (clave):** desktop = escritorio con ventanas; **móvil =
@@ -30,18 +52,21 @@ propios mensajes) y el plan, para arrancar el rediseño con contexto.
   (arrastrar/redimensionar/taskbar/menú inicio). Empezar por: fondo + iconos de
   carpeta con relieve/hover + abrir ventana al clic con animación retro + cursor de
   flecha + etiquetas "WIP". Arrastrar/sonido = extra si sobra tiempo.
-- **Ventanas SIN arrastrar en v1 (decisión tomada).** Las ventanas abren en posición
-  fija (cascada o centradas) con chrome retro y botones **minimizar / maximizar /
-  cerrar**; clic en una ventana la trae al frente (z-index simple). Al abrir un
-  proyecto, la ventana va **casi maximizada por defecto** (se quiere ver la obra
-  grande), tipo lector de PDF; "restaurar" vuelve al escritorio. Razón: arrastrar
-  aporta poco a un portfolio, mete mucha complejidad/bugs (posiciones, foco,
-  ventanas perdidas), no significa nada en móvil, y **Marta describió abrir carpetas,
-  no arrastrarlas**. La interacción de valor es **maximizar**, no mover. Arrastrar =
-  posible mejora futura opcional (solo desktop, con `transform`), si ella lo pide.
-- **Era:** pedir a Marta 2-3 referencias (¿XP colinas verdes "Bliss" = lo típico? /
-  ¿95-98 gris pixelado = más vintage?). Fuente retro libre para el chrome (p. ej.
-  W95FA u otra system-font pixelada).
+- **Ventanas:** chrome retro con **minimizar / maximizar / cerrar**; clic en una
+  ventana la trae al frente (z-index simple). Al abrir un proyecto, la ventana va
+  **casi maximizada por defecto** (se quiere ver la obra grande), tipo lector de PDF;
+  "restaurar" vuelve al escritorio.
+- **Arrastrar: SÍ en desktop, versión sencilla.** (Revisado: todas las referencias
+  del género arrastran; hecho simple no es caro ni lento.) Mover con `transform`
+  desde la barra de título, con pointer events, clamp al viewport, **sin persistir
+  posiciones** (reset al recargar). En **móvil desactivado** → ventanas a pantalla
+  completa. No montar un window-manager completo; solo el drag básico. Se puede
+  shippear v1 sin arrastre si aprieta el tiempo, pero está en el plan.
+- **Era decidida: Windows 95 / 2000, en clave "retro moderno".** Marta (nacida
+  ~2000) no vivió el 95 → busca el retro como **estética**, no nostalgia fiel. Eso
+  da **licencia para pulir**: chrome 95 pero nítido, buena tipografía, animaciones
+  suaves, "vistoso". Retro premium, no pixel-mush de museo. Fuente retro libre para
+  el chrome (p. ej. W95FA u otra system-font).
 - **SEO/a11y (guardarraíl):** el contenido real va **SSR y semántico debajo** del
   chrome del OS. Cursor y sonidos respetando `prefers-reduced-motion` + opción de
   silenciar. Foco de teclado navegable.
@@ -71,9 +96,13 @@ lectura"** = una web estándar convencional.
 - `src/content/proyectos/*/index.yaml` (fichas bilingües) + imágenes optimizadas.
 - i18n (next-intl → aquí es el sistema propio en `src/i18n/`).
 - El **CMS Keystatic** entero (modelo, config).
-- Mapeos naturales: `provisional` → carpeta **"WIP"** · `destacado` → carpeta
-  destacada/fija · `orden` → colocación en el escritorio · `tipo`/`ubicacion`/`ano`
-  → "propiedades" del archivo.
+- Mapeos naturales: `provisional` → carpeta/etiqueta **"WIP"** · `destacado` →
+  carpeta destacada/fija · `orden` → colocación · `ubicacion`/`ano` → "propiedades"
+  del archivo.
+- **Organización por carpetas usando `tipo`** (ya en el CMS): el escritorio tiene
+  unas pocas carpetas de categoría — "Académicos", "Concursos", "Visualización",
+  "Performance", "Publicaciones" — y al abrir una están los proyectos dentro
+  "ordenaditos". Encaja con lo que pidió Marta ("dividir en carpetas").
 
 Se reemplaza solo la **piel/UX** (hero rojo, layout editorial actual → escritorio).
 
