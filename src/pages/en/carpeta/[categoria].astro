@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import Explorador from '../../../components/pages/Explorador.astro';
+import { CATEGORIAS } from '../../../os/categorias';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('proyectos');
+  return CATEGORIAS.filter((c) => entries.some((e) => e.data.categoria === c.slug)).map((c) => ({
+    params: { categoria: c.slug },
+  }));
+}
+const { categoria } = Astro.params;
+---
+
+<Explorador lang="en" categoria={categoria as any} />

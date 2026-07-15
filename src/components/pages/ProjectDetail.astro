@@ -1,7 +1,14 @@
 ---
+/**
+ * Ficha de proyecto como ventana-visor casi maximizada (tipo lector),
+ * para ver la obra grande. El contenido dentro mantiene la voz
+ * editorial (Inter, papel, tinto); el chrome es Win2000.
+ */
 import { Image } from 'astro:assets';
-import Layout from '../../layouts/Layout.astro';
+import OSLayout from '../../layouts/OSLayout.astro';
+import Window from '../os/Window.astro';
 import ProvisionalBadge from '../ProvisionalBadge.astro';
+import { categoriaLabel } from '../../os/categorias';
 import { useTranslations, type Lang } from '../../i18n/ui';
 import { localeUrl, richText } from '../../i18n/utils';
 
@@ -14,6 +21,10 @@ const { lang, entry, next } = Astro.props;
 const t = useTranslations(lang);
 const { data } = entry;
 
+// La ✕ y el "Atrás" devuelven a la carpeta del proyecto.
+const carpetaHref = localeUrl(lang, `/carpeta/${data.categoria}`);
+const carpetaLabel = categoriaLabel(data.categoria, lang);
+
 const ficha = [
   [t('detail.year'), data.ano],
   [t('detail.location'), data.ubicacion],
@@ -24,153 +35,188 @@ const ficha = [
 const [galLead, ...galRest] = data.galeria;
 ---
 
-<Layout lang={lang} title={`${data.titulo} — Marta Masides`} description={data.resumen}>
-  <article>
-    <header class="head wrap">
-      <a href={localeUrl(lang, '/proyectos')} class="back link-underline">
-        ← {t('detail.back')}
-      </a>
-      <h1>{data.titulo}</h1>
-      {data.resumen && <p class="lead">{data.resumen}</p>}
-    </header>
+<OSLayout
+  lang={lang}
+  title={`${data.titulo} — Marta Masides`}
+  description={data.resumen}
+  window={{ title: data.titulo, icon: 'image' }}
+>
+  <main id="main" class="window-stage">
+    <Window
+      lang={lang}
+      title={data.titulo}
+      icon="image"
+      closeHref={carpetaHref}
+      size="max"
+    >
+      <div class="viewer-toolbar" slot="toolbar">
+        <a class="w2k-btn tb-btn" href={carpetaHref}>
+          <span aria-hidden="true">←</span>
+          {carpetaLabel}
+        </a>
+      </div>
 
-    {
-      data.portada && (
-        <figure class="cover">
-          <ProvisionalBadge show={data.provisional} lang={lang} />
-          <Image
-            src={data.portada}
-            alt={data.titulo}
-            widths={[600, 1000, 1600, 2000]}
-            sizes="100vw"
-            loading="eager"
-            data-parallax="6"
-          />
-        </figure>
-      )
-    }
+      <article class="ficha">
+        <header class="head wrap">
+          <h1>{data.titulo}</h1>
+          {data.resumen && <p class="lead">{data.resumen}</p>}
+        </header>
 
-    <div class="body wrap">
-      {
-        ficha.length > 0 && (
-          <dl class="spec">
-            {ficha.map(([k, v]) => (
-              <div class="spec-cell">
-                <dt>{k}</dt>
-                <dd>{v}</dd>
-              </div>
-            ))}
-          </dl>
-        )
-      }
-      {data.descripcion && <div class="prose" set:html={richText(data.descripcion)} />}
-    </div>
-
-    {
-      data.video && (
-        <section class="video-wrap wrap">
-          <video
-            controls
-            preload="none"
-            playsinline
-            poster={data.portada?.src}
-            aria-label={`${data.titulo} — ${t('detail.video')}`}
-          >
-            <source src={data.video} type="video/mp4" />
-          </video>
-        </section>
-      )
-    }
-
-    {
-      data.galeria.length > 0 && (
-        <section class="galeria-wrap wrap">
-          {galLead && (
-            <figure class="gal-lead">
+        {
+          data.portada && (
+            <figure class="cover">
+              <ProvisionalBadge show={data.provisional} lang={lang} />
               <Image
-                src={galLead}
-                alt={`${data.titulo} — ${t('detail.imageAlt')} 1`}
-                widths={[800, 1200, 1800]}
+                src={data.portada}
+                alt={data.titulo}
+                widths={[600, 1000, 1600, 2000]}
                 sizes="100vw"
+                loading="eager"
               />
             </figure>
-          )}
-          {galRest.length > 0 && (
-            <div class="galeria">
-              {galRest.map((img: any, i: number) => (
-                <figure>
+          )
+        }
+
+        <div class="body wrap">
+          {
+            ficha.length > 0 && (
+              <dl class="spec">
+                {ficha.map(([k, v]) => (
+                  <div class="spec-cell">
+                    <dt>{k}</dt>
+                    <dd>{v}</dd>
+                  </div>
+                ))}
+              </dl>
+            )
+          }
+          {data.descripcion && <div class="prose" set:html={richText(data.descripcion)} />}
+        </div>
+
+        {
+          data.video && (
+            <section class="video-wrap wrap">
+              <video
+                controls
+                preload="none"
+                playsinline
+                poster={data.portada?.src}
+                aria-label={`${data.titulo} — ${t('detail.video')}`}
+              >
+                <source src={data.video} type="video/mp4" />
+              </video>
+            </section>
+          )
+        }
+
+        {
+          data.galeria.length > 0 && (
+            <section class="galeria-wrap wrap">
+              {galLead && (
+                <figure class="gal-lead">
                   <Image
-                    src={img}
-                    alt={`${data.titulo} — ${t('detail.imageAlt')} ${i + 2}`}
-                    widths={[500, 900, 1400]}
-                    sizes="(max-width: 720px) 100vw, 50vw"
+                    src={galLead}
+                    alt={`${data.titulo} — ${t('detail.imageAlt')} 1`}
+                    widths={[800, 1200, 1800]}
+                    sizes="100vw"
                   />
                 </figure>
-              ))}
-            </div>
-          )}
-        </section>
-      )
-    }
+              )}
+              {galRest.length > 0 && (
+                <div class="galeria">
+                  {galRest.map((img: any, i: number) => (
+                    <figure>
+                      <Image
+                        src={img}
+                        alt={`${data.titulo} — ${t('detail.imageAlt')} ${i + 2}`}
+                        widths={[500, 900, 1400]}
+                        sizes="(max-width: 720px) 100vw, 50vw"
+                      />
+                    </figure>
+                  ))}
+                </div>
+              )}
+            </section>
+          )
+        }
 
-    {
-      data.planos.length > 0 && (
-        <section class="section wrap">
-          <h2 class="planos-title">{t('detail.plans')}</h2>
-          <div class="planos">
-            {data.planos.map((img: any, i: number) => (
-              <figure class="plano">
-                <Image
-                  src={img}
-                  alt={`${data.titulo} — ${t('detail.planAlt')} ${i + 1}`}
-                  widths={[600, 1000, 1600]}
-                  sizes="100vw"
-                />
-              </figure>
-            ))}
-          </div>
-        </section>
-      )
-    }
+        {
+          data.planos.length > 0 && (
+            <section class="section wrap">
+              <h2 class="planos-title">{t('detail.plans')}</h2>
+              <div class="planos">
+                {data.planos.map((img: any, i: number) => (
+                  <figure class="plano">
+                    <Image
+                      src={img}
+                      alt={`${data.titulo} — ${t('detail.planAlt')} ${i + 1}`}
+                      widths={[600, 1000, 1600]}
+                      sizes="100vw"
+                    />
+                  </figure>
+                ))}
+              </div>
+            </section>
+          )
+        }
 
-    {
-      next && (
-        <a class="next-proj" href={localeUrl(lang, `/proyectos/${next.slug}`)}>
-          <span class="np-inner wrap">
-            <span class="np-label">{t('detail.next')}</span>
-            <span class="np-title">
-              {next.entry.data.titulo}
-              <span class="arrow" aria-hidden="true">
-                →
+        {
+          next && (
+            <a class="next-proj" href={localeUrl(lang, `/proyectos/${next.slug}`)}>
+              <span class="np-inner wrap">
+                <span class="np-label">{t('detail.next')}</span>
+                <span class="np-title">
+                  {next.entry.data.titulo}
+                  <span class="arrow" aria-hidden="true">
+                    →
+                  </span>
+                </span>
               </span>
-            </span>
-          </span>
-        </a>
-      )
-    }
-  </article>
-</Layout>
+            </a>
+          )
+        }
+      </article>
+    </Window>
+  </main>
+</OSLayout>
 
 <style>
-  .head {
-    padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem) clamp(1.5rem, 1rem + 2vw, 3rem);
+  .viewer-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    min-width: 0;
   }
-  .back {
-    color: var(--muted);
-    font-size: var(--step--1);
-    display: inline-block;
-    margin-bottom: 1.5rem;
+  .tb-btn {
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.78rem;
+    color: inherit;
+    flex: none;
+  }
+
+  /* El interior del visor recupera la voz editorial del sitio */
+  .ficha {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    min-height: 100%;
+  }
+
+  .head {
+    padding-block: clamp(2rem, 1.2rem + 3vw, 3.5rem) clamp(1.25rem, 1rem + 1.5vw, 2.25rem);
   }
   .head h1 {
-    font-size: var(--step-4);
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.8rem);
     max-width: 20ch;
   }
   .lead {
-    font-size: clamp(1.2rem, 1rem + 0.9vw, 1.6rem);
+    font-size: clamp(1.1rem, 1rem + 0.7vw, 1.45rem);
     color: var(--ink-soft);
-    margin-top: 1.2rem;
+    margin-top: 1.1rem;
     line-height: 1.35;
-    max-width: 40ch;
+    max-width: 44ch;
   }
   .cover {
     position: relative;
@@ -180,20 +226,17 @@ const [galLead, ...galRest] = data.galeria;
     background: var(--paper-soft);
   }
   .cover img {
-    position: absolute;
-    top: -8%;
-    left: 0;
     width: 100%;
-    height: 116%;
+    height: 100%;
     object-fit: cover;
   }
 
   .body {
-    padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    padding-block: clamp(2rem, 1.2rem + 3vw, 4rem);
   }
   .spec {
-    margin: 0 0 clamp(2rem, 1.5rem + 2vw, 3.5rem);
-    padding-block: 1.4rem;
+    margin: 0 0 clamp(1.75rem, 1.25rem + 2vw, 3rem);
+    padding-block: 1.3rem;
     border-top: 1px solid color-mix(in srgb, var(--ink) 11%, transparent);
     border-bottom: 1px solid color-mix(in srgb, var(--ink) 11%, transparent);
     display: flex;
@@ -230,7 +273,7 @@ const [galLead, ...galRest] = data.galeria;
     display: block;
     width: 100%;
     max-width: 100%;
-    max-height: 82vh;
+    max-height: 78vh;
     background: var(--ink);
     border-radius: 2px;
   }
@@ -283,15 +326,14 @@ const [galLead, ...galRest] = data.galeria;
   .next-proj {
     display: block;
     border-top: 1px solid color-mix(in srgb, var(--ink) 11%, transparent);
-    margin-top: clamp(2rem, 1rem + 3vw, 4rem);
-    overflow-x: clip; /* contiene el translateX del hover: sin crecer scrollWidth ni reflujar */
+    margin-top: clamp(1.5rem, 1rem + 2vw, 3rem);
+    overflow-x: clip;
   }
   .np-inner {
     display: block;
-    padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    padding-block: clamp(2rem, 1.2rem + 3vw, 3.5rem);
     transition: transform 0.45s var(--ease);
   }
-  /* Desliza con transform (no padding) para no reflujar el título del siguiente proyecto */
   .next-proj:hover .np-inner {
     transform: translateX(1.4rem);
   }
@@ -304,7 +346,7 @@ const [galLead, ...galRest] = data.galeria;
     margin-bottom: 0.6rem;
   }
   .np-title {
-    font-size: var(--step-3);
+    font-size: clamp(1.5rem, 1.1rem + 2vw, 2.8rem);
     font-weight: 500;
     letter-spacing: -0.02em;
     transition: color 0.3s var(--ease);
@@ -325,9 +367,6 @@ const [galLead, ...galRest] = data.galeria;
   @media (max-width: 600px) {
     .galeria {
       grid-template-columns: 1fr;
-    }
-    .head h1 {
-      font-size: var(--step-3);
     }
   }
 </style>

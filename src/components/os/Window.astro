@@ -1,0 +1,204 @@
+---
+/**
+ * Ventana Win2000: titlebar con degradado + minimizar/maximizar/cerrar,
+ * toolbar y statusbar opcionales (slots) y cuerpo con scroll propio.
+ *
+ * Responsive temático: en móvil la ventana es SIEMPRE pantalla completa
+ * (bajo la status bar); en desktop flota centrada según `size`.
+ * Cerrar es un enlace real (funciona sin JS); minimizar/maximizar los
+ * habilita el window-manager (hasta entonces van ocultos).
+ */
+import OSIcon from './OSIcon.astro';
+import { useTranslations, type Lang } from '../../i18n/ui';
+import type { OSIconName } from '../../os/types';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  icon: OSIconName;
+  /** A dónde lleva la ✕ (normalmente el escritorio o la carpeta madre). */
+  closeHref: string;
+  /** sm = app pequeña · md = explorador · max = visor casi maximizado. */
+  size?: 'sm' | 'md' | 'max';
+  /** El título de la ventana es el h1 de la página (explorador, apps). */
+  titleAsH1?: boolean;
+}
+const { lang, title, icon, closeHref, size = 'md', titleAsH1 = false } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="window" data-window data-size={size} aria-label={title}>
+  <header class="titlebar" data-drag-handle>
+    <OSIcon name={icon} size={16} />
+    {titleAsH1 ? <h1 class="wtitle">{title}</h1> : <p class="wtitle">{title}</p>}
+    <span class="controls">
+      <button class="w2k-btn wbtn" data-win="min" aria-label={t('os.minimizar')} hidden>
+        <svg viewBox="0 0 10 10" aria-hidden="true"><rect x="1" y="7.2" width="7" height="1.8" fill="currentColor" /></svg>
+      </button>
+      <button class="w2k-btn wbtn" data-win="max" aria-label={t('os.maximizar')} hidden>
+        <svg viewBox="0 0 10 10" aria-hidden="true">
+          <rect x="1.4" y="1.4" width="7.2" height="7.2" fill="none" stroke="currentColor" stroke-width="1.3" />
+          <rect x="1.4" y="1.4" width="7.2" height="2" fill="currentColor" />
+        </svg>
+      </button>
+      <a class="w2k-btn wbtn wbtn-close" href={closeHref} aria-label={t('os.cerrar')}>
+        <svg viewBox="0 0 10 10" aria-hidden="true">
+          <path d="M1.6 1.6 8.4 8.4 M8.4 1.6 1.6 8.4" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+      </a>
+    </span>
+  </header>
+
+  {
+    Astro.slots.has('toolbar') && (
+      <div class="toolbar">
+        <slot name="toolbar" />
+      </div>
+    )
+  }
+
+  <div class="window-body os-scroll">
+    <slot />
+  </div>
+
+  {
+    Astro.slots.has('statusbar') && (
+      <div class="statusbar">
+        <slot name="statusbar" />
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .window {
+    display: flex;
+    flex-direction: column;
+    background: var(--w2k-face);
+    padding: 3px;
+    box-shadow:
+      inset -1px -1px 0 var(--w2k-dark),
+      inset 1px 1px 0 var(--w2k-light),
+      inset -2px -2px 0 var(--w2k-shadow),
+      inset 2px 2px 0 var(--w2k-hi);
+    /* Móvil: pantalla completa bajo la status bar */
+    position: fixed;
+    inset: var(--os-top) 0 0 0;
+    z-index: 10;
+  }
+
+  .titlebar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 3px 3px 3px 7px;
+    min-height: 28px;
+    background: linear-gradient(90deg, var(--w2k-title-a), var(--w2k-title-b));
+    color: var(--w2k-title-text);
+    user-select: none;
+    flex: none;
+  }
+  .wtitle {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-family: var(--w2k-font);
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 1px 1px 0 rgba(0, 0, 30, 0.4);
+  }
+  .controls {
+    display: flex;
+    gap: 2px;
+    flex: none;
+  }
+  .wbtn {
+    width: 24px;
+    height: 22px;
+    color: var(--w2k-text);
+  }
+  .wbtn svg {
+    width: 10px;
+    height: 10px;
+    display: block;
+  }
+
+  .toolbar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 4px 6px;
+    font-family: var(--w2k-font);
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--w2k-shadow);
+    box-shadow: 0 1px 0 var(--w2k-hi);
+    min-width: 0;
+  }
+
+  .window-body {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    background: #fff;
+    box-shadow:
+      inset -1px -1px 0 var(--w2k-hi),
+      inset 1px 1px 0 var(--w2k-shadow);
+  }
+
+  .statusbar {
+    flex: none;
+    display: flex;
+    gap: 1.25rem;
+    padding: 3px 9px;
+    font-family: var(--w2k-font);
+    font-size: 0.74rem;
+    color: var(--w2k-text);
+    box-shadow: inset 0 1px 0 var(--w2k-shadow), inset 0 2px 0 var(--w2k-hi);
+  }
+
+  /* ---- Desktop: ventana flotante ---- */
+  @media (min-width: 768px) {
+    .window {
+      position: relative;
+      inset: auto;
+      box-shadow:
+        inset -1px -1px 0 var(--w2k-dark),
+        inset 1px 1px 0 var(--w2k-light),
+        inset -2px -2px 0 var(--w2k-shadow),
+        inset 2px 2px 0 var(--w2k-hi),
+        var(--w2k-window-shadow);
+    }
+    .window[data-size='sm'] {
+      width: min(640px, 94vw);
+      max-height: calc(100svh - var(--os-bar-h) - 4.5rem);
+    }
+    .window[data-size='md'] {
+      width: min(960px, 94vw);
+      height: min(680px, calc(100svh - var(--os-bar-h) - 4rem));
+    }
+    .window[data-size='max'] {
+      width: calc(100vw - 64px);
+      height: calc(100svh - var(--os-bar-h) - 44px);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .window {
+        animation: win-open 0.2s var(--w2k-ease);
+      }
+    }
+  }
+
+  @keyframes win-open {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+</style>

@@ -140,6 +140,22 @@
   cursor: url('/cursors/arrow.svg') 2 2, auto;
 }
 
+/* ---------- Escenario de ventanas ----------
+   El <main> de las rutas con ventana. En móvil la ventana es fixed a
+   pantalla completa (el stage solo existe como landmark); en desktop
+   centra la ventana flotante sobre el escritorio. */
+.window-stage {
+  min-height: 100svh;
+}
+@media (min-width: 768px) {
+  .window-stage {
+    display: grid;
+    place-items: center;
+    min-height: 100svh;
+    padding: 22px 28px calc(var(--os-bar-h) + 18px);
+  }
+}
+
 /* Selección de texto con el azul del sistema */
 .os ::selection {
   background: var(--w2k-select);

@@ -1,66 +1,125 @@
 ---
+/**
+ * Contacto como ventana de correo: cabecera "Para / De" de mensaje
+ * nuevo + los canales reales. La mascota firma la esquina (desktop).
+ */
 import { Image } from 'astro:assets';
-import Layout from '../../layouts/Layout.astro';
+import OSLayout from '../../layouts/OSLayout.astro';
+import Window from '../os/Window.astro';
 import mascota from '../../assets/mascota.png';
 import { useTranslations, type Lang } from '../../i18n/ui';
+import { localeUrl } from '../../i18n/utils';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const paraLabel = lang === 'en' ? 'To' : 'Para';
+const asuntoLabel = lang === 'en' ? 'Subject' : 'Asunto';
+const asunto = lang === 'en' ? 'New project ✏️' : 'Nuevo proyecto ✏️';
 ---
 
-<Layout
+<OSLayout
   lang={lang}
   title={`${t('contacto.kicker')} — Marta Masides`}
   description={t('contacto.lead')}
+  window={{ title: t('nav.contacto'), icon: 'mail' }}
 >
-  <section class="contacto wrap">
-    <div class="intro" data-reveal>
-      <p class="eyebrow">{t('contacto.kicker')}</p>
-      <h1 class="dot-title">{t('contacto.titulo')}</h1>
-      <p class="lead">{t('contacto.lead')}</p>
-    </div>
-
-    <div class="channels" data-reveal>
-      <a href="mailto:masidesmarta@gmail.com" class="email link-underline">
-        masidesmarta@gmail.com
-      </a>
-      <div class="secondary">
-        <a
-          href="https://instagram.com/mas1des"
-          class="sec-link link-underline"
-          target="_blank"
-          rel="noopener">Instagram · @mas1des</a
-        >
+  <main id="main" class="window-stage">
+    <Window lang={lang} title={t('nav.contacto')} icon="mail" closeHref={localeUrl(lang, '/')} size="sm">
+      <div class="mail-head" slot="toolbar">
+        <span class="mh-row">
+          <span class="mh-label">{paraLabel}:</span>
+          <span class="mh-value bevel-down">masidesmarta@gmail.com</span>
+        </span>
+        <span class="mh-row">
+          <span class="mh-label">{asuntoLabel}:</span>
+          <span class="mh-value bevel-down">{asunto}</span>
+        </span>
       </div>
-    </div>
 
-    <Image
-      class="mascota-firma"
-      src={mascota}
-      alt=""
-      aria-hidden="true"
-      widths={[180, 360]}
-      sizes="180px"
-      loading="lazy"
-    />
-  </section>
-</Layout>
+      <section class="contacto">
+        <div class="intro">
+          <p class="eyebrow">{t('contacto.kicker')}</p>
+          <h1 class="dot-title">{t('contacto.titulo')}</h1>
+          <p class="lead">{t('contacto.lead')}</p>
+        </div>
+
+        <div class="channels">
+          <a href="mailto:masidesmarta@gmail.com" class="email link-underline">
+            masidesmarta@gmail.com
+          </a>
+          <div class="secondary">
+            <a
+              href="https://instagram.com/mas1des"
+              class="sec-link link-underline"
+              target="_blank"
+              rel="noopener">Instagram · @mas1des</a
+            >
+          </div>
+        </div>
+
+        <Image
+          class="mascota-firma"
+          src={mascota}
+          alt=""
+          aria-hidden="true"
+          widths={[180, 360]}
+          sizes="150px"
+          loading="lazy"
+        />
+      </section>
+    </Window>
+  </main>
+</OSLayout>
 
 <style>
-  .contacto {
-    position: relative;
-    min-height: calc(70svh - 72px);
-    padding-block: clamp(2.5rem, 1.5rem + 4vw, 4.5rem) clamp(3rem, 2rem + 4vw, 6rem);
+  .mail-head {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: clamp(2rem, 1.2rem + 3.5vw, 4rem);
+    gap: 4px;
+    width: 100%;
+    min-width: 0;
+    padding-block: 2px;
+  }
+  .mh-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .mh-label {
+    flex: none;
+    width: 3.6rem;
+    text-align: right;
+    opacity: 0.8;
+  }
+  .mh-value {
+    flex: 1;
+    min-width: 0;
+    padding: 0.22rem 0.5rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .contacto {
+    position: relative;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    min-height: 100%;
+    padding: clamp(1.75rem, 1.2rem + 2.5vw, 3rem) clamp(1.25rem, 1rem + 2vw, 2.5rem)
+      clamp(2.5rem, 2rem + 2vw, 3.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.75rem, 1.2rem + 2.5vw, 3rem);
   }
   .intro h1 {
-    margin: 1rem 0 1.2rem;
+    margin: 0.9rem 0 1.1rem;
+    font-size: clamp(1.8rem, 1.3rem + 2.2vw, 2.9rem);
   }
   .lead {
     font-size: var(--step-1);
@@ -71,12 +130,12 @@ const t = useTranslations(lang);
   .channels {
     display: flex;
     flex-direction: column;
-    gap: 1.4rem;
+    gap: 1.3rem;
   }
   .email {
-    font-size: clamp(1.3rem, 0.6rem + 4vw, 4rem);
+    font-size: clamp(1.15rem, 0.7rem + 2.6vw, 2.1rem);
     font-weight: 500;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
     line-height: 1.05;
     width: fit-content;
     max-width: 100%;
@@ -95,21 +154,16 @@ const t = useTranslations(lang);
     color: var(--ink-soft);
   }
   .mascota-firma {
-    position: absolute;
-    right: 3%;
-    bottom: clamp(3.5rem, 2rem + 5vw, 7rem);
-    width: clamp(96px, 12vw, 180px);
+    align-self: flex-end;
+    width: clamp(96px, 16vw, 150px);
     height: auto;
     opacity: 0.92;
     pointer-events: none;
+    margin-top: auto;
   }
-  @media (max-width: 760px) {
-    .contacto {
-      min-height: 0;
-      justify-content: flex-start;
-    }
+  @media (max-width: 480px) {
     .mascota-firma {
-      display: none;
+      width: 90px;
     }
   }
 </style>

@@ -1,0 +1,212 @@
+---
+/**
+ * Ventana "Explorador de Windows" de una carpeta de categoría:
+ * los proyectos dentro como iconos con miniatura + etiqueta WIP.
+ */
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import OSLayout from '../../layouts/OSLayout.astro';
+import Window from '../os/Window.astro';
+import OSIcon from '../os/OSIcon.astro';
+import { categoriaLabel, type CategoriaSlug } from '../../os/categorias';
+import { useTranslations, type Lang } from '../../i18n/ui';
+import { localeUrl, projectsFor } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  categoria: CategoriaSlug;
+}
+const { lang, categoria } = Astro.props;
+const t = useTranslations(lang);
+const label = categoriaLabel(categoria, lang);
+
+const all = projectsFor(await getCollection('proyectos'), lang);
+const proyectos = all.filter((p) => p.entry.data.categoria === categoria);
+const desc =
+  lang === 'en'
+    ? `${label} — projects by Marta Masides, architect (ETSAM).`
+    : `${label} — proyectos de Marta Masides, arquitecta (ETSAM).`;
+---
+
+<OSLayout lang={lang} title={`${label} — Marta Masides`} description={desc} window={{ title: label, icon: 'folder' }}>
+  <main id="main" class="window-stage">
+    <Window
+      lang={lang}
+      title={label}
+      icon="folder"
+      closeHref={localeUrl(lang, '/')}
+      size="md"
+      titleAsH1
+    >
+      <div class="exp-toolbar" slot="toolbar">
+        <a class="w2k-btn tb-btn" href={localeUrl(lang, '/')}>
+          <span aria-hidden="true">←</span>
+          {t('os.atras')}
+        </a>
+        <span class="addr-label">{t('os.direccion')}:</span>
+        <span class="addr bevel-down">
+          <OSIcon name="folder" size={14} />
+          C:\{t('os.escritorio')}\{label}
+        </span>
+      </div>
+
+      <ul class="items" role="list">
+        {
+          proyectos.map((p) => (
+            <li>
+              <a class="item" href={localeUrl(lang, `/proyectos/${p.slug}`)}>
+                <span class="thumb">
+                  {p.entry.data.portada ? (
+                    <Image
+                      src={p.entry.data.portada}
+                      alt=""
+                      widths={[240, 480]}
+                      sizes="240px"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span class="thumb-fallback">
+                      <OSIcon name="image" size={44} />
+                    </span>
+                  )}
+                  {p.entry.data.provisional && <span class="wip">WIP</span>}
+                </span>
+                <span class="item-label">{p.entry.data.titulo}</span>
+                {p.entry.data.ano && <span class="item-meta">{p.entry.data.ano}</span>}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <span slot="statusbar">
+        {`${proyectos.length} ${proyectos.length === 1 ? t('os.elemento') : t('os.elementos')}`}
+      </span>
+    </Window>
+  </main>
+</OSLayout>
+
+<style>
+  .exp-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    min-width: 0;
+  }
+  .tb-btn {
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.78rem;
+    color: inherit;
+    flex: none;
+  }
+  .addr-label {
+    color: var(--w2k-text);
+    opacity: 0.8;
+    flex: none;
+  }
+  .addr {
+    flex: 1;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.28rem 0.5rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  @media (max-width: 520px) {
+    .addr-label {
+      display: none;
+    }
+  }
+
+  .items {
+    list-style: none;
+    margin: 0;
+    padding: clamp(0.9rem, 2.5vw, 1.5rem);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.1rem 0.8rem;
+    align-content: start;
+  }
+  @media (min-width: 768px) {
+    .items {
+      grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+      gap: 1.3rem 1rem;
+    }
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.4rem;
+    text-align: center;
+    color: var(--w2k-text);
+    font-family: var(--w2k-font);
+  }
+  .thumb {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--w2k-face-soft);
+    box-shadow:
+      inset -1px -1px 0 var(--w2k-hi),
+      inset 1px 1px 0 var(--w2k-shadow);
+    padding: 3px;
+  }
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .thumb-fallback {
+    display: grid;
+    place-items: center;
+    height: 100%;
+  }
+  .wip {
+    position: absolute;
+    top: -0.4rem;
+    right: -0.35rem;
+    background: var(--w2k-brand);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.1rem 0.3rem;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 1px 0 rgba(0, 0, 20, 0.3);
+    transform: rotate(4deg);
+  }
+  .item-label {
+    font-size: 0.8rem;
+    line-height: 1.3;
+    padding: 0.05rem 0.3rem;
+    border: 1px dotted transparent;
+  }
+  .item-meta {
+    font-size: 0.7rem;
+    color: #6b6b60;
+  }
+  .item:hover .item-label,
+  .item:focus-visible .item-label {
+    background: var(--w2k-select);
+    color: var(--w2k-select-text);
+    border-color: rgba(0, 0, 0, 0.4);
+  }
+  .item:focus-visible {
+    outline: none;
+  }
+  .item:hover .thumb :global(img) {
+    filter: saturate(1.06);
+  }
+</style>

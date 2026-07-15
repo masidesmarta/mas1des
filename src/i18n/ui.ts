@@ -78,6 +78,15 @@ export const ui = {
     'os.internet': 'Internet',
     'os.sobremi': 'Sobre mí.txt',
     'os.watermarkRole': 'Arquitecta · ETSAM · Madrid',
+    'os.minimizar': 'Minimizar',
+    'os.maximizar': 'Maximizar',
+    'os.restaurar': 'Restaurar',
+    'os.cerrar': 'Cerrar',
+    'os.atras': 'Atrás',
+    'os.direccion': 'Dirección',
+    'os.elementos': 'elementos',
+    'os.elemento': 'elemento',
+    'os.blocnotas': 'Bloc de notas',
   },
   en: {
     'meta.homeDesc':
@@ -153,6 +162,15 @@ export const ui = {
     'os.internet': 'Internet',
     'os.sobremi': 'About me.txt',
     'os.watermarkRole': 'Architect · ETSAM · Madrid',
+    'os.minimizar': 'Minimize',
+    'os.maximizar': 'Maximize',
+    'os.restaurar': 'Restore',
+    'os.cerrar': 'Close',
+    'os.atras': 'Back',
+    'os.direccion': 'Address',
+    'os.elementos': 'items',
+    'os.elemento': 'item',
+    'os.blocnotas': 'Notepad',
   },
 } as const;
 

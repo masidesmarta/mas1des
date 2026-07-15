@@ -5,7 +5,7 @@
  * Decorativos: el texto accesible lo pone siempre el label del enlace.
  */
 interface Props {
-  name: 'folder' | 'internet' | 'notepad' | 'mail' | 'image' | 'window';
+  name: 'folder' | 'internet' | 'notepad' | 'mail' | 'image' | 'window' | 'windows';
   /** Tamaño en px (ancho = alto). Por defecto hereda 1em. */
   size?: number;
 }
@@ -17,59 +17,84 @@ const dim = size ? `${size}px` : '1em';
 
 <span class="os-icon" aria-hidden="true" style={`--icon-size:${dim}`}>
   {
+    /* Carpeta amarilla clásica de Win2000: pestaña atrás + frente recto con brillo */
     name === 'folder' && (
       <svg viewBox="0 0 32 32">
         <defs>
           <linearGradient id={`f-${uid}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#ffeaa6" />
-            <stop offset="1" stop-color="#edb937" />
+            <stop offset="0" stop-color="#fff3b8" />
+            <stop offset="0.55" stop-color="#fcd968" />
+            <stop offset="1" stop-color="#e9a83a" />
           </linearGradient>
         </defs>
         <path
-          d="M2 7h9.4l2.8 3H30v15.5A1.5 1.5 0 0 1 28.5 27h-25A1.5 1.5 0 0 1 2 25.5Z"
-          fill="#c98f1b"
+          d="M2.5 8.2a1 1 0 0 1 1-1h7.6a1 1 0 0 1 .78.37l2 2.43H28.5a1 1 0 0 1 1 1v2H2.5Z"
+          fill="#dfa235"
+          stroke="#7a5018"
+          stroke-width="0.9"
         />
-        <path d="M2 7h9.4l2.8 3H30v2.6H2Z" fill="#e8ad2a" />
-        <path
-          d="M4.6 12.6H30l-2.1 12.6a1.5 1.5 0 0 1-1.5 1.25H3.1Z"
+        <rect
+          x="2.5"
+          y="11.6"
+          width="27"
+          height="14"
+          rx="1"
           fill={`url(#f-${uid})`}
-          stroke="#a97b12"
-          stroke-width="0.75"
+          stroke="#7a5018"
+          stroke-width="0.9"
+        />
+        <path d="M4.2 13h23.6" stroke="#fffbe2" stroke-width="1" stroke-linecap="round" />
+      </svg>
+    )
+  }
+  {
+    /* La "e" de Internet Explorer con su órbita dorada */
+    name === 'internet' && (
+      <svg viewBox="0 0 32 32">
+        <defs>
+          <linearGradient id={`ie-${uid}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#55b6f5" />
+            <stop offset="0.5" stop-color="#1e7fe0" />
+            <stop offset="1" stop-color="#0b4fbe" />
+          </linearGradient>
+        </defs>
+        {/* La "e": anillo abierto por la derecha + barra horizontal */}
+        <path
+          d="M22.9 21.4 A8.5 8.5 0 1 1 24.2 13.4"
+          fill="none"
+          stroke={`url(#ie-${uid})`}
+          stroke-width="5"
+          stroke-linecap="round"
+        />
+        <line
+          x1="8.2"
+          y1="14.9"
+          x2="24.3"
+          y2="14.9"
+          stroke={`url(#ie-${uid})`}
+          stroke-width="4.6"
+        />
+        {/* Órbita dorada */}
+        <path
+          d="M30.6 7.8c1 2.1-4.7 6.4-12.8 9.6C9.6 20.6 2.4 21.6 1.4 19.5c-.7-1.5 2-4.1 6.5-6.6"
+          fill="none"
+          stroke="#f0b428"
+          stroke-width="2.1"
+          stroke-linecap="round"
         />
       </svg>
     )
   }
   {
-    name === 'internet' && (
+    /* Bandera ondeante de Windows 95/2000 (para el botón Inicio) */
+    name === 'windows' && (
       <svg viewBox="0 0 32 32">
-        <defs>
-          <linearGradient id={`ie-${uid}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#6ec6ff" />
-            <stop offset="1" stop-color="#1358b8" />
-          </linearGradient>
-        </defs>
-        <circle cx="16" cy="16.5" r="12.5" fill={`url(#ie-${uid})`} />
-        <text
-          x="15.5"
-          y="23"
-          text-anchor="middle"
-          font-family="Tahoma, Verdana, sans-serif"
-          font-size="19"
-          font-weight="700"
-          fill="#fff"
-        >
-          e
-        </text>
-        <ellipse
-          cx="16"
-          cy="15"
-          rx="14.4"
-          ry="5.4"
-          fill="none"
-          stroke="#ffd24a"
-          stroke-width="1.7"
-          transform="rotate(-16 16 15)"
-        />
+        <g stroke="#1a1a1a" stroke-width="0.6" stroke-linejoin="round">
+          <path d="M4 10.6q5.3-2.3 10.6-.9v6q-5.3-1.4-10.6.9Z" fill="#e3352a" />
+          <path d="M16.4 10q5.6 1.4 11.6-.9v6q-6 2.3-11.6.9Z" fill="#3aab3a" />
+          <path d="M4 18.4q5.3-2.3 10.6-.9v6q-5.3-1.4-10.6.9Z" fill="#2e5fe0" />
+          <path d="M16.4 17.8q5.6 1.4 11.6-.9v6q-6 2.3-11.6.9Z" fill="#f5c518" />
+        </g>
       </svg>
     )
   }
