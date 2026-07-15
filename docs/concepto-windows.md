@@ -30,6 +30,15 @@ propios mensajes) y el plan, para arrancar el rediseño con contexto.
   (arrastrar/redimensionar/taskbar/menú inicio). Empezar por: fondo + iconos de
   carpeta con relieve/hover + abrir ventana al clic con animación retro + cursor de
   flecha + etiquetas "WIP". Arrastrar/sonido = extra si sobra tiempo.
+- **Ventanas SIN arrastrar en v1 (decisión tomada).** Las ventanas abren en posición
+  fija (cascada o centradas) con chrome retro y botones **minimizar / maximizar /
+  cerrar**; clic en una ventana la trae al frente (z-index simple). Al abrir un
+  proyecto, la ventana va **casi maximizada por defecto** (se quiere ver la obra
+  grande), tipo lector de PDF; "restaurar" vuelve al escritorio. Razón: arrastrar
+  aporta poco a un portfolio, mete mucha complejidad/bugs (posiciones, foco,
+  ventanas perdidas), no significa nada en móvil, y **Marta describió abrir carpetas,
+  no arrastrarlas**. La interacción de valor es **maximizar**, no mover. Arrastrar =
+  posible mejora futura opcional (solo desktop, con `transform`), si ella lo pide.
 - **Era:** pedir a Marta 2-3 referencias (¿XP colinas verdes "Bliss" = lo típico? /
   ¿95-98 gris pixelado = más vintage?). Fuente retro libre para el chrome (p. ej.
   W95FA u otra system-font pixelada).
