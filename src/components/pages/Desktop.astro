@@ -19,6 +19,13 @@ const t = useTranslations(lang);
     <h1 class="watermark">
       Marta Masides<span class="watermark-sub">{t('os.watermarkRole')}</span>
     </h1>
+    {/* Crédito discreto tipo watermark de build — y el enlace a ebecerra.es
+        desde la home, que es la página que más pesa para SEO. */}
+    <p class="watermark-credit">
+      <a href="https://ebecerra.es" target="_blank" rel="noopener">
+        {t('foot.credit')} · ebecerra.es
+      </a>
+    </p>
   </main>
 </OSLayout>
 
@@ -29,9 +36,26 @@ const t = useTranslations(lang);
     right: 0;
     bottom: calc(var(--os-bottom) + 1.1rem);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     z-index: 2;
     pointer-events: none;
+  }
+  .watermark-credit {
+    margin: 0.3rem 0 0;
+    font-family: var(--w2k-font);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+  }
+  .watermark-credit a {
+    pointer-events: auto;
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 1px 1px 0 rgba(0, 0, 20, 0.6);
+    transition: color 0.25s var(--w2k-ease);
+  }
+  .watermark-credit a:hover,
+  .watermark-credit a:focus-visible {
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .watermark {
@@ -56,7 +80,7 @@ const t = useTranslations(lang);
 
   @media (min-width: 768px) {
     .desktop-sign {
-      justify-content: flex-end;
+      align-items: flex-end;
       padding-right: 1.6rem;
       bottom: calc(var(--os-bar-h) + 1.1rem);
     }
@@ -65,6 +89,9 @@ const t = useTranslations(lang);
     }
     .watermark-sub {
       letter-spacing: 0.18em;
+    }
+    .watermark-credit {
+      text-align: right;
     }
   }
 </style>
