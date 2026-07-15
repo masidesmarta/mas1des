@@ -4,6 +4,7 @@
  * "Para / Asunto" + el contenido compartido de ContactContent (que
  * también usa la versión web del modo lectura en /portfolio/contacto).
  */
+import { getEntry } from 'astro:content';
 import OSLayout from '../../layouts/OSLayout.astro';
 import Window from '../os/Window.astro';
 import ContactContent from '../ContactContent.astro';
@@ -18,6 +19,8 @@ const t = useTranslations(lang);
 const paraLabel = lang === 'en' ? 'To' : 'Para';
 const asuntoLabel = lang === 'en' ? 'Subject' : 'Asunto';
 const asunto = lang === 'en' ? 'New project ✏️' : 'Nuevo proyecto ✏️';
+// El "Para:" de la cabecera usa el email del CMS (singleton "Contacto").
+const email = (await getEntry('sitio', 'contacto'))?.data?.email || 'masidesmarta@gmail.com';
 ---
 
 <OSLayout
@@ -31,7 +34,7 @@ const asunto = lang === 'en' ? 'New project ✏️' : 'Nuevo proyecto ✏️';
       <div class="mail-head" slot="toolbar">
         <span class="mh-row">
           <span class="mh-label">{paraLabel}:</span>
-          <span class="mh-value bevel-down">masidesmarta@gmail.com</span>
+          <span class="mh-value bevel-down">{email}</span>
         </span>
         <span class="mh-row">
           <span class="mh-label">{asuntoLabel}:</span>

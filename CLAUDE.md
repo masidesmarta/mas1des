@@ -24,6 +24,9 @@ de Marta). Web hecha gratis; lleva un crédito discreto a `ebecerra.es` en el fo
 - SEO: `@astrojs/sitemap`, canonical, Open Graph (`public/og.png`), JSON-LD.
 - CMS **Keystatic** en modo **Cloud** (`mas1des/mas1des`): Marta edita online en
   `/keystatic`, cero env vars; dominios permitidos en keystatic.cloud (ver `docs/cms.md`).
+  Además de la colección Proyectos hay **singletons** (Inicio/Estudio/Contacto)
+  en `src/content/sitio/*.yaml` (collection `sitio`, campos pareados Es/En,
+  helper `pickLang()`); los componentes caen a los textos de `ui.ts` si faltan.
 
 ## Arquitectura "escritorio Windows" (rediseño 2026)
 

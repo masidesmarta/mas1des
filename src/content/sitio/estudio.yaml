@@ -1,0 +1,72 @@
+leadEs: Arquitecta por la Escuela Técnica Superior de Arquitectura de Madrid (ETSAM). Diseño espacios atenta a la luz, la materia y el uso real de cada lugar.
+leadEn: Architect from the Technical School of Architecture of Madrid (ETSAM). I design spaces attentive to light, materials and the real use of each place.
+bioEs: |-
+  A lo largo de mi paso por distintos estudios de arquitectura he participado en la realización de planos de instalaciones y construcción, así como en la elaboración de renders, dibujos y maquetación para concursos. También he colaborado en la postproducción fotográfica y en la difusión de proyectos en revistas y plataformas especializadas.
+
+  He complementado mi formación como arquitecta con un Máster en BIM (BIM I y II), desarrollando proyectos con herramientas como Revit y consolidando una base técnica que sigo ampliando en el entorno profesional. En esta selección de proyectos muestro mi recorrido académico y profesional, mis intereses y mi manera de entender la arquitectura.
+bioEn: |-
+  Across my time at different architecture studios I have taken part in producing installation and construction drawings, as well as renders, drawings and layout for competitions. I have also collaborated on photographic post-production and on featuring projects in specialized magazines and platforms.
+
+  I complemented my training as an architect with a Master's in BIM (BIM I & II), developing projects with tools like Revit and consolidating a technical base that I keep expanding in the professional field. This selection of projects shows my academic and professional path, my interests and my way of understanding architecture.
+experiencia:
+  - puestoEs: Arquitecta en prácticas
+    puestoEn: Architecture intern
+    lugarEs: Estudio Eduardo Navadijos
+    lugarEn: Estudio Eduardo Navadijos
+    fechasEs: 2025 — 2026
+    fechasEn: 2025 — 2026
+  - puestoEs: Arquitecta en prácticas
+    puestoEn: Architecture intern
+    lugarEs: CumuloLimbo — Arquitectura e Interiorismo
+    lugarEn: CumuloLimbo — Architecture & Interior design
+    fechasEs: 2023 — 2024
+    fechasEn: 2023 — 2024
+  - puestoEs: Arquitecta en prácticas
+    puestoEn: Architecture intern
+    lugarEs: ZOOCO — Arquitectura e Interiorismo
+    lugarEn: ZOOCO — Architecture & Interior design
+    fechasEs: Junio — Julio 2023
+    fechasEn: June — July 2023
+formacion:
+  - tituloEs: Máster Habilitante en Arquitectura (ETSAM)
+    tituloEn: Enabling Master's in Architecture (ETSAM)
+    lugarEs: Universidad Politécnica de Madrid
+    lugarEn: Polytechnic University of Madrid
+    fechasEs: 2025 — 2026
+    fechasEn: 2025 — 2026
+  - tituloEs: Grado en Estudios de Arquitectura
+    tituloEn: Bachelor's Degree in Architecture Studies
+    lugarEs: Escuela de Arquitectura de Alcalá de Henares
+    lugarEn: School of Architecture of Alcalá de Henares
+    fechasEs: 2019 — 2025
+    fechasEn: 2019 — 2025
+  - tituloEs: Estancia — Escuela de Arquitectura de A Coruña (UDC)
+    tituloEn: Exchange — School of Architecture of A Coruña (UDC)
+    lugarEs: Universidade da Coruña
+    lugarEn: Universidade da Coruña
+    fechasEs: 2021 — 2022
+    fechasEn: 2021 — 2022
+  - tituloEs: Máster en BIM I y II
+    tituloEn: Master's in BIM I & II
+    lugarEs: Escuela 24 Studio Lab
+    lugarEn: Escuela 24 Studio Lab
+    fechasEs: "2025"
+    fechasEn: "2025"
+herramientas:
+  - grupoEs: Edición
+    grupoEn: Editing
+    items:
+      - Photoshop
+      - Illustrator
+      - InDesign
+  - grupoEs: Elaboración de planos
+    grupoEn: Drafting
+    items:
+      - Revit
+      - AutoCAD
+      - Rhinoceros
+  - grupoEs: Renderización
+    grupoEn: Rendering
+    items:
+      - Lumion
+      - Enscape

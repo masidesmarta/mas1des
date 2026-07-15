@@ -44,4 +44,61 @@ const proyectos = defineCollection({
     }),
 });
 
-export const collections = { proyectos };
+// Textos de las secciones fijas (singletons de Keystatic): inicio (hero),
+// estudio (bio/CV) y contacto. Un yaml por sección en src/content/sitio/.
+// Schema laxo (superset con todo opcional): cada componente coge lo suyo
+// y cae a sus textos por defecto si falta algo.
+const sitio = defineCollection({
+  loader: glob({ pattern: '*.yaml', base: './src/content/sitio' }),
+  schema: z
+    .object({
+      // inicio
+      kickerEs: z.string(),
+      kickerEn: z.string(),
+      taglineEs: z.string(),
+      taglineEn: z.string(),
+      // estudio + contacto
+      leadEs: z.string(),
+      leadEn: z.string(),
+      bioEs: z.string(),
+      bioEn: z.string(),
+      experiencia: z.array(
+        z
+          .object({
+            puestoEs: z.string(),
+            puestoEn: z.string(),
+            lugarEs: z.string(),
+            lugarEn: z.string(),
+            fechasEs: z.string(),
+            fechasEn: z.string(),
+          })
+          .partial(),
+      ),
+      formacion: z.array(
+        z
+          .object({
+            tituloEs: z.string(),
+            tituloEn: z.string(),
+            lugarEs: z.string(),
+            lugarEn: z.string(),
+            fechasEs: z.string(),
+            fechasEn: z.string(),
+          })
+          .partial(),
+      ),
+      herramientas: z.array(
+        z
+          .object({
+            grupoEs: z.string(),
+            grupoEn: z.string(),
+            items: z.array(z.string()).default([]),
+          })
+          .partial(),
+      ),
+      email: z.string(),
+      instagram: z.string(),
+    })
+    .partial(),
+});
+
+export const collections = { proyectos, sitio };

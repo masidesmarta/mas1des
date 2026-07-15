@@ -3,9 +3,11 @@
  * Contenido de "Estudio / Sobre mí" (bio, experiencia, formación,
  * herramientas). Compartido por la app Bloc de notas del escritorio y
  * por la versión web dentro de Internet Explorer (/portfolio/estudio).
+ * Los textos los edita Marta en el CMS (singleton "Sobre mí / Estudio").
  */
+import { getEntry } from 'astro:content';
 import { useTranslations, type Lang } from '../i18n/ui';
-import { localeUrl } from '../i18n/utils';
+import { localeUrl, pickLang, richText } from '../i18n/utils';
 
 interface Props {
   lang: Lang;
@@ -16,62 +18,33 @@ const { lang, contactHref } = Astro.props;
 const t = useTranslations(lang);
 const ctaHref = contactHref ?? localeUrl(lang, '/contacto');
 
-const experiencia = {
-  es: [
-    { puesto: 'Arquitecta en prácticas', lugar: 'Estudio Eduardo Navadijos', fechas: '2025 — 2026' },
-    { puesto: 'Arquitecta en prácticas', lugar: 'CumuloLimbo — Arquitectura e Interiorismo', fechas: '2023 — 2024' },
-    { puesto: 'Arquitecta en prácticas', lugar: 'ZOOCO — Arquitectura e Interiorismo', fechas: 'Junio — Julio 2023' },
-  ],
-  en: [
-    { puesto: 'Architecture intern', lugar: 'Estudio Eduardo Navadijos', fechas: '2025 — 2026' },
-    { puesto: 'Architecture intern', lugar: 'CumuloLimbo — Architecture & Interior design', fechas: '2023 — 2024' },
-    { puesto: 'Architecture intern', lugar: 'ZOOCO — Architecture & Interior design', fechas: 'June — July 2023' },
-  ],
-}[lang];
-
-const formacion = {
-  es: [
-    { titulo: 'Máster Habilitante en Arquitectura (ETSAM)', lugar: 'Universidad Politécnica de Madrid', fechas: '2025 — 2026' },
-    { titulo: 'Grado en Estudios de Arquitectura', lugar: 'Escuela de Arquitectura de Alcalá de Henares', fechas: '2019 — 2025' },
-    { titulo: 'Estancia — Escuela de Arquitectura de A Coruña (UDC)', lugar: 'Universidade da Coruña', fechas: '2021 — 2022' },
-    { titulo: 'Máster en BIM I y II', lugar: 'Escuela 24 Studio Lab', fechas: '2025' },
-  ],
-  en: [
-    { titulo: "Enabling Master's in Architecture (ETSAM)", lugar: 'Polytechnic University of Madrid', fechas: '2025 — 2026' },
-    { titulo: "Bachelor's Degree in Architecture Studies", lugar: 'School of Architecture of Alcalá de Henares', fechas: '2019 — 2025' },
-    { titulo: 'Exchange — School of Architecture of A Coruña (UDC)', lugar: 'Universidade da Coruña', fechas: '2021 — 2022' },
-    { titulo: "Master's in BIM I & II", lugar: 'Escuela 24 Studio Lab', fechas: '2025' },
-  ],
-}[lang];
-
-const destrezas = [
-  { grupo: t('estudio.g.edicion'), items: ['Photoshop', 'Illustrator', 'InDesign'] },
-  { grupo: t('estudio.g.planos'), items: ['Revit', 'AutoCAD', 'Rhinoceros'] },
-  { grupo: t('estudio.g.render'), items: ['Lumion', 'Enscape'] },
-];
-
-const bio =
-  lang === 'en'
-    ? [
-        'Across my time at different architecture studios I have taken part in producing installation and construction drawings, as well as renders, drawings and layout for competitions. I have also collaborated on photographic post-production and on featuring projects in specialized magazines and platforms.',
-        'I complemented my training as an architect with a Master’s in BIM (BIM I & II), developing projects with tools like Revit and consolidating a technical base that I keep expanding in the professional field. This selection of projects shows my academic and professional path, my interests and my way of understanding architecture.',
-      ]
-    : [
-        'A lo largo de mi paso por distintos estudios de arquitectura he participado en la realización de planos de instalaciones y construcción, así como en la elaboración de renders, dibujos y maquetación para concursos. También he colaborado en la postproducción fotográfica y en la difusión de proyectos en revistas y plataformas especializadas.',
-        'He complementado mi formación como arquitecta con un Máster en BIM (BIM I y II), desarrollando proyectos con herramientas como Revit y consolidando una base técnica que sigo ampliando en el entorno profesional. En esta selección de proyectos muestro mi recorrido académico y profesional, mis intereses y mi manera de entender la arquitectura.',
-      ];
+const data = (await getEntry('sitio', 'estudio'))?.data;
+const lead = pickLang(data, 'lead', lang) || t('estudio.lead');
+const bioHtml = richText(pickLang(data, 'bio', lang));
+const experiencia = (data?.experiencia ?? []).map((e) => ({
+  puesto: pickLang(e, 'puesto', lang),
+  lugar: pickLang(e, 'lugar', lang),
+  fechas: pickLang(e, 'fechas', lang),
+}));
+const formacion = (data?.formacion ?? []).map((f) => ({
+  titulo: pickLang(f, 'titulo', lang),
+  lugar: pickLang(f, 'lugar', lang),
+  fechas: pickLang(f, 'fechas', lang),
+}));
+const destrezas = (data?.herramientas ?? []).map((d) => ({
+  grupo: pickLang(d, 'grupo', lang),
+  items: d.items ?? [],
+}));
 ---
 
 <div class="doc">
   <section class="head">
     <p class="eyebrow">{t('estudio.kicker')}</p>
     <h1 class="dot-title">Marta Masides</h1>
-    <p class="lead">{t('estudio.lead')}</p>
+    <p class="lead">{lead}</p>
   </section>
 
-  <section class="bio">
-    {bio.map((p) => <p>{p}</p>)}
-  </section>
+  {bioHtml && <section class="bio" set:html={bioHtml} />}
 
   <hr class="hr" />
 
@@ -157,7 +130,8 @@ const bio =
     padding-block: clamp(1.5rem, 1rem + 2vw, 2.5rem);
     color: var(--ink-soft);
   }
-  .bio p {
+  /* :global — los <p> vienen de set:html (richText del CMS) */
+  .bio :global(p) {
     margin: 0 0 1.2rem;
     max-width: var(--measure);
   }

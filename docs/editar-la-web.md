@@ -30,6 +30,19 @@ de minutos.
      mejor no subir originales de 20 MB).
 4. Cuando termines, arriba a la derecha: **Save**.
 
+## Editar los textos de la web (Inicio, Sobre mí, Contacto)
+
+Además de **Proyectos**, en el menú del panel tienes:
+
+- **Inicio (hero)**: la etiqueta pequeña y la frase grande de la portada web.
+- **Sobre mí / Estudio**: tu presentación, la bio (párrafos separados por una
+  línea en blanco; puedes usar `**negrita**`), y las listas de experiencia,
+  formación y herramientas (añade/quita entradas con **Add**).
+- **Contacto**: el texto, tu email y tu Instagram.
+
+Casi todos los textos van **en los dos idiomas** (ES y EN); si dejas el inglés
+vacío, se muestra el español.
+
 ## Publicar
 
 Al guardar, el cambio se registra y la web se actualiza sola en ~1-2 minutos. Si

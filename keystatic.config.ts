@@ -10,7 +10,7 @@
  *  Para que Marta edite online se pasa a modo GitHub (ver docs/cms.md).
  * ─────────────────────────────────────────────────────────────────────────
  */
-import { config, fields, collection } from '@keystatic/core';
+import { config, fields, collection, singleton } from '@keystatic/core';
 
 export default config({
   // Keystatic CLOUD: Marta edita online en /keystatic (auth hosteado por
@@ -21,6 +21,88 @@ export default config({
   cloud: { project: 'mas1des/mas1des' },
   ui: {
     brand: { name: 'Marta Masides' },
+  },
+  // Textos de las secciones fijas de la web (fuera de los proyectos).
+  singletons: {
+    inicio: singleton({
+      label: 'Inicio (hero)',
+      path: 'src/content/sitio/inicio',
+      format: { data: 'yaml' },
+      schema: {
+        kickerEs: fields.text({ label: 'Etiqueta superior (ES)', description: 'P. ej. "Arquitecta · Madrid"' }),
+        kickerEn: fields.text({ label: 'Etiqueta superior (EN)' }),
+        taglineEs: fields.text({ label: 'Frase del hero (ES)', multiline: true }),
+        taglineEn: fields.text({ label: 'Frase del hero (EN)', multiline: true }),
+      },
+    }),
+    estudio: singleton({
+      label: 'Sobre mí / Estudio',
+      path: 'src/content/sitio/estudio',
+      format: { data: 'yaml' },
+      schema: {
+        leadEs: fields.text({ label: 'Entradilla (ES)', multiline: true }),
+        leadEn: fields.text({ label: 'Entradilla (EN)', multiline: true }),
+        bioEs: fields.text({
+          label: 'Bio (ES)',
+          multiline: true,
+          description: 'Párrafos separados por una línea en blanco. Admite **negrita** y *cursiva*.',
+        }),
+        bioEn: fields.text({ label: 'Bio (EN)', multiline: true }),
+        experiencia: fields.array(
+          fields.object({
+            puestoEs: fields.text({ label: 'Puesto (ES)' }),
+            puestoEn: fields.text({ label: 'Puesto (EN)' }),
+            lugarEs: fields.text({ label: 'Lugar / estudio (ES)' }),
+            lugarEn: fields.text({ label: 'Lugar / estudio (EN)' }),
+            fechasEs: fields.text({ label: 'Fechas (ES)' }),
+            fechasEn: fields.text({ label: 'Fechas (EN)' }),
+          }),
+          {
+            label: 'Experiencia',
+            itemLabel: (p) => p.fields.puestoEs.value || 'Puesto',
+          },
+        ),
+        formacion: fields.array(
+          fields.object({
+            tituloEs: fields.text({ label: 'Título (ES)' }),
+            tituloEn: fields.text({ label: 'Título (EN)' }),
+            lugarEs: fields.text({ label: 'Centro (ES)' }),
+            lugarEn: fields.text({ label: 'Centro (EN)' }),
+            fechasEs: fields.text({ label: 'Fechas (ES)' }),
+            fechasEn: fields.text({ label: 'Fechas (EN)' }),
+          }),
+          {
+            label: 'Formación',
+            itemLabel: (p) => p.fields.tituloEs.value || 'Título',
+          },
+        ),
+        herramientas: fields.array(
+          fields.object({
+            grupoEs: fields.text({ label: 'Grupo (ES)', description: 'P. ej. "Edición"' }),
+            grupoEn: fields.text({ label: 'Grupo (EN)' }),
+            items: fields.array(fields.text({ label: 'Herramienta' }), {
+              label: 'Herramientas',
+              itemLabel: (p) => p.value || 'Herramienta',
+            }),
+          }),
+          {
+            label: 'Herramientas',
+            itemLabel: (p) => p.fields.grupoEs.value || 'Grupo',
+          },
+        ),
+      },
+    }),
+    contacto: singleton({
+      label: 'Contacto',
+      path: 'src/content/sitio/contacto',
+      format: { data: 'yaml' },
+      schema: {
+        leadEs: fields.text({ label: 'Texto (ES)', multiline: true }),
+        leadEn: fields.text({ label: 'Texto (EN)', multiline: true }),
+        email: fields.text({ label: 'Email' }),
+        instagram: fields.text({ label: 'Instagram (usuario, sin @)' }),
+      },
+    }),
   },
   collections: {
     proyectos: collection({

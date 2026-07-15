@@ -75,6 +75,16 @@ export function getProject<T extends Raw>(entries: T[], slug: string, lang: Lang
 }
 
 /**
+ * Elige el campo del idioma en un objeto con pares `xxxEs`/`xxxEn`
+ * (mismo criterio que las fichas: el inglés vacío cae al español).
+ */
+export function pickLang(data: Record<string, any> | undefined, base: string, lang: Lang): string {
+  if (!data) return '';
+  const v = data[base + (lang === 'en' ? 'En' : 'Es')];
+  return v != null && v !== '' ? v : (data[base + 'Es'] ?? '');
+}
+
+/**
  * Texto largo → HTML seguro con formato ligero: **negrita**, *cursiva*,
  * párrafos (línea en blanco) y saltos de línea simples. Para las descripciones
  * que Marta edita en el CMS como texto plano.

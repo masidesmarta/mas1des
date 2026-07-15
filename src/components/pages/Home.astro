@@ -1,17 +1,22 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import ProjectIndex from '../ProjectIndex.astro';
 import heroImg from '../../assets/hero-panel14.webp';
 import { useTranslations, type Lang } from '../../i18n/ui';
-import { localeUrl, projectsFor } from '../../i18n/utils';
+import { localeUrl, projectsFor, pickLang } from '../../i18n/utils';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+
+// Textos del hero editables desde el CMS (singleton "Inicio").
+const inicio = (await getEntry('sitio', 'inicio'))?.data;
+const kicker = pickLang(inicio, 'kicker', lang) || t('hero.kicker');
+const tagline = pickLang(inicio, 'tagline', lang) || t('hero.tagline');
 
 const all = projectsFor(await getCollection('proyectos'), lang);
 const destacados = all.filter((p) => p.entry.data.destacado);
@@ -23,9 +28,9 @@ const total = all.length;
   <section class="hero">
     <div class="hero-grid">
       <div class="hero-copy" data-reveal>
-        <p class="hero-kicker">{t('hero.kicker')}</p>
+        <p class="hero-kicker">{kicker}</p>
         <h1 class="hero-name">Marta<br />Masides<span class="hero-dot">.</span></h1>
-        <p class="hero-tag">{t('hero.tagline')}</p>
+        <p class="hero-tag">{tagline}</p>
         <a href={localeUrl(lang, '/proyectos')} class="hero-cta">
           <span>{t('hero.cta')}</span>
           <span class="arrow" aria-hidden="true">→</span>
