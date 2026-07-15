@@ -25,7 +25,8 @@ const nav = [
 
 <header class:list={['site-header', { transparent }]} data-header>
   <div class="wrap bar">
-    <a href={localeUrl(lang, '/')} class="brand" aria-label={t('nav.inicio')}>
+    {/* El wordmark lleva a la home del "navegador" (modo lectura), no al escritorio */}
+    <a href={localeUrl(lang, '/portfolio')} class="brand" aria-label={t('nav.inicio')}>
       Marta Masides<span class="brand-dot">.</span>
     </a>
 

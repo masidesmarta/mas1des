@@ -1,105 +1,177 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
+/**
+ * MODO LECTURA: el portfolio editorial (header, hero, listados, footer)
+ * renderizado DENTRO de una ventana de Internet Explorer sobre el
+ * escritorio. Render nativo (nada de iframes): estas rutas SSR son el
+ * contenido indexable de verdad; el chrome del navegador es decoración.
+ * En móvil la ventana va a pantalla completa, como el resto del OS.
+ */
+import OSLayout from './OSLayout.astro';
+import Window from '../components/os/Window.astro';
+import OSIcon from '../components/os/OSIcon.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import type { Lang } from '../i18n/ui';
+import { localeUrl } from '../i18n/utils';
+import { useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
   title?: string;
   description?: string;
-  transparentHeader?: boolean;
   lang?: Lang;
 }
 
-const { title, description, transparentHeader = false, lang = 'es' } = Astro.props;
+const { title = 'Marta Masides — Arquitecta', description, lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
+// Barra de direcciones in-world (el dominio "bonito" de la ficción del OS).
+const address = `www.mas1des.es${Astro.url.pathname}`;
 ---
 
-<!doctype html>
-<html lang={lang} class="no-js">
-  <head>
-    <BaseHead title={title} description={description} lang={lang} />
-  </head>
-  <body>
-    <a class="skip" href="#main">{lang === 'en' ? 'Skip to content' : 'Saltar al contenido'}</a>
-    <Header transparent={transparentHeader} lang={lang} />
-    <main id="main">
-      <slot />
-    </main>
-    <Footer lang={lang} />
+<OSLayout
+  lang={lang}
+  title={title}
+  description={description}
+  window={{ title: `${title} — Internet Explorer`, icon: 'internet' }}
+>
+  <main id="main" class="window-stage">
+    <Window
+      lang={lang}
+      title={`${title} — Internet Explorer`}
+      icon="internet"
+      closeHref={localeUrl(lang, '/')}
+      size="max"
+    >
+      <div class="ie-toolbar" slot="toolbar">
+        <button class="w2k-btn ie-btn" data-ie-back aria-label={t('os.atras')} disabled>
+          <span aria-hidden="true">←</span>
+        </button>
+        <button class="w2k-btn ie-btn" data-ie-fwd aria-label={lang === 'en' ? 'Forward' : 'Adelante'} disabled>
+          <span aria-hidden="true">→</span>
+        </button>
+        <a
+          class="w2k-btn ie-btn"
+          href={Astro.url.pathname}
+          aria-label={lang === 'en' ? 'Reload' : 'Recargar'}
+        >
+          <span aria-hidden="true">⟳</span>
+        </a>
+        <span class="addr-label">{t('os.direccion')}:</span>
+        <span class="addr bevel-down">
+          <OSIcon name="internet" size={13} />
+          {address}
+        </span>
+      </div>
 
-    <style>
-      .skip {
-        position: absolute;
-        left: -9999px;
-        top: 0;
-        background: var(--ink);
-        color: var(--paper);
-        padding: 0.6rem 1rem;
-        z-index: 200;
-      }
-      .skip:focus {
-        left: 0;
-      }
-    </style>
+      <div class="page">
+        <Header lang={lang} />
+        <div class="page-main">
+          <slot />
+        </div>
+        <Footer lang={lang} />
+      </div>
+    </Window>
+  </main>
+</OSLayout>
 
-    <script>
-      import Lenis from 'lenis';
+<style>
+  .ie-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    width: 100%;
+    min-width: 0;
+  }
+  .ie-btn {
+    width: 30px;
+    height: 26px;
+    font-size: 0.95rem;
+    color: inherit;
+    flex: none;
+  }
+  .ie-btn[disabled] {
+    opacity: 0.45;
+    cursor: default;
+  }
+  .addr-label {
+    flex: none;
+    opacity: 0.8;
+    margin-left: 0.25rem;
+  }
+  .addr {
+    flex: 1;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.28rem 0.55rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  @media (max-width: 560px) {
+    .addr-label {
+      display: none;
+    }
+  }
 
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* La "página web" dentro del navegador */
+  .page {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+  }
+  .page-main {
+    flex: 1;
+  }
+</style>
 
-      // Reveal on scroll
-      const io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (e.isIntersecting) {
-              e.target.classList.add('is-in');
-              io.unobserve(e.target);
-            }
-          }
-        },
-        { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
-      );
-      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+<script>
+  // Atrás/adelante del navegador in-world (history real). Los botones
+  // nacen disabled y solo se activan con JS: sin JS el modo lectura
+  // funciona igual (enlaces reales + recargar como <a>).
+  function initIE() {
+    const back = document.querySelector<HTMLButtonElement>('[data-ie-back]');
+    const fwd = document.querySelector<HTMLButtonElement>('[data-ie-fwd]');
+    if (!back || back.dataset.ieInit) return;
+    back.dataset.ieInit = '1';
+    back.disabled = history.length <= 1;
+    fwd.disabled = false;
+    back.addEventListener('click', () => history.back());
+    fwd.addEventListener('click', () => history.forward());
+  }
+  initIE();
+  document.addEventListener('astro:page-load', initIE);
 
-      // Header state on scroll
-      const header = document.querySelector('[data-header]');
-      const setHeader = () =>
-        header && header.classList.toggle('is-scrolled', window.scrollY > 40);
+  // Estado del header editorial ("is-scrolled") y reveal-on-scroll,
+  // referidos al scroll INTERNO de la ventana del navegador.
+  function initReader() {
+    const scroller = document.querySelector<HTMLElement>('.window-body');
+    const header = document.querySelector<HTMLElement>('[data-header]');
+    if (!scroller || scroller.dataset.readerInit) return;
+    scroller.dataset.readerInit = '1';
 
-      // Parallax leve de portadas
-      const parEls = Array.from(document.querySelectorAll('[data-parallax]'));
-      let ticking = false;
-      const updateParallax = () => {
-        const vh = window.innerHeight || 1;
-        for (const el of parEls) {
-          const r = el.getBoundingClientRect();
-          const p = (r.top + r.height / 2 - vh / 2) / vh; // -0.5..0.5
-          const amp = parseFloat(el.dataset.parallax) || 8; // en %
-          el.style.setProperty('--py', (-p * amp).toFixed(2) + '%');
-        }
-        ticking = false;
-      };
-      const onScroll = () => {
-        setHeader();
-        if (!reduce && parEls.length && !ticking) {
-          ticking = true;
-          requestAnimationFrame(updateParallax);
-        }
-      };
+    if (header) {
+      const setHeader = () => header.classList.toggle('is-scrolled', scroller.scrollTop > 40);
       setHeader();
-      if (!reduce) updateParallax();
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll, { passive: true });
+      scroller.addEventListener('scroll', setHeader, { passive: true });
+    }
 
-      // Smooth scroll (Lenis) — solo si no hay reduce-motion
-      if (!reduce) {
-        const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
-        const raf = (t) => {
-          lenis.raf(t);
-          requestAnimationFrame(raf);
-        };
-        requestAnimationFrame(raf);
-      }
-    </script>
-  </body>
-</html>
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+    );
+    document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+  }
+  initReader();
+  document.addEventListener('astro:page-load', initReader);
+</script>
