@@ -28,10 +28,10 @@ const path = Astro.url.pathname;
   <div class="tasks">
     {
       win && (
-        <span class="w2k-btn task-btn" aria-pressed="true" data-task-btn hidden={false}>
+        <button class="w2k-btn task-btn" aria-pressed="true" data-task-btn>
           <OSIcon name={win.icon} size={16} />
           <span class="task-title">{win.title}</span>
-        </span>
+        </button>
       )
     }
   </div>
@@ -156,11 +156,11 @@ const path = Astro.url.pathname;
 </style>
 
 <script>
-  // Reloj de la bandeja: HH:MM, se actualiza cada medio minuto.
-  const clocks = document.querySelectorAll<HTMLElement>('[data-clock]');
+  // Reloj de la bandeja: HH:MM, cada medio minuto. Busca los nodos en cada
+  // tick para sobrevivir a los swaps del ClientRouter (View Transitions).
   const tick = () => {
     const now = new Date();
-    for (const c of clocks) {
+    for (const c of document.querySelectorAll<HTMLElement>('[data-clock]')) {
       const locale = c.dataset.lang === 'en' ? 'en-GB' : 'es-ES';
       c.textContent = now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
       c.setAttribute('datetime', now.toISOString());
@@ -168,4 +168,5 @@ const path = Astro.url.pathname;
   };
   tick();
   setInterval(tick, 30_000);
+  document.addEventListener('astro:page-load', tick);
 </script>

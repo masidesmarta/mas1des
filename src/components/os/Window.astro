@@ -35,7 +35,14 @@ const t = useTranslations(lang);
       <button class="w2k-btn wbtn" data-win="min" aria-label={t('os.minimizar')} hidden>
         <svg viewBox="0 0 10 10" aria-hidden="true"><rect x="1" y="7.2" width="7" height="1.8" fill="currentColor" /></svg>
       </button>
-      <button class="w2k-btn wbtn" data-win="max" aria-label={t('os.maximizar')} hidden>
+      <button
+        class="w2k-btn wbtn"
+        data-win="max"
+        aria-label={t('os.maximizar')}
+        data-label-max={t('os.maximizar')}
+        data-label-restore={t('os.restaurar')}
+        hidden
+      >
         <svg viewBox="0 0 10 10" aria-hidden="true">
           <rect x="1.4" y="1.4" width="7.2" height="7.2" fill="none" stroke="currentColor" stroke-width="1.3" />
           <rect x="1.4" y="1.4" width="7.2" height="2" fill="currentColor" />
@@ -188,6 +195,23 @@ const t = useTranslations(lang);
       height: calc(100svh - var(--os-bar-h) - 44px);
     }
 
+    /* Estados del window-manager (solo desktop) */
+    .window.is-max {
+      position: fixed;
+      inset: 0 0 var(--os-bar-h) 0;
+      width: auto !important;
+      height: auto !important;
+      max-height: none !important;
+      transform: none !important;
+      z-index: 20;
+    }
+    .window.is-min {
+      display: none;
+    }
+    .titlebar {
+      touch-action: none; /* el drag gestiona el pointer */
+    }
+
     @media (prefers-reduced-motion: no-preference) {
       .window {
         animation: win-open 0.2s var(--w2k-ease);
@@ -202,3 +226,96 @@ const t = useTranslations(lang);
     }
   }
 </style>
+
+<script>
+  /**
+   * Window-manager mínimo (progressive enhancement, solo desktop):
+   *  - drag desde la titlebar (transform, clamp al viewport, sin persistir)
+   *  - maximizar/restaurar (toggle CSS)
+   *  - minimizar → restaurar desde el botón de la taskbar
+   * Sin JS la ventana funciona igual (scroll propio + cerrar como enlace).
+   */
+  function initWindowManager() {
+    const win = document.querySelector<HTMLElement>('[data-window]');
+    if (!win || win.dataset.wmInit) return;
+    if (!window.matchMedia('(min-width: 768px)').matches) return; // móvil: fullscreen
+    win.dataset.wmInit = '1';
+
+    const minBtn = win.querySelector<HTMLButtonElement>('[data-win="min"]');
+    const maxBtn = win.querySelector<HTMLButtonElement>('[data-win="max"]');
+    const taskBtn = document.querySelector<HTMLButtonElement>('[data-task-btn]');
+    minBtn?.removeAttribute('hidden');
+    maxBtn?.removeAttribute('hidden');
+
+    // Maximizar / restaurar
+    maxBtn?.addEventListener('click', () => {
+      const maxed = win.classList.toggle('is-max');
+      if (maxed) win.style.transform = '';
+      maxBtn.setAttribute(
+        'aria-label',
+        (maxed ? maxBtn.dataset.labelRestore : maxBtn.dataset.labelMax) ?? '',
+      );
+      maxBtn.setAttribute('aria-pressed', String(maxed));
+    });
+
+    // Minimizar → el botón de la taskbar restaura
+    minBtn?.addEventListener('click', () => {
+      win.classList.add('is-min');
+      taskBtn?.setAttribute('aria-pressed', 'false');
+      taskBtn?.focus();
+    });
+    taskBtn?.addEventListener('click', () => {
+      const min = win.classList.toggle('is-min');
+      taskBtn.setAttribute('aria-pressed', String(!min));
+    });
+
+    // Drag sencillo desde la titlebar
+    const handle = win.querySelector<HTMLElement>('[data-drag-handle]');
+    if (!handle) return;
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+    let baseTx = 0;
+    let baseTy = 0;
+    let baseRect: DOMRect | null = null;
+
+    handle.addEventListener('pointerdown', (e) => {
+      if ((e.target as HTMLElement).closest('button, a')) return;
+      if (win.classList.contains('is-max')) return;
+      dragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      const tr = getComputedStyle(win).transform;
+      const m = tr === 'none' ? new DOMMatrixReadOnly() : new DOMMatrixReadOnly(tr);
+      baseTx = m.m41;
+      baseTy = m.m42;
+      const r = win.getBoundingClientRect();
+      // Posición "sin transform" de la ventana, para el clamp
+      baseRect = new DOMRect(r.left - baseTx, r.top - baseTy, r.width, r.height);
+      handle.setPointerCapture(e.pointerId);
+    });
+
+    handle.addEventListener('pointermove', (e) => {
+      if (!dragging || !baseRect) return;
+      let tx = baseTx + e.clientX - startX;
+      let ty = baseTy + e.clientY - startY;
+      // Clamp: la titlebar siempre visible (y sin colarse bajo la taskbar)
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const minVisible = 110;
+      tx = Math.max(minVisible - baseRect.width - baseRect.left + 40, Math.min(tx, vw - baseRect.left - minVisible));
+      ty = Math.max(-baseRect.top + 6, Math.min(ty, vh - baseRect.top - 80));
+      win.style.transform = `translate(${tx}px, ${ty}px)`;
+    });
+
+    const stop = () => {
+      dragging = false;
+      baseRect = null;
+    };
+    handle.addEventListener('pointerup', stop);
+    handle.addEventListener('pointercancel', stop);
+  }
+
+  initWindowManager();
+  document.addEventListener('astro:page-load', initWindowManager);
+</script>

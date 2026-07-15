@@ -5,6 +5,7 @@
  * o su ventana. El <head> SEO es el mismo del sitio (BaseHead).
  */
 import { getImage } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
 import BaseHead from '../components/BaseHead.astro';
 import Taskbar from '../components/os/Taskbar.astro';
 import type { Lang } from '../i18n/ui';
@@ -32,6 +33,8 @@ const wpSmall = await getImage({ src: wallpaperSrc, width: 900 });
 <html lang={lang} class="no-js">
   <head>
     <BaseHead title={title} description={description} lang={lang} preloadDisplayFont={false} />
+    {/* Navegación suave entre páginas del OS (abrir/cerrar ventanas sin recarga dura) */}
+    <ClientRouter />
   </head>
   <body class="os os-cursor">
     <a class="skip" href="#main">{lang === 'en' ? 'Skip to content' : 'Saltar al contenido'}</a>
