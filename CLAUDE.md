@@ -124,9 +124,10 @@ Ver skill `/imagenes-provisionales`.
 - Commits **en español, imperativo**, con el trailer
   `Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`.
 - **Build verde antes de cualquier push** (no tumbar la web al desplegar).
-- **El push está bloqueado (403)** hasta que Marta añada como colaboradora a la
-  cuenta **`ebecerra-developer`** (Settings → Collaborators → Add people). Hay
-  commits en local listos; al aceptar: `git push -u origin main` → deploy Vercel.
+  El hook `astro:build:done` de Vercel falla a veces en Windows a la primera
+  (lock de archivos); reintentar el build antes de asumir rotura.
+- Push a `origin main` → **deploy automático en Vercel** (cuenta de Marta).
+  El acceso de `ebecerra-developer` como colaboradora ya está activo.
 
 ## Variables de entorno
 
