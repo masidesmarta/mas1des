@@ -83,7 +83,11 @@ Brief completo y decisiones en `docs/concepto-windows.md`. Resumen:
 - **Wallpaper**: render del mercado textil de Riotinto (hero) con velado azul
   tinta. Marta puede pedir otra imagen — se cambia en `OSLayout.astro`.
 - **Mascota** (`src/assets/mascota.png`): firma de marca — está en la ventana de
-  Contacto; el favicon es su cabeza. NO repetirla dos veces en la misma página.
+  Contacto. NO repetirla dos veces en la misma página.
+- **Favicon**: ventana Win2000 en miniatura con un recorte de la portada de
+  Riotinto dentro (titlebar azul + ✕). Elegido por Enrique entre 3 candidatos
+  (mascota-en-ventana y carpeta+punto quedaron descartados). Set completo en
+  `public/` (16/32/192/512, apple-touch, .ico multi-tamaño).
 
 ## Idiomas (i18n)
 
