@@ -13,11 +13,12 @@
 import { config, fields, collection } from '@keystatic/core';
 
 export default config({
-  // Modo GitHub: Marta edita online desde /keystatic (login con GitHub, cada
-  // cambio commitea al repo). La primera vez, /keystatic muestra un asistente
-  // que crea la GitHub App y da las 3 env vars a añadir en Vercel (ver docs/cms.md).
-  // Para editar en local sin nada de esto, cambiar temporalmente a { kind: 'local' }.
-  storage: { kind: 'github', repo: 'masidesmarta/mas1des' },
+  // Modo LOCAL de momento: se edita en local (`npm run dev` → /keystatic) y se
+  // commitea a git. Para que Marta edite ONLINE sin env vars pasaremos a Keystatic
+  // Cloud: `storage: { kind: 'cloud' }` + `cloud: { project: 'equipo/proyecto' }`
+  // (cuando el proyecto de keystatic.cloud esté creado y el repo conectado).
+  // Ver docs/cms.md.
+  storage: { kind: 'local' },
   ui: {
     brand: { name: 'Marta Masides' },
   },
