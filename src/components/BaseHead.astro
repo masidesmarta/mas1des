@@ -15,6 +15,12 @@ interface Props {
   lang?: Lang;
   /** Precarga de SciFly (solo la usan las páginas editoriales con wordmark/hero). */
   preloadDisplayFont?: boolean;
+  /**
+   * Ruta canónica cuando la página es una vista alternativa de otra
+   * (p. ej. /portfolio/estudio → canonical /estudio). Sin idioma; se
+   * localiza aquí.
+   */
+  canonicalPath?: string;
 }
 
 const {
@@ -22,10 +28,14 @@ const {
   description = 'Portfolio de Marta Masides, arquitecta por la ETSAM. Proyectos académicos y profesionales de arquitectura, interiorismo y visualización.',
   lang = 'es',
   preloadDisplayFont = true,
+  canonicalPath,
 } = Astro.props;
 
 const site = Astro.site ?? new URL('https://mas1des.vercel.app');
-const canonical = new URL(Astro.url.pathname, site).href;
+const canonical = new URL(
+  canonicalPath ? localeUrl(lang, canonicalPath) : Astro.url.pathname,
+  site,
+).href;
 const ogImage = new URL('/og.png', site).href;
 
 // Alternates hreflang (misma página en cada idioma)

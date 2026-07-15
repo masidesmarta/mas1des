@@ -1,0 +1,112 @@
+---
+/**
+ * Contenido de Contacto (intro, canales, mascota de firma). Compartido
+ * por la app de correo del escritorio y por la versión web dentro de
+ * Internet Explorer (/portfolio/contacto).
+ */
+import { Image } from 'astro:assets';
+import mascota from '../assets/mascota.png';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="contacto">
+  <div class="intro">
+    <p class="eyebrow">{t('contacto.kicker')}</p>
+    <h1 class="dot-title">{t('contacto.titulo')}</h1>
+    <p class="lead">{t('contacto.lead')}</p>
+  </div>
+
+  <div class="channels">
+    <a href="mailto:masidesmarta@gmail.com" class="email link-underline">
+      masidesmarta@gmail.com
+    </a>
+    <div class="secondary">
+      <a
+        href="https://instagram.com/mas1des"
+        class="sec-link link-underline"
+        target="_blank"
+        rel="noopener">Instagram · @mas1des</a
+      >
+    </div>
+  </div>
+
+  <Image
+    class="mascota-firma"
+    src={mascota}
+    alt=""
+    aria-hidden="true"
+    widths={[180, 360]}
+    sizes="150px"
+    loading="lazy"
+  />
+</section>
+
+<style>
+  .contacto {
+    position: relative;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    min-height: 100%;
+    padding: clamp(1.75rem, 1.2rem + 2.5vw, 3rem) clamp(1.25rem, 1rem + 2vw, 2.5rem)
+      clamp(2.5rem, 2rem + 2vw, 3.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.75rem, 1.2rem + 2.5vw, 3rem);
+  }
+  .intro h1 {
+    margin: 0.9rem 0 1.1rem;
+    font-size: clamp(1.8rem, 1.3rem + 2.2vw, 2.9rem);
+  }
+  .lead {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    line-height: 1.4;
+    max-width: 46ch;
+  }
+  .channels {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+  }
+  .email {
+    font-size: clamp(1.15rem, 0.7rem + 2.6vw, 2.1rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    width: fit-content;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    transition: color 0.3s var(--ease);
+  }
+  .email:hover {
+    color: var(--accent);
+  }
+  .secondary {
+    display: flex;
+    gap: 2rem;
+  }
+  .sec-link {
+    font-size: var(--step-0);
+    color: var(--ink-soft);
+  }
+  .mascota-firma {
+    align-self: flex-end;
+    width: clamp(96px, 16vw, 150px);
+    height: auto;
+    opacity: 0.92;
+    pointer-events: none;
+    margin-top: auto;
+  }
+  @media (max-width: 480px) {
+    .mascota-firma {
+      width: 90px;
+    }
+  }
+</style>

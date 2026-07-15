@@ -1,0 +1,26 @@
+---
+/**
+ * Versión WEB de Estudio (modo lectura): el mismo contenido, dentro de
+ * la ventana de Internet Explorer con el header/footer editoriales.
+ * Canonical → /estudio (la app del escritorio es la vista principal).
+ */
+import Layout from '../../layouts/Layout.astro';
+import StudioContent from '../StudioContent.astro';
+import { useTranslations, type Lang } from '../../i18n/ui';
+import { localeUrl } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<Layout
+  lang={lang}
+  title={`${t('estudio.kicker')} — Marta Masides`}
+  description={t('estudio.lead')}
+  canonicalPath="/estudio"
+>
+  <StudioContent lang={lang} contactHref={localeUrl(lang, '/portfolio/contacto')} />
+</Layout>

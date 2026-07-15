@@ -11,15 +11,19 @@ const t = useTranslations(lang);
 const path = Astro.url.pathname;
 
 const { pathname } = Astro.url;
+// localeUrl emite barra final; normalizamos el pathname (dev no la lleva).
 const isActive = (href: string) => {
   const full = localeUrl(lang, href);
-  return href === '/' ? pathname === full : pathname.startsWith(full);
+  const path = pathname.endsWith('/') ? pathname : `${pathname}/`;
+  return href === '/' ? path === full : path.startsWith(full);
 };
 
+// Navegación del modo lectura: SIEMPRE dentro del navegador (versiones
+// web de estudio/contacto); las apps del escritorio son otra cosa.
 const nav = [
   { href: '/proyectos', key: 'nav.proyectos' as const },
-  { href: '/estudio', key: 'nav.estudio' as const },
-  { href: '/contacto', key: 'nav.contacto' as const },
+  { href: '/portfolio/estudio', key: 'nav.estudio' as const },
+  { href: '/portfolio/contacto', key: 'nav.contacto' as const },
 ];
 ---
 

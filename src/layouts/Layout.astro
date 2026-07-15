@@ -18,9 +18,16 @@ interface Props {
   title?: string;
   description?: string;
   lang?: Lang;
+  /** Canonical hacia la vista principal (ver BaseHead). */
+  canonicalPath?: string;
 }
 
-const { title = 'Marta Masides — Arquitecta', description, lang = 'es' } = Astro.props;
+const {
+  title = 'Marta Masides — Arquitecta',
+  description,
+  lang = 'es',
+  canonicalPath,
+} = Astro.props;
 const t = useTranslations(lang);
 // Barra de direcciones in-world (el dominio "bonito" de la ficción del OS).
 const address = `www.mas1des.es${Astro.url.pathname}`;
@@ -30,6 +37,7 @@ const address = `www.mas1des.es${Astro.url.pathname}`;
   lang={lang}
   title={title}
   description={description}
+  canonicalPath={canonicalPath}
   window={{ title: `${title} — Internet Explorer`, icon: 'internet' }}
 >
   <main id="main" class="window-stage">
@@ -135,7 +143,7 @@ const address = `www.mas1des.es${Astro.url.pathname}`;
   function initIE() {
     const back = document.querySelector<HTMLButtonElement>('[data-ie-back]');
     const fwd = document.querySelector<HTMLButtonElement>('[data-ie-fwd]');
-    if (!back || back.dataset.ieInit) return;
+    if (!back || !fwd || back.dataset.ieInit) return;
     back.dataset.ieInit = '1';
     back.disabled = history.length <= 1;
     fwd.disabled = false;

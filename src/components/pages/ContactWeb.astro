@@ -1,0 +1,25 @@
+---
+/**
+ * Versión WEB de Contacto (modo lectura): dentro de Internet Explorer,
+ * con header/footer editoriales. Canonical → /contacto (la app de
+ * correo del escritorio es la vista principal).
+ */
+import Layout from '../../layouts/Layout.astro';
+import ContactContent from '../ContactContent.astro';
+import { useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<Layout
+  lang={lang}
+  title={`${t('contacto.kicker')} — Marta Masides`}
+  description={t('contacto.lead')}
+  canonicalPath="/contacto"
+>
+  <ContactContent lang={lang} />
+</Layout>

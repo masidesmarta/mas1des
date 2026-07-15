@@ -16,11 +16,12 @@ const year = new Date().getFullYear();
       <p class="name">Marta Masides</p>
       <p class="muted">{t('foot.rol')}</p>
     </div>
-    {/* Etiqueta distinta a la del nav del header (landmarks duplicados) */}
+    {/* Etiqueta distinta a la del nav del header (landmarks duplicados).
+        Enlaces a las versiones web: el footer vive dentro del navegador. */}
     <nav class="cols" aria-label={lang === 'en' ? 'Footer' : 'Pie de página'}>
       <a href={localeUrl(lang, '/proyectos')} class="link-underline">{t('nav.proyectos')}</a>
-      <a href={localeUrl(lang, '/estudio')} class="link-underline">{t('nav.estudio')}</a>
-      <a href={localeUrl(lang, '/contacto')} class="link-underline">{t('nav.contacto')}</a>
+      <a href={localeUrl(lang, '/portfolio/estudio')} class="link-underline">{t('nav.estudio')}</a>
+      <a href={localeUrl(lang, '/portfolio/contacto')} class="link-underline">{t('nav.contacto')}</a>
     </nav>
     <div class="cols">
       <a href="mailto:masidesmarta@gmail.com" class="link-underline"

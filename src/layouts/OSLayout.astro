@@ -21,13 +21,15 @@ interface Props {
   title?: string;
   description?: string;
   lang?: Lang;
+  /** Ver BaseHead: canonical para vistas alternativas. */
+  canonicalPath?: string;
   /** Ventana abierta en esta ruta → botón en la taskbar. */
   window?: {
     title: string;
     icon: 'folder' | 'internet' | 'notepad' | 'mail' | 'image' | 'window';
   };
 }
-const { title, description, lang = 'es', window: win } = Astro.props;
+const { title, description, lang = 'es', canonicalPath, window: win } = Astro.props;
 
 // Wallpaper optimizado: apaisado pre-encuadrado en desktop, vertical en móvil.
 const wpLarge = await getImage({ src: wallpaperWide, width: 1920 });
@@ -37,7 +39,13 @@ const wpSmall = await getImage({ src: wallpaperSrc, width: 900 });
 <!doctype html>
 <html lang={lang} class="no-js">
   <head>
-    <BaseHead title={title} description={description} lang={lang} preloadDisplayFont={false} />
+    <BaseHead
+      title={title}
+      description={description}
+      lang={lang}
+      canonicalPath={canonicalPath}
+      preloadDisplayFont={false}
+    />
     {/* Navegación suave entre páginas del OS (abrir/cerrar ventanas sin recarga dura) */}
     <ClientRouter />
   </head>
