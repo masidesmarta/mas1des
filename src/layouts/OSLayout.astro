@@ -8,6 +8,7 @@ import { getImage } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import BaseHead from '../components/BaseHead.astro';
 import Taskbar from '../components/os/Taskbar.astro';
+import DesktopIcons from '../components/os/DesktopIcons.astro';
 import type { Lang } from '../i18n/ui';
 import wallpaperSrc from '../assets/hero-panel14.webp';
 import '../styles/os.css';
@@ -36,15 +37,17 @@ const wpSmall = await getImage({ src: wallpaperSrc, width: 900 });
     {/* Navegación suave entre páginas del OS (abrir/cerrar ventanas sin recarga dura) */}
     <ClientRouter />
   </head>
-  <body class="os os-cursor">
+  <body
+    class="os os-cursor"
+    style={`--wp-large:url(${wpLarge.src});--wp-small:url(${wpSmall.src})`}
+  >
     <a class="skip" href="#main">{lang === 'en' ? 'Skip to content' : 'Saltar al contenido'}</a>
+    {/* Capa persistente: el escritorio sigue detrás de la ventana abierta */}
+    <DesktopIcons lang={lang} />
     <slot />
     <Taskbar lang={lang} window={win} />
 
-    <style
-      is:global
-      define:vars={{ 'wp-large': `url(${wpLarge.src})`, 'wp-small': `url(${wpSmall.src})` }}
-    >
+    <style is:global>
       :root {
         /* Espacio reservado por la barra del sistema (arriba en móvil,
            abajo en desktop). Las páginas del OS lo usan para no quedar

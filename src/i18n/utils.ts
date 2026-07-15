@@ -1,10 +1,15 @@
 import { defaultLang, type Lang } from './ui';
 
-/** URL con prefijo de idioma (es = raíz, en = /en/...). */
+/**
+ * URL con prefijo de idioma (es = raíz, en = /en/...).
+ * Siempre con barra final: los canonicals y el sitemap la llevan, y así
+ * los enlaces internos no pasan por el redirect 308 de Vercel.
+ */
 export function localeUrl(lang: Lang, path = '/'): string {
-  const clean = path.startsWith('/') ? path : `/${path}`;
+  let clean = path.startsWith('/') ? path : `/${path}`;
+  if (!clean.endsWith('/')) clean += '/';
   if (lang === defaultLang) return clean;
-  return clean === '/' ? `/${lang}` : `/${lang}${clean}`;
+  return `/${lang}${clean === '/' ? '/' : clean}`;
 }
 
 /** Quita el prefijo /en de una ruta. */

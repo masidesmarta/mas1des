@@ -146,6 +146,12 @@
    centra la ventana flotante sobre el escritorio. */
 .window-stage {
   min-height: 100svh;
+  position: relative;
+  z-index: 5; /* por encima de la capa de iconos del escritorio */
+  pointer-events: none; /* el hueco alrededor de la ventana deja clicar los iconos */
+}
+.window-stage > * {
+  pointer-events: auto;
 }
 @media (min-width: 768px) {
   .window-stage {

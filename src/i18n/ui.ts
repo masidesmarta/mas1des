@@ -8,6 +8,10 @@ export const ui = {
     'meta.homeDesc':
       'Portfolio de Marta Masides, arquitecta por la ETSAM. Proyectos académicos y profesionales de arquitectura, interiorismo y visualización.',
     'meta.arquitecta': 'Marta Masides — Arquitecta',
+    'meta.portfolioDesc':
+      'Portfolio editorial de Marta Masides: selección de proyectos destacados de arquitectura, interiorismo y visualización.',
+    'meta.proyectosDesc':
+      'Todos los proyectos de Marta Masides: académicos, concursos, visualización arquitectónica, performance y publicaciones.',
 
     'nav.proyectos': 'Proyectos',
     'nav.estudio': 'Estudio',
@@ -92,6 +96,10 @@ export const ui = {
     'meta.homeDesc':
       "Portfolio of Marta Masides, architect from ETSAM. Academic and professional projects in architecture, interior design and visualization.",
     'meta.arquitecta': 'Marta Masides — Architect',
+    'meta.portfolioDesc':
+      'Editorial portfolio of Marta Masides: a selection of featured works in architecture, interior design and visualization.',
+    'meta.proyectosDesc':
+      'All projects by Marta Masides: academic work, competitions, architectural visualization, performance and publications.',
 
     'nav.proyectos': 'Projects',
     'nav.estudio': 'Studio',

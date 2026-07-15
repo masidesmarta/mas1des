@@ -1,53 +1,21 @@
 ---
 /**
- * La home del sitio: el escritorio (desktop) / pantalla de inicio (móvil).
- * Carpetas por categoría del CMS + apps (Internet = modo lectura,
- * Sobre mí, Contacto). Todo son enlaces reales a rutas SSR.
+ * La home del sitio: el escritorio sin ventanas. Los iconos los pinta
+ * OSLayout (capa persistente); aquí solo va la firma de esquina, que
+ * es el h1 real de la página (tipo "Windows 2000 Professional").
  */
-import { getCollection } from 'astro:content';
 import OSLayout from '../../layouts/OSLayout.astro';
-import DesktopIcon from '../os/DesktopIcon.astro';
-import { CATEGORIAS } from '../../os/categorias';
 import { useTranslations, type Lang } from '../../i18n/ui';
-import { localeUrl, projectsFor } from '../../i18n/utils';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-
-const all = projectsFor(await getCollection('proyectos'), lang);
-// Carpetas con contenido; una carpeta es "WIP" si TODO lo de dentro es provisional.
-const carpetas = CATEGORIAS.map((c) => {
-  const dentro = all.filter((p) => p.entry.data.categoria === c.slug);
-  return {
-    ...c,
-    count: dentro.length,
-    wip: dentro.length > 0 && dentro.every((p) => p.entry.data.provisional),
-  };
-}).filter((c) => c.count > 0);
 ---
 
 <OSLayout lang={lang} title={t('meta.arquitecta')} description={t('meta.homeDesc')}>
-  <main id="main" class="desktop">
-    <nav class="icons" aria-label={t('os.escritorio')}>
-      {
-        carpetas.map((c) => (
-          <DesktopIcon
-            href={localeUrl(lang, `/carpeta/${c.slug}`)}
-            icon="folder"
-            label={c[lang]}
-            badge={c.wip ? 'WIP' : undefined}
-          />
-        ))
-      }
-      <DesktopIcon href={localeUrl(lang, '/portfolio')} icon="internet" label={t('os.internet')} />
-      <DesktopIcon href={localeUrl(lang, '/estudio')} icon="notepad" label={t('os.sobremi')} />
-      <DesktopIcon href={localeUrl(lang, '/contacto')} icon="mail" label={t('nav.contacto')} />
-    </nav>
-
-    {/* Firma tipo "Windows 2000 Professional" en la esquina: es el h1 real. */}
+  <main id="main" class="desktop-sign">
     <h1 class="watermark">
       Marta Masides<span class="watermark-sub">{t('os.watermarkRole')}</span>
     </h1>
@@ -55,28 +23,19 @@ const carpetas = CATEGORIAS.map((c) => {
 </OSLayout>
 
 <style>
-  .desktop {
-    min-height: 100svh;
-    padding: calc(var(--os-top) + 1.25rem) 1rem calc(var(--os-bottom) + 4.5rem);
+  .desktop-sign {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--os-bottom) + 1.1rem);
     display: flex;
-    flex-direction: column;
-  }
-
-  /* Móvil: rejilla tipo pantalla de inicio de un teléfono */
-  .icons {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.4rem 0.5rem;
-    align-content: start;
-    max-width: 26rem;
-    margin-inline: auto;
-    width: 100%;
-    flex: 1;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: none;
   }
 
   .watermark {
-    margin-top: auto;
-    align-self: center;
+    margin: 0;
     text-align: center;
     font-family: var(--w2k-font);
     font-size: 1rem;
@@ -95,28 +54,14 @@ const carpetas = CATEGORIAS.map((c) => {
     color: rgba(255, 255, 255, 0.62);
   }
 
-  /* Desktop: iconos en columnas desde arriba-izquierda (como Windows)
-     y firma en la esquina inferior derecha (como la build del sistema). */
   @media (min-width: 768px) {
-    .desktop {
-      padding: 2rem 1.5rem calc(var(--os-bottom) + 2.5rem);
-    }
-    .icons {
-      grid-template-columns: none;
-      grid-template-rows: repeat(auto-fill, minmax(108px, auto));
-      grid-auto-flow: column;
-      grid-auto-columns: 110px;
-      justify-content: start;
-      align-content: start;
-      gap: 0.6rem;
-      max-width: none;
-      margin-inline: 0;
-      max-height: calc(100svh - var(--os-bar-h) - 8rem);
+    .desktop-sign {
+      justify-content: flex-end;
+      padding-right: 1.6rem;
+      bottom: calc(var(--os-bar-h) + 1.1rem);
     }
     .watermark {
-      align-self: flex-end;
       text-align: right;
-      margin-top: auto;
     }
     .watermark-sub {
       letter-spacing: 0.18em;

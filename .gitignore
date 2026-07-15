@@ -31,3 +31,8 @@ _material/
 
 # artefactos de los testers visuales (Playwright MCP)
 .playwright-mcp/
+
+# screenshots de testers (raíz)
+/*.png
+/*.jpeg
+/*.jpg

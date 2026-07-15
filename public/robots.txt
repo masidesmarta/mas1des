@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /keystatic
+Disallow: /api/
 
 Sitemap: https://mas1des.vercel.app/sitemap-index.xml

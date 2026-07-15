@@ -48,41 +48,10 @@ const dim = size ? `${size}px` : '1em';
     )
   }
   {
-    /* La "e" de Internet Explorer con su órbita dorada */
+    /* El icono CLÁSICO de Internet Explorer (bitmap original de 48px,
+       nítido en tamaño nativo y pixel-perfect retro al escalar) */
     name === 'internet' && (
-      <svg viewBox="0 0 32 32">
-        <defs>
-          <linearGradient id={`ie-${uid}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#55b6f5" />
-            <stop offset="0.5" stop-color="#1e7fe0" />
-            <stop offset="1" stop-color="#0b4fbe" />
-          </linearGradient>
-        </defs>
-        {/* La "e": anillo abierto por la derecha + barra horizontal */}
-        <path
-          d="M22.9 21.4 A8.5 8.5 0 1 1 24.2 13.4"
-          fill="none"
-          stroke={`url(#ie-${uid})`}
-          stroke-width="5"
-          stroke-linecap="round"
-        />
-        <line
-          x1="8.2"
-          y1="14.9"
-          x2="24.3"
-          y2="14.9"
-          stroke={`url(#ie-${uid})`}
-          stroke-width="4.6"
-        />
-        {/* Órbita dorada */}
-        <path
-          d="M30.6 7.8c1 2.1-4.7 6.4-12.8 9.6C9.6 20.6 2.4 21.6 1.4 19.5c-.7-1.5 2-4.1 6.5-6.6"
-          fill="none"
-          stroke="#f0b428"
-          stroke-width="2.1"
-          stroke-linecap="round"
-        />
-      </svg>
+      <img class="ie-img" src="/icons/ie.png" alt="" width="48" height="48" loading="lazy" />
     )
   }
   {
@@ -153,5 +122,11 @@ const dim = size ? `${size}px` : '1em';
     width: 100%;
     height: 100%;
     display: block;
+  }
+  .os-icon .ie-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    image-rendering: pixelated; /* al ampliar/reducir, píxel retro nítido */
   }
 </style>

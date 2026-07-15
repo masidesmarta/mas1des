@@ -1,0 +1,83 @@
+---
+/**
+ * Los iconos del escritorio como capa PERSISTENTE del OS: se renderizan
+ * en todas las rutas del modo OS, detrás de la ventana abierta (como en
+ * Windows de verdad: abrir una carpeta no borra el escritorio).
+ */
+import { getCollection } from 'astro:content';
+import DesktopIcon from './DesktopIcon.astro';
+import { CATEGORIAS } from '../../os/categorias';
+import { useTranslations, type Lang } from '../../i18n/ui';
+import { localeUrl, projectsFor } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const all = projectsFor(await getCollection('proyectos'), lang);
+// Carpetas con contenido; "WIP" si TODO lo de dentro es provisional.
+const carpetas = CATEGORIAS.map((c) => {
+  const dentro = all.filter((p) => p.entry.data.categoria === c.slug);
+  return {
+    ...c,
+    count: dentro.length,
+    wip: dentro.length > 0 && dentro.every((p) => p.entry.data.provisional),
+  };
+}).filter((c) => c.count > 0);
+---
+
+<nav class="desk-icons" aria-label={t('os.escritorio')}>
+  {
+    carpetas.map((c) => (
+      <DesktopIcon
+        href={localeUrl(lang, `/carpeta/${c.slug}`)}
+        icon="folder"
+        label={c[lang]}
+        badge={c.wip ? 'WIP' : undefined}
+      />
+    ))
+  }
+  <DesktopIcon href={localeUrl(lang, '/portfolio')} icon="internet" label={t('os.internet')} />
+  <DesktopIcon href={localeUrl(lang, '/estudio')} icon="notepad" label={t('os.sobremi')} />
+  <DesktopIcon href={localeUrl(lang, '/contacto')} icon="mail" label={t('nav.contacto')} />
+</nav>
+
+<style>
+  /* Móvil: rejilla tipo pantalla de inicio, centrada */
+  .desk-icons {
+    position: fixed;
+    top: var(--os-top);
+    bottom: var(--os-bottom);
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100%, 26rem);
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem 0.5rem;
+    align-content: start;
+    padding: 1.25rem 1rem 5rem;
+    overflow-y: auto;
+  }
+
+  /* Desktop: columnas desde arriba-izquierda, como Windows */
+  @media (min-width: 768px) {
+    .desk-icons {
+      left: 0;
+      transform: none;
+      width: auto;
+      right: 0;
+      grid-template-columns: none;
+      grid-template-rows: repeat(auto-fill, minmax(108px, auto));
+      grid-auto-flow: column;
+      grid-auto-columns: 110px;
+      justify-content: start;
+      align-content: start;
+      gap: 0.6rem;
+      padding: 2rem 1.5rem calc(var(--os-bar-h) + 2.5rem);
+      overflow: hidden;
+    }
+  }
+</style>

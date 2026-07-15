@@ -18,6 +18,8 @@ de minutos.
      inglés.
    - **Orden**: número. Menor = aparece antes en la lista.
    - **Destacado**: márcalo si quieres que salga en la portada.
+   - **Carpeta**: en qué carpeta del escritorio aparece el proyecto
+     (Académicos, Concursos, Visualización, Performance o Publicaciones).
    - **Descripción**: puedes poner **negrita** escribiendo `**así**` y *cursiva*
      con `*así*`. Separa los párrafos con una línea en blanco.
 3. **Fotos**:
