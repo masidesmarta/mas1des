@@ -1,0 +1,84 @@
+---
+/**
+ * Icono del escritorio / pantalla de inicio: un <a> real (SEO/a11y)
+ * con arte SVG + etiqueta. Selección azul clásica en hover/focus.
+ */
+import OSIcon from './OSIcon.astro';
+
+interface Props {
+  href: string;
+  label: string;
+  icon: 'folder' | 'internet' | 'notepad' | 'mail' | 'image' | 'window';
+  /** Etiqueta pequeña sobre el icono (p. ej. "WIP"). */
+  badge?: string;
+}
+const { href, label, icon, badge } = Astro.props;
+---
+
+<a class="dicon" href={href}>
+  <span class="dicon-art">
+    <OSIcon name={icon} />
+    {badge && <span class="dicon-badge">{badge}</span>}
+  </span>
+  <span class="dicon-label">{label}</span>
+</a>
+
+<style>
+  .dicon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    width: 100%;
+    padding: 0.5rem 0.25rem;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .dicon-art {
+    position: relative;
+    font-size: 48px; /* tamaño del OSIcon (1em) */
+    line-height: 1;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 20, 0.45));
+    transition: transform 0.25s var(--w2k-ease);
+  }
+  .dicon:hover .dicon-art {
+    transform: translateY(-2px) scale(1.04);
+  }
+  .dicon-badge {
+    position: absolute;
+    right: -0.9rem;
+    top: -0.35rem;
+    background: var(--w2k-brand);
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.1rem 0.3rem;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    box-shadow: 1px 1px 0 rgba(0, 0, 20, 0.4);
+    transform: rotate(4deg);
+  }
+  .dicon-label {
+    font-family: var(--w2k-font);
+    font-size: 0.8rem;
+    line-height: 1.25;
+    color: #fff;
+    text-shadow:
+      1px 1px 0 rgba(0, 0, 20, 0.85),
+      0 0 6px rgba(0, 0, 20, 0.5);
+    padding: 0.1rem 0.35rem;
+    border: 1px dotted transparent;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+  .dicon:hover .dicon-label,
+  .dicon:focus-visible .dicon-label {
+    background: var(--w2k-select);
+    color: var(--w2k-select-text);
+    text-shadow: none;
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+  .dicon:focus-visible {
+    outline: none;
+  }
+</style>

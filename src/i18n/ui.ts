@@ -69,6 +69,15 @@ export const ui = {
 
     'prov.label': 'Provisional',
     'prov.title': 'Imagen provisional — pendiente de sustituir por el original',
+
+    'os.barra': 'Barra del sistema',
+    'os.inicio': 'Inicio',
+    'os.volverEscritorio': 'Volver al escritorio',
+    'os.idioma': 'Idioma',
+    'os.escritorio': 'Escritorio',
+    'os.internet': 'Internet',
+    'os.sobremi': 'Sobre mí.txt',
+    'os.watermarkRole': 'Arquitecta · ETSAM · Madrid',
   },
   en: {
     'meta.homeDesc':
@@ -135,6 +144,15 @@ export const ui = {
 
     'prov.label': 'Provisional',
     'prov.title': 'Placeholder image — to be replaced by the final one',
+
+    'os.barra': 'System bar',
+    'os.inicio': 'Start',
+    'os.volverEscritorio': 'Back to desktop',
+    'os.idioma': 'Language',
+    'os.escritorio': 'Desktop',
+    'os.internet': 'Internet',
+    'os.sobremi': 'About me.txt',
+    'os.watermarkRole': 'Architect · ETSAM · Madrid',
   },
 } as const;
 

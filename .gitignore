@@ -28,3 +28,6 @@ _material/
 
 # Vercel adapter build output
 .vercel/
+
+# artefactos de los testers visuales (Playwright MCP)
+.playwright-mcp/

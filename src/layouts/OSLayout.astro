@@ -1,0 +1,103 @@
+---
+/**
+ * Layout del "modo OS": wallpaper (imagen de un proyecto de Marta),
+ * barra del sistema y el hueco donde cada ruta pinta su escritorio
+ * o su ventana. El <head> SEO es el mismo del sitio (BaseHead).
+ */
+import { getImage } from 'astro:assets';
+import BaseHead from '../components/BaseHead.astro';
+import Taskbar from '../components/os/Taskbar.astro';
+import type { Lang } from '../i18n/ui';
+import wallpaperSrc from '../assets/hero-panel14.webp';
+import '../styles/os.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: Lang;
+  /** Ventana abierta en esta ruta → botón en la taskbar. */
+  window?: {
+    title: string;
+    icon: 'folder' | 'internet' | 'notepad' | 'mail' | 'image' | 'window';
+  };
+}
+const { title, description, lang = 'es', window: win } = Astro.props;
+
+// Wallpaper optimizado en dos tamaños (móvil / desktop).
+const wpLarge = await getImage({ src: wallpaperSrc, width: 1920 });
+const wpSmall = await getImage({ src: wallpaperSrc, width: 900 });
+---
+
+<!doctype html>
+<html lang={lang} class="no-js">
+  <head>
+    <BaseHead title={title} description={description} lang={lang} preloadDisplayFont={false} />
+  </head>
+  <body class="os os-cursor">
+    <a class="skip" href="#main">{lang === 'en' ? 'Skip to content' : 'Saltar al contenido'}</a>
+    <slot />
+    <Taskbar lang={lang} window={win} />
+
+    <style
+      is:global
+      define:vars={{ 'wp-large': `url(${wpLarge.src})`, 'wp-small': `url(${wpSmall.src})` }}
+    >
+      :root {
+        /* Espacio reservado por la barra del sistema (arriba en móvil,
+           abajo en desktop). Las páginas del OS lo usan para no quedar
+           tapadas por la barra. */
+        --os-bar-h: 30px;
+        --os-top: var(--os-bar-h);
+        --os-bottom: 0px;
+      }
+      @media (min-width: 768px) {
+        :root {
+          --os-bar-h: 38px;
+          --os-top: 0px;
+          --os-bottom: var(--os-bar-h);
+        }
+      }
+
+      body.os {
+        font-family: var(--w2k-font);
+        color: var(--w2k-text);
+        min-height: 100svh;
+        /* Wallpaper: imagen de proyecto de Marta con un velado azul-tinta
+           para que iconos y ventanas se lean encima. */
+        background-color: var(--w2k-desktop);
+        background-image: linear-gradient(rgba(10, 17, 40, 0.55), rgba(10, 17, 40, 0.72)),
+          var(--wp-small);
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        overflow-x: hidden;
+      }
+      @media (min-width: 768px) {
+        body.os {
+          /* Velado + scrim lateral: los iconos viven a la izquierda */
+          background-image: linear-gradient(
+              100deg,
+              rgba(10, 17, 40, 0.72) 0%,
+              rgba(10, 17, 40, 0.5) 34%,
+              rgba(10, 17, 40, 0.42) 100%
+            ),
+            var(--wp-large);
+        }
+      }
+
+      body.os .skip {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        background: var(--w2k-select);
+        color: var(--w2k-select-text);
+        padding: 0.6rem 1rem;
+        z-index: 300;
+        font-family: var(--w2k-font);
+      }
+      body.os .skip:focus {
+        left: 0;
+      }
+    </style>
+  </body>
+</html>

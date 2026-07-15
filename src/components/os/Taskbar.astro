@@ -1,0 +1,171 @@
+---
+/**
+ * Barra del sistema, responsive temático:
+ *  - Desktop (≥768px): taskbar Win2000 abajo — Inicio, botón de la ventana
+ *    abierta, bandeja con idioma y reloj.
+ *  - Móvil: status bar arriba (reloj + idioma), como un teléfono.
+ */
+import OSIcon from './OSIcon.astro';
+import { useTranslations, type Lang } from '../../i18n/ui';
+import { localeUrl, switchLocalePath } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  /** Ventana abierta en esta ruta (botón "pulsado" en la taskbar). */
+  window?: { title: string; icon: 'folder' | 'internet' | 'notepad' | 'mail' | 'image' | 'window' };
+}
+const { lang, window: win } = Astro.props;
+const t = useTranslations(lang);
+const path = Astro.url.pathname;
+---
+
+<nav class="taskbar" aria-label={t('os.barra')}>
+  <a class="w2k-btn start" href={localeUrl(lang, '/')} title={t('os.volverEscritorio')}>
+    <img src="/favicon-32.png" alt="" width="18" height="18" />
+    <span>{t('os.inicio')}</span>
+  </a>
+
+  <div class="tasks">
+    {
+      win && (
+        <span class="w2k-btn task-btn" aria-pressed="true" data-task-btn hidden={false}>
+          <OSIcon name={win.icon} size={16} />
+          <span class="task-title">{win.title}</span>
+        </span>
+      )
+    }
+  </div>
+
+  <div class="tray">
+    <span class="langs" aria-label={t('os.idioma')}>
+      <a href={switchLocalePath(path, 'es')} aria-current={lang === 'es' ? 'true' : undefined}>ES</a>
+      <span aria-hidden="true">/</span>
+      <a href={switchLocalePath(path, 'en')} aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
+    </span>
+    <time class="clock" data-clock data-lang={lang}></time>
+  </div>
+</nav>
+
+<style>
+  .taskbar {
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: stretch;
+    gap: 0.4rem;
+    font-family: var(--w2k-font);
+    /* Móvil: status bar arriba */
+    top: 0;
+    height: var(--os-bar-h, 30px);
+    padding: 2px 0.75rem;
+    background: rgba(8, 14, 30, 0.55);
+    backdrop-filter: blur(6px);
+    color: #fff;
+  }
+  .start,
+  .tasks {
+    display: none; /* móvil: solo reloj + idioma */
+  }
+  .tray {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 0.8rem;
+  }
+  .clock {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+  }
+  .langs a {
+    padding: 0.15rem 0.3rem;
+    opacity: 0.65;
+  }
+  .langs a[aria-current] {
+    opacity: 1;
+    font-weight: 700;
+  }
+  .langs a:focus-visible {
+    outline: 1px dotted currentColor;
+    outline-offset: 1px;
+  }
+
+  /* ---- Desktop: taskbar Win2000 abajo ---- */
+  @media (min-width: 768px) {
+    .taskbar {
+      top: auto;
+      bottom: 0;
+      height: var(--os-bar-h, 38px);
+      padding: 3px 4px;
+      background: var(--w2k-face);
+      color: var(--w2k-text);
+      backdrop-filter: none;
+      box-shadow: inset 0 1px 0 var(--w2k-hi), 0 -1px 0 var(--w2k-shadow);
+    }
+    .start {
+      display: inline-flex;
+      gap: 0.4rem;
+      align-items: center;
+      padding: 0 0.8rem 0 0.5rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--w2k-text);
+    }
+    .start img {
+      image-rendering: auto;
+    }
+    .tasks {
+      display: flex;
+      flex: 1;
+      min-width: 0;
+      gap: 0.3rem;
+    }
+    .task-btn {
+      max-width: 220px;
+      min-width: 0;
+      gap: 0.4rem;
+      padding: 0 0.7rem;
+      font-size: 0.8rem;
+      justify-content: flex-start;
+    }
+    .task-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .tray {
+      width: auto;
+      justify-content: flex-end;
+      gap: 0.7rem;
+      padding: 0 0.7rem;
+      font-size: 0.78rem;
+      box-shadow:
+        inset 1px 1px 0 var(--w2k-shadow),
+        inset -1px -1px 0 var(--w2k-hi);
+    }
+    .langs a {
+      opacity: 0.55;
+    }
+    .langs a[aria-current] {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  // Reloj de la bandeja: HH:MM, se actualiza cada medio minuto.
+  const clocks = document.querySelectorAll<HTMLElement>('[data-clock]');
+  const tick = () => {
+    const now = new Date();
+    for (const c of clocks) {
+      const locale = c.dataset.lang === 'en' ? 'en-GB' : 'es-ES';
+      c.textContent = now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+      c.setAttribute('datetime', now.toISOString());
+    }
+  };
+  tick();
+  setInterval(tick, 30_000);
+</script>
