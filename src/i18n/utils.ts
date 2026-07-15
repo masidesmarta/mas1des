@@ -42,6 +42,7 @@ function localize(data: Record<string, any>, lang: Lang) {
     descripcion: pick('descripcion'),
     orden: data.orden,
     destacado: data.destacado,
+    categoria: data.categoria,
     ano: data.ano,
     provisional: data.provisional,
     portada: data.portada,

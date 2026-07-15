@@ -1,0 +1,156 @@
+/* ============================================================
+   mas1des — chrome del "modo OS" (escritorio Windows 2000)
+   Estética retro premium: chrome Win2000 (bevels 1px nítidos,
+   titlebar en degradado) pero pulido — buena tipografía, sombras
+   suaves y animación cuidada. No es un museo: es una estética.
+   Convive con los tokens editoriales de global.css (el contenido
+   dentro de las ventanas mantiene la voz editorial del sitio).
+   ============================================================ */
+
+:root {
+  /* Paleta clásica de Windows 2000 ("Windows Standard") */
+  --w2k-face: #d4d0c8; /* gris cálido de los paneles/botones */
+  --w2k-face-soft: #e3e1da; /* variante clara para fondos amplios */
+  --w2k-hi: #ffffff; /* bevel luz */
+  --w2k-light: #ececec; /* bevel luz secundaria */
+  --w2k-shadow: #808080; /* bevel sombra */
+  --w2k-dark: #404040; /* bevel sombra profunda */
+  --w2k-text: #1a1a1a;
+
+  /* Titlebar activa: el degradado azul icónico de Win2000 */
+  --w2k-title-a: #0a246a;
+  --w2k-title-b: #a6caf0;
+  --w2k-title-text: #ffffff;
+  /* Titlebar inactiva */
+  --w2k-title-ina-a: #6d6d6d;
+  --w2k-title-ina-b: #b8b8b4;
+
+  /* Selección / acentos del OS */
+  --w2k-select: #0a246a;
+  --w2k-select-text: #ffffff;
+  /* Guiño de marca: el rojo editorial aparece puntualmente en el OS
+     (etiqueta WIP, detalles) igual que el tinto en la web editorial. */
+  --w2k-brand: #c8342b;
+
+  /* Escritorio: azul Win2000 de base, debajo del wallpaper-imagen */
+  --w2k-desktop: #3a6ea5;
+
+  /* Tipografía del chrome: Tahoma era LA fuente de Windows 2000.
+     Stack de sistema → cero bytes y 100% auténtica. */
+  --w2k-font: Tahoma, 'Segoe UI', Verdana, system-ui, sans-serif;
+
+  /* Sombra "premium" bajo las ventanas (licencia moderna) */
+  --w2k-window-shadow: 0 10px 40px rgba(10, 20, 40, 0.38), 0 2px 8px rgba(10, 20, 40, 0.25);
+
+  --w2k-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Bevels 3D (recetas reutilizables) ----------
+   En Win2000 el relieve son 2 líneas de 1px. Con box-shadow inset
+   quedan nítidas a cualquier zoom y sin sumar tamaño de caja. */
+
+/* Relieve saliente (ventanas, botones) */
+.bevel-up {
+  background: var(--w2k-face);
+  box-shadow:
+    inset -1px -1px 0 var(--w2k-dark),
+    inset 1px 1px 0 var(--w2k-light),
+    inset -2px -2px 0 var(--w2k-shadow),
+    inset 2px 2px 0 var(--w2k-hi);
+}
+
+/* Relieve hundido (inputs, paneles de contenido, barra de direcciones) */
+.bevel-down {
+  background: #fff;
+  box-shadow:
+    inset -1px -1px 0 var(--w2k-hi),
+    inset 1px 1px 0 var(--w2k-shadow),
+    inset -2px -2px 0 var(--w2k-light),
+    inset 2px 2px 0 var(--w2k-dark);
+}
+
+/* Surco fino (separadores, status bar) */
+.bevel-groove {
+  box-shadow:
+    inset 0 1px 0 var(--w2k-shadow),
+    inset 0 2px 0 var(--w2k-hi);
+}
+
+/* Botón del chrome (min/max/cerrar, botones de barra) */
+.w2k-btn {
+  appearance: none;
+  border: 0;
+  font-family: var(--w2k-font);
+  color: var(--w2k-text);
+  background: var(--w2k-face);
+  box-shadow:
+    inset -1px -1px 0 var(--w2k-dark),
+    inset 1px 1px 0 var(--w2k-light),
+    inset -2px -2px 0 var(--w2k-shadow),
+    inset 2px 2px 0 var(--w2k-hi);
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.w2k-btn:active,
+.w2k-btn[aria-pressed='true'] {
+  box-shadow:
+    inset 1px 1px 0 var(--w2k-dark),
+    inset -1px -1px 0 var(--w2k-light),
+    inset 2px 2px 0 var(--w2k-shadow),
+    inset -2px -2px 0 var(--w2k-hi);
+}
+.w2k-btn:active > * {
+  transform: translate(1px, 1px);
+}
+.w2k-btn:focus-visible {
+  outline: 1px dotted var(--w2k-text);
+  outline-offset: -4px;
+}
+
+/* ---------- Scrollbars retro dentro del OS ---------- */
+.os-scroll {
+  scrollbar-width: auto;
+  scrollbar-color: var(--w2k-face) var(--w2k-face-soft);
+}
+.os-scroll::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+.os-scroll::-webkit-scrollbar-track {
+  background: repeating-conic-gradient(#fff 0% 25%, var(--w2k-face-soft) 0% 50%) 0 0 / 2px 2px;
+}
+.os-scroll::-webkit-scrollbar-thumb {
+  background: var(--w2k-face);
+  box-shadow:
+    inset -1px -1px 0 var(--w2k-dark),
+    inset 1px 1px 0 var(--w2k-light),
+    inset -2px -2px 0 var(--w2k-shadow),
+    inset 2px 2px 0 var(--w2k-hi);
+}
+
+/* ---------- Cursor retro ----------
+   Flecha clásica en el escritorio y el chrome; los contenidos
+   editoriales dentro de ventanas mantienen el cursor normal. */
+.os-cursor,
+.os-cursor .w2k-btn,
+.os-cursor a {
+  cursor: url('/cursors/arrow.svg') 2 2, auto;
+}
+
+/* Selección de texto con el azul del sistema */
+.os ::selection {
+  background: var(--w2k-select);
+  color: var(--w2k-select-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .os *,
+  .os *::before,
+  .os *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

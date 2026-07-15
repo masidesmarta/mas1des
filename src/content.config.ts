@@ -17,6 +17,11 @@ const proyectos = defineCollection({
       // Orden en el listado (menor = primero). Los destacados van arriba.
       orden: z.number().default(100),
       destacado: z.boolean().default(false),
+      // Carpeta del escritorio en la que vive el proyecto (modo OS).
+      // `tipo` sigue siendo el texto libre de las "propiedades" de la ficha.
+      categoria: z
+        .enum(['academicos', 'concursos', 'visualizacion', 'performance', 'publicaciones'])
+        .default('academicos'),
       ano: z.number().optional(),
       ubicacionEs: z.string().optional(),
       ubicacionEn: z.string().optional(),

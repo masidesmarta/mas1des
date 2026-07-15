@@ -137,8 +137,31 @@ Se reemplaza solo la **piel/UX** (hero rojo, layout editorial actual → escrito
 - **Renders de su trabajo**: puede subirlos **mencionando a su jefe** (colaboración)
   → añadir una línea de **crédito** en la ficha del proyecto de visualización.
 
-## Preguntas para Marta antes de arrancar
+## Decisiones tomadas (julio 2026, con Enrique)
 
-1. 2-3 **referencias** de webs/estética "OS" que le molen (para fijar la era y el tono).
-2. ¿**Fondo**: el clásico de Windows o una imagen suya? (si es suya, cuál).
-3. ¿Le importa que esto **sustituya** la versión actual (hero rojo, etc.)?
+1. **Era: Windows 2000.** Titlebar con degradado azul (`#0a246a → #a6caf0`), gris
+   cálido `#d4d0c8`, bevels de 1px, Tahoma como fuente del chrome (system stack,
+   auténtica de Win2000 y cero bytes). Licencias "retro premium": sombras suaves
+   bajo las ventanas, animación cuidada.
+2. **Fondo: imagen de un proyecto de Marta** (de partida, el render del mercado
+   textil de Riotinto — el hero actual — con tratamiento para que los iconos se
+   lean; fácil de cambiar si Marta prefiere otra).
+3. **Sustituye a la versión actual**, PERO el hero rojo **no desaparece**: pasa
+   también al modo lectura. La home editorial completa (hero + destacados) se
+   muda a `/portfolio` y es la página de inicio de la ventana de Internet
+   Explorer. La home (`/`) pasa a ser el escritorio.
+
+### Arquitectura acordada
+
+- MPA sobre rutas reales (SSR, indexable): `/` escritorio · `/carpeta/[categoria]`
+  ventana Explorador · `/proyectos/[slug]` ventana visor casi maximizada ·
+  `/portfolio`, `/proyectos`, `/estudio`, `/contacto` dentro de la ventana IE
+  (modo lectura). Fichas con **una sola URL** (siempre abren como visor, como un
+  PDF desde el navegador — in-world y sin URLs duplicadas).
+- Campo **`categoria`** nuevo en el CMS (select: academicos / concursos /
+  visualizacion / performance / publicaciones) para las carpetas del escritorio;
+  `tipo` sigue como texto libre de las "propiedades".
+- Móvil = pantalla de inicio (rejilla de iconos + status bar); todo fullscreen,
+  sin drag. Desktop = ventanas flotantes + taskbar + drag sencillo.
+- Chrome del OS en `src/styles/os.css`; el contenido dentro de las ventanas
+  mantiene la voz editorial (Inter, papel, tinto).

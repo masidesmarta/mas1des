@@ -46,6 +46,18 @@ export default config({
           description: 'Aparece en la selección de la home y como pieza grande.',
           defaultValue: false,
         }),
+        categoria: fields.select({
+          label: 'Carpeta',
+          description: 'Carpeta del escritorio en la que aparece el proyecto.',
+          options: [
+            { label: 'Académicos', value: 'academicos' },
+            { label: 'Concursos', value: 'concursos' },
+            { label: 'Visualización', value: 'visualizacion' },
+            { label: 'Performance', value: 'performance' },
+            { label: 'Publicaciones', value: 'publicaciones' },
+          ],
+          defaultValue: 'academicos',
+        }),
         ano: fields.integer({ label: 'Año' }),
         ubicacionEs: fields.text({ label: 'Ubicación (ES)' }),
         ubicacionEn: fields.text({ label: 'Ubicación (EN)' }),
