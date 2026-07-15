@@ -13,12 +13,12 @@
 import { config, fields, collection } from '@keystatic/core';
 
 export default config({
-  // Modo LOCAL de momento: se edita en local (`npm run dev` → /keystatic) y se
-  // commitea a git. Para que Marta edite ONLINE sin env vars pasaremos a Keystatic
-  // Cloud: `storage: { kind: 'cloud' }` + `cloud: { project: 'equipo/proyecto' }`
-  // (cuando el proyecto de keystatic.cloud esté creado y el repo conectado).
-  // Ver docs/cms.md.
-  storage: { kind: 'local' },
+  // Keystatic CLOUD: Marta edita online en /keystatic (auth hosteado por
+  // keystatic.cloud, cero env vars). El proyecto está conectado al repo en
+  // el panel de keystatic.cloud; los dominios permitidos (localhost + Vercel)
+  // se gestionan allí. Ver docs/cms.md.
+  storage: { kind: 'cloud' },
+  cloud: { project: 'mas1des/mas1des' },
   ui: {
     brand: { name: 'Marta Masides' },
   },

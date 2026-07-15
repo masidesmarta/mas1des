@@ -22,7 +22,8 @@ de Marta). Web hecha gratis; lleva un crédito discreto a `ebecerra.es` en el fo
 - **View Transitions** (`ClientRouter` en OSLayout) para abrir/cerrar ventanas
   sin recarga dura. Reveal-on-scroll con IO. Guard de `prefers-reduced-motion`.
 - SEO: `@astrojs/sitemap`, canonical, Open Graph (`public/og.png`), JSON-LD.
-- CMS **Keystatic** activado en modo local (ver `docs/cms.md`).
+- CMS **Keystatic** en modo **Cloud** (`mas1des/mas1des`): Marta edita online en
+  `/keystatic`, cero env vars; dominios permitidos en keystatic.cloud (ver `docs/cms.md`).
 
 ## Arquitectura "escritorio Windows" (rediseño 2026)
 

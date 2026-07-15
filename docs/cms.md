@@ -1,4 +1,4 @@
-# CMS — Keystatic (activado en local)
+# CMS — Keystatic (activado en Keystatic Cloud)
 
 ## Decisión: Keystatic (no Sanity)
 
@@ -38,44 +38,25 @@ antes, así que los componentes no cambian.
 > Migración histórica: el contenido venía como `es.md` + `en.md` por carpeta. Se
 > fusionó en `index.yaml` (script one-off, ya ejecutado y retirado).
 
-## Estado actual
+## Estado actual — Keystatic Cloud ACTIVADO (jul 2026)
 
-- **Activado en modo LOCAL** (`storage: { kind: 'local' }` en `keystatic.config.ts`).
+- **`storage: { kind: 'cloud' }` + `cloud: { project: 'mas1des/mas1des' }`** en
+  `keystatic.config.ts`. El auth lo hostea [Keystatic Cloud](https://keystatic.cloud)
+  (plan gratuito): **cero env vars**, ni en el repo ni en Vercel.
 - `astro.config.mjs` tiene el adaptador de Vercel + las integraciones `react()` y
   `keystatic()`. El sitio **sigue siendo estático**; solo `/keystatic` y su API se
   renderizan on-demand (funciones serverless en Vercel).
-- Edición en local: `npm run dev` → **http://localhost:4321/keystatic**. Los
-  cambios se guardan en los ficheros del repo; se commitean a git.
-- **Cero env vars** en este modo.
+- **Marta edita online**: `su-web/keystatic` → login (Keystatic Cloud) → editar →
+  Save. Cada guardado commitea al repo → Vercel redeploya solo. Guía para ella en
+  `docs/editar-la-web.md`.
+- También funciona en local: `npm run dev` → http://localhost:4321/keystatic
+  (mismo login; escribe en el repo vía Cloud).
+- Los **dominios permitidos** (localhost + el dominio de Vercel, y el dominio
+  real cuando exista) se gestionan en el panel del proyecto en keystatic.cloud.
 
-## Activar edición ONLINE para Marta (modo GitHub) — PENDIENTE
-
-Para que Marta edite desde el navegador sin tocar código, hay que pasar a modo
-GitHub. Requiere una **GitHub App** (acciones en la cuenta de GitHub de Marta):
-
-1. En `keystatic.config.ts`, cambiar el `storage`:
-   ```ts
-   storage: { kind: 'github', repo: 'masidesmarta/mas1des' },
-   ```
-2. Arrancar el sitio e ir a `/keystatic`: Keystatic **guía la creación de la GitHub
-   App** conectada al repo. Al terminar da tres valores:
-   - `KEYSTATIC_GITHUB_CLIENT_ID`
-   - `KEYSTATIC_GITHUB_CLIENT_SECRET`  ← **secreto**
-   - `KEYSTATIC_SECRET`               ← **secreto**
-3. Añadir esos tres en **Vercel** (proyecto de Marta) → Settings → Environment
-   Variables. **NO** se hardcodean en el repo (son secretos y el repo es público).
-4. Redeploy. Marta entra en `su-web/keystatic`, se loguea con GitHub y edita; cada
-   cambio abre un commit/PR en el repo → Vercel redeploya solo.
-
-**Alternativa sin gestionar env vars propias:** [Keystatic Cloud](https://keystatic.cloud)
-(plan gratuito) hostea el auth. Se crea un proyecto en su panel, se conecta el
-repo, y el `storage` pasa a `{ kind: 'cloud', project: 'team/proyecto' }`. Menos
-piezas que la GitHub App; puede ser la opción más cómoda.
-
-> Mientras no se active el modo online, `/keystatic` en producción existe pero
-> solo funciona en local (no puede guardar en un servidor de solo-lectura). No es
-> peligroso —el repo ya es público— pero no sirve para que Marta edite hasta el
-> paso GitHub/Cloud.
+> Histórico: estuvo en modo `local` hasta jul 2026 (edición solo en local +
+> commit manual). El modo GitHub App (env vars propias en Vercel) se descartó en
+> favor de Cloud, que no necesita ninguna.
 
 ## Regla de variables de entorno
 
