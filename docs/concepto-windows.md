@@ -21,27 +21,27 @@ propios mensajes) y el plan, para arrancar el rediseño con contexto.
 > Nota: sus referencias de tipografía anteriores (UNIK2, SciFly, "tech-futurista")
 > encajan con esta estética retro-ordenador — probablemente era el norte real.
 
-## Referencias (reunidas con Marta)
+## Referencias (numeradas como las pasó Enrique)
 
-**El más cercano a lo que buscamos: Ejemplo 5** (concepto + vintage), pero con
-mejor organización (carpetas por categoría).
+**La más cercana a lo que buscamos: la nº 5** (concepto + vintage), con mejor
+organización (carpetas por categoría).
 
-- **[estudiopachel.com/windows](https://windows.estudiopachel.com/)** — Win95 muy
-  vintage, no tan completo. **NORTE en concepto y estética.**
-- **[vovacodes.ca](https://www.vovacodes.ca/)** — Win11; sus "documentos que abren
-  un formato web" ES nuestro **modo lectura** (icono Portfolio/CV → ventana con la
-  web normal dentro). Clave conceptual. (Carga algo lenta → evitar eso.)
-- **[donchia.tech](https://www.donchia.tech/)** + repo
-  **[github.com/dhs17y2adonchia/win95](https://github.com/dhs17y2adonchia/win95)**
-  — Win95 open-source muy completo. No queremos tanto, pero **mina de patrones de
-  implementación**.
-- **[mitchivin.com](https://mitchivin.com/)** y
-  **[pauljaguin.com](https://pauljaguin.com/)** — XP completísimos (boot, login,
-  Paint…). Nivel de ambición que NO buscamos; inspiran detalles.
-- **[amorciegocupido.com](https://www.amorciegocupido.com/)** — estilo Mac; lo dio
-  Marta como referencia aunque quiere **Windows retro** (no Mac).
-- Contexto: en el Reddit del Ejemplo 1 le critican la **accesibilidad** → es
-  justo **nuestra ventaja** con el modo lectura + SSR (ver abajo).
+1. **[donchia.tech](https://www.donchia.tech/)** + repo
+   **[github.com/dhs17y2adonchia/win95](https://github.com/dhs17y2adonchia/win95)**
+   — Win95 open-source muy completo. No queremos tanto, pero **mina de patrones de
+   implementación**. (En su hilo de Reddit le critican la **accesibilidad** → es
+   justo nuestra ventaja con el modo lectura + SSR.)
+2. **[mitchivin.com](https://mitchivin.com/)** — XP completísimo (boot, login,
+   IE, Paint…). Demasiado; inspira detalles.
+3. **[pauljaguin.com](https://pauljaguin.com/)** — otro XP completísimo. Ídem.
+4. **[vovacodes.ca](https://www.vovacodes.ca/)** — Win11; sus "documentos que abren
+   un formato web" ES nuestro **modo lectura** (icono → ventana con la web normal
+   dentro). **Clave conceptual.** (Carga algo lenta → evitar eso.)
+5. **[windows.estudiopachel.com](https://windows.estudiopachel.com/)** — Win95 muy
+   vintage, no tan completo. **← NORTE en concepto y estética** (con mejor
+   organización por carpetas).
+6. **[amorciegocupido.com](https://www.amorciegocupido.com/)** — estilo Mac; lo dio
+   Marta como referencia, pero quiere **Windows retro** (no Mac).
 
 ## Decisiones de diseño
 
@@ -110,10 +110,11 @@ formato web** (la versión editorial que ya tenemos). Patrón del Ejemplo 4 (vov
 - Mapeos naturales: `provisional` → carpeta/etiqueta **"WIP"** · `destacado` →
   carpeta destacada/fija · `orden` → colocación · `ubicacion`/`ano` → "propiedades"
   del archivo.
-- **Organización por carpetas usando `tipo`** (ya en el CMS): el escritorio tiene
-  unas pocas carpetas de categoría — "Académicos", "Concursos", "Visualización",
-  "Performance", "Publicaciones" — y al abrir una están los proyectos dentro
-  "ordenaditos". Encaja con lo que pidió Marta ("dividir en carpetas").
+- **Organización por carpetas con el campo `categoria`** (ya en el CMS: enum
+  `academicos` / `concursos` / `visualizacion` / `performance` / `publicaciones`):
+  el escritorio tiene esas carpetas y al abrir una están los proyectos dentro
+  "ordenaditos". (`tipo` sigue siendo el texto libre de las "propiedades" de la
+  ficha.) Encaja con lo que pidió Marta ("dividir en carpetas").
 
 Se reemplaza solo la **piel/UX** (hero rojo, layout editorial actual → escritorio).
 
