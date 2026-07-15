@@ -73,9 +73,20 @@ mejor organización (carpetas por categoría).
 
 ## Opción fuerte: "Modo lectura" (toggle)
 
-Como los lectores de PDF (modo estándar / modo lectura): la web arranca en **modo
-escritorio Windows** (lo de Marta, protagonista), y ofrece un **toggle a "modo
-lectura"** = una web estándar convencional.
+La web arranca en **modo escritorio Windows** (lo de Marta, protagonista), y el
+"modo lectura" (web estándar) se accede como **una app del escritorio: un icono de
+Internet Explorer** ("e") → abre una **ventana de navegador** (con marco falso: barra
+de direcciones `www.mas1des.es`, atrás/adelante/recargar) y dentro **el portfolio en
+formato web** (la versión editorial que ya tenemos). Patrón del Ejemplo 4 (vovacodes).
+
+- **In-world, no un toggle pegado:** en un escritorio, "ver la web normal" = abrir el
+  navegador. Natural.
+- **Render NATIVO, no iframe.** La ventana renderiza las mismas rutas/componentes
+  editoriales; nada de `<iframe>` (rompe SEO/scroll/estilos).
+- **Se apoya en rutas SSR reales** → Google indexa esas páginas y los humanos tienen
+  el escritorio encima. A11y + SEO resueltos por diseño (donde las webs-OS fallan).
+- **Móvil:** tender a abrir directamente esa vista editorial / el "navegador" a
+  pantalla completa.
 
 - **Ventajón:** el modo lectura **ya está construido** — es la versión editorial
   actual (hero, listado, fichas). No se tira; se recicla como vista estándar.
@@ -85,8 +96,8 @@ lectura"** = una web estándar convencional.
 - En móvil se puede tender al modo lectura / pantalla-de-inicio; el escritorio con
   ventanas se reserva para desktop.
 - **Reglas:** el escritorio es el modo **por defecto y protagonista**; el modo
-  lectura es una opción **discreta y aditiva** (un item "Modo lectura" en un menú
-  Inicio / barra, sin romper la metáfora). Ambos leen el **mismo contenido/CMS**.
+  lectura es la **app de Internet Explorer** (aditiva, in-world). Ambos leen el
+  **mismo contenido/CMS**.
 - **Secuencia:** construir el modo OS (lo nuevo) → dejar el editorial actual como
   modo lectura → cablear el toggle. No perfeccionar los dos a la vez.
 - **Validar con Marta** como algo aditivo antes de comprometerlo.
