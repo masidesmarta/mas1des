@@ -47,8 +47,9 @@ const nav = [
         >
       </div>
 
-      <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden />
-      <label for="nav-toggle" class="burger" aria-label={t('nav.abrir')}>
+      {/* Checkbox accesible (no hidden): enfocable con Tab, Espacio abre/cierra */}
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label={t('nav.abrir')} />
+      <label for="nav-toggle" class="burger" aria-hidden="true">
         <span></span><span></span><span></span>
       </label>
 
@@ -204,6 +205,23 @@ const nav = [
   }
 
   @media (max-width: 760px) {
+    /* El checkbox real queda invisible sobre la hamburguesa: recibe el foco
+       de teclado (Espacio abre/cierra) y el anillo se pinta en el dibujo. */
+    .nav-toggle {
+      display: block;
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      opacity: 0;
+      margin: 0;
+      z-index: 131;
+      right: var(--gutter);
+      cursor: pointer;
+    }
+    .nav-toggle:focus-visible ~ .burger {
+      outline: 2px solid currentColor;
+      outline-offset: 3px;
+    }
     .burger {
       display: flex;
       flex-direction: column;
@@ -231,7 +249,8 @@ const nav = [
 
     .nav {
       position: fixed;
-      inset: 0;
+      /* Deja visible la status bar del OS por encima del drawer */
+      inset: var(--os-top, 0px) 0 0 0;
       flex-direction: column;
       align-items: stretch;
       padding: 96px var(--gutter) calc(var(--gutter) + 6px);

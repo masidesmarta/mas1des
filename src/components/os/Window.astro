@@ -191,7 +191,9 @@ const t = useTranslations(lang);
       height: min(680px, calc(100svh - var(--os-bar-h) - 4rem));
     }
     .window[data-size='max'] {
-      width: calc(100vw - 64px);
+      /* Casi maximizada pero con tope: en monitores muy anchos el contenido
+         editorial no necesita 2500px y quedaría un vacío enorme. */
+      width: min(calc(100vw - 64px), 1500px);
       height: calc(100svh - var(--os-bar-h) - 44px);
     }
 
