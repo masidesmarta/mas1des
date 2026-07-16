@@ -86,8 +86,8 @@ export function pickLang(data: Record<string, any> | undefined, base: string, la
 
 /**
  * Texto largo → HTML seguro con formato ligero: **negrita**, *cursiva*,
- * párrafos (línea en blanco) y saltos de línea simples. Para las descripciones
- * que Marta edita en el CMS como texto plano.
+ * [enlaces](https://…), párrafos (línea en blanco) y saltos de línea simples.
+ * Para las descripciones que Marta edita en el CMS como texto plano.
  */
 export function richText(text?: string): string {
   if (!text) return '';
@@ -99,6 +99,10 @@ export function richText(text?: string): string {
       let h = esc(para.trim());
       h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       h = h.replace(/(^|[^*])\*(?!\*)([^*]+?)\*(?!\*)/g, '$1<em>$2</em>');
+      h = h.replace(
+        /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+        '<a href="$2" target="_blank" rel="noopener">$1</a>',
+      );
       h = h.replace(/\r?\n/g, '<br />');
       return `<p>${h}</p>`;
     })

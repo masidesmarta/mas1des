@@ -1,6 +1,6 @@
 tituloEs: Performance — Arquitecturas efímeras
 tituloEn: Performance — Ephemeral architectures
-orden: 10
+orden: 12
 destacado: false
 categoria: performance
 ano: 2025
@@ -24,5 +24,10 @@ provisional: false
 portada: portada.webp
 galeria:
   - gal-01.webp
+  - gal-02.webp
+  - gal-03.webp
+  - gal-04.webp
+  - gal-05.webp
+  - gal-06.webp
 planos: []
 video: /videos/performance.mp4

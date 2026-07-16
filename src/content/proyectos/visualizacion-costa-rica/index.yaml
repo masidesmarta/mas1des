@@ -1,6 +1,6 @@
 tituloEs: Vivienda unifamiliar en Costa Rica
 tituloEn: Single-family house in Costa Rica
-orden: 6
+orden: 8
 destacado: false
 categoria: visualizacion
 ubicacionEs: Costa Rica
@@ -19,11 +19,11 @@ descripcionEn: |-
   Development of photorealistic images for a single-family house located in Costa Rica, produced during my collaboration at the studio.
 
   The work was carried out with Lumion on Revit models, producing exterior and interior renders to communicate the project, enhance the spatial quality of the proposal and support its presentation to the client.
-provisional: true
-portada: portada.provisional.jpg
+provisional: false
+portada: portada.webp
 galeria:
-  - gal-01.provisional.jpg
-  - gal-02.provisional.jpg
-  - gal-03.provisional.jpg
+  - gal-01.webp
+  - gal-02.webp
+  - gal-03.webp
 planos: []
 video: ""

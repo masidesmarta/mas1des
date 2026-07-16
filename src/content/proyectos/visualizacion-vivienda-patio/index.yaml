@@ -1,6 +1,6 @@
 tituloEs: Vivienda unifamiliar con patio
 tituloEn: Single-family house with courtyard
-orden: 7
+orden: 9
 destacado: false
 categoria: visualizacion
 ubicacionEs: ""
@@ -19,9 +19,10 @@ descripcionEn: |-
   Development of photorealistic images for a single-family house during my collaboration at the studio.
 
   The work was carried out with Lumion on Revit models, producing exterior and interior renders to communicate the project, enhance the spatial quality of the proposal and support its presentation to the client.
-provisional: true
-portada: portada.provisional.jpg
+provisional: false
+portada: portada.webp
 galeria:
-  - gal-01.provisional.jpg
+  - gal-01.webp
+  - gal-02.webp
 planos: []
 video: ""

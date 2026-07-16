@@ -3,10 +3,13 @@
 Seguimiento de qué imágenes son **originales** (de Marta) y cuáles siguen siendo
 **recortes provisionales del PDF**, para pedirle a Marta lo que falte.
 
-> Marta envió por Drive (email 10/07): láminas SVG del PFM Riotinto (pesan ~130 MB
-> cada una, hay que rasterizarlas a tamaño web) + las páginas del portfolio en JPG
-> (`portfolio jpg 4–27`) + 3 fotos de WhatsApp. Nota suya: *"el panel 14 igual de
-> primera imagen"* → candidata a portada de Riotinto (y a valorar como hero).
+> Marta envió por Drive (email 10/07): láminas SVG del PFM Riotinto + páginas del
+> portfolio en JPG + 3 fotos de WhatsApp.
+> Segundo envío (email 16/07): carpetas por proyecto en alta calidad (West Glow,
+> Costa Rica, Piso Arcas, Touro, Performance) + **2 proyectos nuevos** (TFG
+> «Madrid me mata» y Paisaje de Alto de Carabanchel). Se sustituyeron todas las
+> imágenes de esos apartados salvo Performance, donde se mantuvieron las
+> anteriores y los escaneados nuevos se **añadieron** a la galería.
 
 ## Estado
 
@@ -14,31 +17,28 @@ Seguimiento de qué imágenes son **originales** (de Marta) y cuáles siguen sie
 |---|---|---|---|---|
 | pfm-riotinto | ✅ original | ✅ original | Láminas SVG rasterizadas a webp | — |
 | concurso-aranzazu | ✅ | ✅ | Páginas portfolio (jpg24 recortada + 25-27) | Láminas en alta si las tiene |
-| residencial-taller-touro | ✅ | ✅ | Páginas portfolio (jpg5-9) | Láminas en alta si las tiene |
+| residencial-taller-touro | ✅ | ✅ | Zip 16/07 (portada + 3 imágenes en alta) | — |
 | intervencion-vista-alegre | ✅ | ✅ | Páginas portfolio (jpg11-13) | Láminas en alta si las tiene |
-| modelado-bim-seul | ✅ | ✅ | Páginas portfolio (jpg15-23) | Renders originales (Lumion/Enscape) si mejor calidad |
+| modelado-bim-seul | ✅ | ✅ | Zip 16/07 «West Glow» (10 renders/planos) | — |
+| tfg-madrid-me-mata | ✅ | ✅ | Zip 16/07 «TFG» (6 láminas) | — |
+| paisaje-alto-carabanchel | ✅ | ✅ | Zip 16/07 «Alto de Carabanchel» (4 imágenes) | — |
 | publicaciones | ✅ | ✅ | 3 axonométricas WhatsApp | Dibujos en alta si los tiene |
-| visualizacion-costa-rica | ⏳ provisional | ⏳ provisional | Recorte del PDF | **Faltan los renders originales** |
-| visualizacion-vivienda-patio | ⏳ provisional | ⏳ provisional | Recorte del PDF | **Faltan los renders originales** |
+| visualizacion-costa-rica | ✅ | ✅ | Zip 16/07 «Costa Rica» (4 renders originales) | — |
+| visualizacion-vivienda-patio | ✅ | ✅ | Zip 16/07 «Piso Arcas» (3 renders originales) | — |
 | visualizacion-retail | ⏳ provisional | ⏳ provisional | Recorte del PDF | **Faltan los renders originales** |
+| performance | ✅ | ✅ | Fotos previas + 5 escaneados analógicos (zip 16/07) | — |
 
 Al sustituir cada uno: quitar `.provisional`, `provisional: false`, `npm run check:provisionales`.
 
 ## Pendiente de pedir a Marta (bloqueante para quitar el aviso "provisional")
 
-Los tres proyectos de **visualización arquitectónica** (Costa Rica, vivienda con
-patio, evento de retail) no venían en el material del Drive — solo existen como
-recorte del PDF. Hay que pedirle los **renders originales** (los que hizo en
-Lumion / Enscape) para poder sustituirlos. Hasta entonces se quedan con el aviso
-de imagen provisional en la web.
+Solo queda el **Evento de retail**: no venía en ningún envío — sigue siendo un
+recorte del PDF. Pedirle los renders originales (Enscape) cuando surja.
 
-Opcional (mejora de calidad, no bloqueante): las páginas del portfolio que
-usamos como fuente son de **baja resolución (1191×842 px, A4 a ~150 dpi)**. Al
-recortar el margen blanco, algunos dibujos quedan pequeños. El caso más visible
-es la **portada de Vista Alegre** (la axonometría ocupa poca página → ~509 px →
-se ve algo blanda en pantallas grandes). Si Marta conserva las **láminas
-originales en alta** de Aranzazu, Touro, Vista Alegre, BIM y los dibujos de
-publicaciones, sustituirían con más nitidez. Prioridad: Vista Alegre.
+Opcional (mejora de calidad, no bloqueante): la **portada de Vista Alegre**
+sigue saliendo de una página del portfolio a baja resolución (~509 px, se ve
+algo blanda en pantallas grandes). Si Marta conserva la lámina original en
+alta, sustituirla. Lo mismo (menos urgente) para Aranzazu y publicaciones.
 
 ## Pendiente de decidir
 - **Panel 14 como portada del hero** (en vez de la muñeca): explorar con delicadeza
