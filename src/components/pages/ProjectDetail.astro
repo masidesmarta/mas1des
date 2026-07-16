@@ -33,6 +33,14 @@ const ficha = [
 ].filter(([, v]) => Boolean(v));
 
 const [galLead, ...galRest] = data.galeria;
+
+// Composición de la galería: filas justificadas de 2 (misma altura por fila,
+// ancho proporcional al formato) para mezclar verticales y horizontales sin
+// recortar. La portada vertical se presenta como lámina en vez de a 16:9.
+const esVertical = (img: any) => img && img.height > img.width;
+const portadaVertical = esVertical(data.portada);
+const galRows: any[][] = [];
+for (let i = 0; i < galRest.length; i += 2) galRows.push(galRest.slice(i, i + 2));
 ---
 
 <OSLayout
@@ -64,13 +72,13 @@ const [galLead, ...galRest] = data.galeria;
 
         {
           data.portada && (
-            <figure class="cover">
+            <figure class:list={['cover', { 'cover--vertical': portadaVertical }]}>
               <ProvisionalBadge show={data.provisional} lang={lang} />
               <Image
                 src={data.portada}
                 alt={data.titulo}
                 widths={[600, 1000, 1600, 2000]}
-                sizes="100vw"
+                sizes={portadaVertical ? '(max-width: 720px) 92vw, 60vh' : '100vw'}
                 loading="eager"
               />
             </figure>
@@ -113,29 +121,32 @@ const [galLead, ...galRest] = data.galeria;
           data.galeria.length > 0 && (
             <section class="galeria-wrap wrap">
               {galLead && (
-                <figure class="gal-lead">
+                <figure class:list={['gal-lead', { 'gal-lead--vertical': esVertical(galLead) }]}>
                   <Image
                     src={galLead}
                     alt={`${data.titulo} — ${t('detail.imageAlt')} 1`}
                     widths={[800, 1200, 1800]}
-                    sizes="100vw"
+                    sizes={esVertical(galLead) ? '(max-width: 720px) 100vw, 62vh' : '100vw'}
                   />
                 </figure>
               )}
-              {galRest.length > 0 && (
-                <div class="galeria">
-                  {galRest.map((img: any, i: number) => (
-                    <figure>
+              {galRows.map((row, r) => (
+                <div class:list={['gal-row', { 'gal-row--solo': row.length === 1 }]}>
+                  {row.map((img: any, i: number) => (
+                    <figure
+                      class:list={[{ 'es-vertical': esVertical(img) }]}
+                      style={`--ar: ${(img.width / img.height).toFixed(4)}`}
+                    >
                       <Image
                         src={img}
-                        alt={`${data.titulo} — ${t('detail.imageAlt')} ${i + 2}`}
+                        alt={`${data.titulo} — ${t('detail.imageAlt')} ${r * 2 + i + 2}`}
                         widths={[500, 900, 1400]}
                         sizes="(max-width: 720px) 100vw, 50vw"
                       />
                     </figure>
                   ))}
                 </div>
-              )}
+              ))}
             </section>
           )
         }
@@ -218,17 +229,27 @@ const [galLead, ...galRest] = data.galeria;
     line-height: 1.35;
     max-width: 44ch;
   }
+  /* La portada se muestra entera: horizontal a sangre completa con su
+     proporción natural; vertical como lámina centrada sobre el papel. */
   .cover {
     position: relative;
     margin: 0;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
     background: var(--paper-soft);
   }
   .cover img {
+    display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+  }
+  .cover--vertical {
+    display: flex;
+    justify-content: center;
+    padding-block: clamp(1.5rem, 1rem + 2vw, 3rem);
+  }
+  .cover--vertical img {
+    width: auto;
+    max-width: min(92%, 640px);
+    max-height: 74vh;
   }
 
   .body {
@@ -291,26 +312,51 @@ const [galLead, ...galRest] = data.galeria;
     height: auto;
     display: block;
   }
-  .galeria {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(0.75rem, 0.4rem + 1.5vw, 1.75rem);
+  .gal-lead--vertical {
+    display: flex;
+    justify-content: center;
+    background: none;
   }
-  .galeria figure {
+  .gal-lead--vertical img {
+    width: auto;
+    max-width: min(100%, 620px);
+    max-height: 72vh;
+  }
+
+  /* Filas justificadas: las imágenes de cada fila comparten altura y se
+     reparten el ancho según su formato (--ar = ancho/alto) → verticales y
+     horizontales conviven sin recortarse. */
+  .gal-row {
+    display: flex;
+    gap: clamp(0.75rem, 0.4rem + 1.5vw, 1.75rem);
+    margin-bottom: clamp(0.75rem, 0.4rem + 1.5vw, 1.75rem);
+  }
+  .gal-row figure {
     margin: 0;
-    aspect-ratio: 4 / 3;
+    flex: var(--ar, 1) 1 0%;
+    min-width: 0;
     background: var(--paper-soft);
     overflow: hidden;
   }
-  .galeria figure img {
+  .gal-row figure img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     display: block;
     transition: transform 0.7s var(--ease);
   }
-  .galeria figure:hover img {
+  .gal-row figure:hover img {
     transform: scale(1.03);
+  }
+  /* Última imagen suelta: la horizontal ocupa el ancho; la vertical se centra
+     con un ancho contenido para no hacerse gigante. */
+  .gal-row--solo {
+    justify-content: center;
+  }
+  .gal-row--solo figure {
+    flex: 0 1 auto;
+  }
+  .gal-row--solo figure.es-vertical {
+    max-width: min(100%, 620px);
   }
 
   .planos-title {
@@ -365,8 +411,13 @@ const [galLead, ...galRest] = data.galeria;
   }
 
   @media (max-width: 600px) {
-    .galeria {
-      grid-template-columns: 1fr;
+    .gal-row {
+      flex-direction: column;
+    }
+    .gal-row figure,
+    .gal-row--solo figure.es-vertical {
+      flex: none;
+      max-width: 100%;
     }
   }
 </style>
