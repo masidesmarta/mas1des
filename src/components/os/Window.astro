@@ -88,10 +88,25 @@ const t = useTranslations(lang);
       inset 1px 1px 0 var(--w2k-light),
       inset -2px -2px 0 var(--w2k-shadow),
       inset 2px 2px 0 var(--w2k-hi);
-    /* Móvil: pantalla completa bajo la status bar */
+    /* Móvil: pantalla completa sobre la taskbar */
     position: fixed;
-    inset: var(--os-top) 0 0 0;
+    inset: var(--os-top) 0 var(--os-bottom) 0;
     z-index: 10;
+  }
+  .window.is-min {
+    display: none;
+  }
+  /* Móvil "restaurada": ventana flotante con margen para ver el escritorio */
+  @media (max-width: 767.98px) {
+    .window.is-float {
+      inset: calc(var(--os-top) + 16px) 12px calc(var(--os-bottom) + 16px) 12px;
+      box-shadow:
+        inset -1px -1px 0 var(--w2k-dark),
+        inset 1px 1px 0 var(--w2k-light),
+        inset -2px -2px 0 var(--w2k-shadow),
+        inset 2px 2px 0 var(--w2k-hi),
+        var(--w2k-window-shadow);
+    }
   }
 
   .titlebar {
@@ -207,9 +222,6 @@ const t = useTranslations(lang);
       transform: none !important;
       z-index: 20;
     }
-    .window.is-min {
-      display: none;
-    }
     .titlebar {
       touch-action: none; /* el drag gestiona el pointer */
     }
@@ -231,17 +243,19 @@ const t = useTranslations(lang);
 
 <script>
   /**
-   * Window-manager mínimo (progressive enhancement, solo desktop):
-   *  - drag desde la titlebar (transform, clamp al viewport, sin persistir)
-   *  - maximizar/restaurar (toggle CSS)
-   *  - minimizar → restaurar desde el botón de la taskbar
+   * Window-manager mínimo (progressive enhancement):
+   *  - desktop: drag desde la titlebar (transform, clamp, sin persistir)
+   *    + maximizar/restaurar (toggle CSS)
+   *  - móvil: la ventana nace maximizada; "restaurar" la deja flotante
+   *    con margen para ver el escritorio
+   *  - minimizar (ambos) → restaurar desde el botón de la taskbar
    * Sin JS la ventana funciona igual (scroll propio + cerrar como enlace).
    */
   function initWindowManager() {
     const win = document.querySelector<HTMLElement>('[data-window]');
     if (!win || win.dataset.wmInit) return;
-    if (!window.matchMedia('(min-width: 768px)').matches) return; // móvil: fullscreen
     win.dataset.wmInit = '1';
+    const desktop = window.matchMedia('(min-width: 768px)').matches;
 
     const minBtn = win.querySelector<HTMLButtonElement>('[data-win="min"]');
     const maxBtn = win.querySelector<HTMLButtonElement>('[data-win="max"]');
@@ -249,16 +263,25 @@ const t = useTranslations(lang);
     minBtn?.removeAttribute('hidden');
     maxBtn?.removeAttribute('hidden');
 
-    // Maximizar / restaurar
-    maxBtn?.addEventListener('click', () => {
-      const maxed = win.classList.toggle('is-max');
-      if (maxed) win.style.transform = '';
-      maxBtn.setAttribute(
+    const setMaxState = (maxed: boolean) => {
+      maxBtn?.setAttribute(
         'aria-label',
         (maxed ? maxBtn.dataset.labelRestore : maxBtn.dataset.labelMax) ?? '',
       );
-      maxBtn.setAttribute('aria-pressed', String(maxed));
+      maxBtn?.setAttribute('aria-pressed', String(maxed));
+    };
+
+    // Maximizar / restaurar (en móvil, restaurar = ventana flotante)
+    maxBtn?.addEventListener('click', () => {
+      if (desktop) {
+        const maxed = win.classList.toggle('is-max');
+        if (maxed) win.style.transform = '';
+        setMaxState(maxed);
+      } else {
+        setMaxState(!win.classList.toggle('is-float'));
+      }
     });
+    if (!desktop) setMaxState(true); // en móvil nace maximizada
 
     // Minimizar → el botón de la taskbar restaura
     minBtn?.addEventListener('click', () => {
@@ -271,7 +294,8 @@ const t = useTranslations(lang);
       taskBtn.setAttribute('aria-pressed', String(!min));
     });
 
-    // Drag sencillo desde la titlebar
+    // Drag sencillo desde la titlebar (solo desktop)
+    if (!desktop) return;
     const handle = win.querySelector<HTMLElement>('[data-drag-handle]');
     if (!handle) return;
     let dragging = false;

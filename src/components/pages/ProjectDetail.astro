@@ -7,6 +7,7 @@
 import { Image } from 'astro:assets';
 import OSLayout from '../../layouts/OSLayout.astro';
 import Window from '../os/Window.astro';
+import OSIcon from '../os/OSIcon.astro';
 import ProvisionalBadge from '../ProvisionalBadge.astro';
 import { categoriaLabel } from '../../os/categorias';
 import { useTranslations, type Lang } from '../../i18n/ui';
@@ -187,6 +188,55 @@ for (let i = 0; i < galRest.length; i += 2) galRows.push(galRest.slice(i, i + 2)
           )
         }
       </article>
+
+      {/* Visor de imágenes (estilo Win2000): se abre al pulsar cualquier
+          imagen de la ficha. Zoom con botones/rueda/pellizco/doble clic,
+          paneo arrastrando y navegación entre imágenes. */}
+      <dialog class="visor" data-visor aria-label={t('os.visor')} data-default-title={t('os.visor')}>
+        <div class="visor-win">
+          <header class="visor-titlebar">
+            <OSIcon name="image" size={16} />
+            <p class="visor-title" data-visor-title>{t('os.visor')}</p>
+            <button class="w2k-btn visor-wbtn" data-visor-act="close" aria-label={t('os.cerrar')}>
+              <svg viewBox="0 0 10 10" aria-hidden="true">
+                <path d="M1.6 1.6 8.4 8.4 M8.4 1.6 1.6 8.4" stroke="currentColor" stroke-width="1.5" />
+              </svg>
+            </button>
+          </header>
+          <div class="visor-toolbar">
+            <button class="w2k-btn visor-tbtn" data-visor-act="prev" aria-label={t('os.anterior')}>
+              <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M7.5 2 4 6l3.5 4" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+            </button>
+            <span class="visor-count" data-visor-count></span>
+            <button class="w2k-btn visor-tbtn" data-visor-act="next" aria-label={t('os.siguiente')}>
+              <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2 8 6l-3.5 4" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+            </button>
+            <span class="visor-sep" aria-hidden="true"></span>
+            <button class="w2k-btn visor-tbtn" data-visor-act="out" aria-label={t('os.zoomOut')}>
+              <svg viewBox="0 0 12 12" aria-hidden="true">
+                <circle cx="5.2" cy="5.2" r="3.5" fill="none" stroke="currentColor" stroke-width="1.2" />
+                <path d="M7.9 7.9 11 11" stroke="currentColor" stroke-width="1.5" />
+                <path d="M3.5 5.2h3.4" stroke="currentColor" stroke-width="1.2" />
+              </svg>
+            </button>
+            <button class="w2k-btn visor-tbtn" data-visor-act="in" aria-label={t('os.zoomIn')}>
+              <svg viewBox="0 0 12 12" aria-hidden="true">
+                <circle cx="5.2" cy="5.2" r="3.5" fill="none" stroke="currentColor" stroke-width="1.2" />
+                <path d="M7.9 7.9 11 11" stroke="currentColor" stroke-width="1.5" />
+                <path d="M3.5 5.2h3.4 M5.2 3.5v3.4" stroke="currentColor" stroke-width="1.2" />
+              </svg>
+            </button>
+            <button class="w2k-btn visor-tbtn" data-visor-act="fit" aria-label={t('os.zoomFit')}>
+              <svg viewBox="0 0 12 12" aria-hidden="true">
+                <path d="M1.5 4V1.5H4 M8 1.5h2.5V4 M10.5 8v2.5H8 M4 10.5H1.5V8" fill="none" stroke="currentColor" stroke-width="1.3" />
+              </svg>
+            </button>
+          </div>
+          <div class="visor-stage" data-visor-stage>
+            <img data-visor-img alt="" draggable="false" />
+          </div>
+        </div>
+      </dialog>
     </Window>
   </main>
 </OSLayout>
@@ -247,9 +297,8 @@ for (let i = 0; i < galRest.length; i += 2) galRows.push(galRest.slice(i, i + 2)
     padding-block: clamp(1.5rem, 1rem + 2vw, 3rem);
   }
   .cover--vertical img {
-    width: auto;
-    max-width: min(92%, 640px);
-    max-height: 74vh;
+    width: min(94%, 840px);
+    height: auto;
   }
 
   .body {
@@ -318,9 +367,8 @@ for (let i = 0; i < galRest.length; i += 2) galRows.push(galRest.slice(i, i + 2)
     background: none;
   }
   .gal-lead--vertical img {
-    width: auto;
-    max-width: min(100%, 620px);
-    max-height: 72vh;
+    width: min(100%, 760px);
+    height: auto;
   }
 
   /* Filas justificadas: las imágenes de cada fila comparten altura y se
@@ -342,10 +390,6 @@ for (let i = 0; i < galRest.length; i += 2) galRows.push(galRest.slice(i, i + 2)
     width: 100%;
     height: auto;
     display: block;
-    transition: transform 0.7s var(--ease);
-  }
-  .gal-row figure:hover img {
-    transform: scale(1.03);
   }
   /* Última imagen suelta: la horizontal ocupa el ancho; la vertical se centra
      con un ancho contenido para no hacerse gigante. */
@@ -356,7 +400,20 @@ for (let i = 0; i < galRest.length; i += 2) galRows.push(galRest.slice(i, i + 2)
     flex: 0 1 auto;
   }
   .gal-row--solo figure.es-vertical {
-    max-width: min(100%, 620px);
+    max-width: min(100%, 760px);
+  }
+
+  /* Todas las imágenes de la ficha abren el visor: cursor + micro-zoom
+     de hover consistente (antes solo lo tenía la retícula). */
+  .ficha figure {
+    overflow: hidden;
+  }
+  .ficha figure img {
+    cursor: zoom-in;
+    transition: transform 0.7s var(--ease);
+  }
+  .ficha figure:hover img {
+    transform: scale(1.02);
   }
 
   .planos-title {
@@ -420,4 +477,342 @@ for (let i = 0; i < galRest.length; i += 2) galRows.push(galRest.slice(i, i + 2)
       max-width: 100%;
     }
   }
+
+  /* ---- Visor de imágenes (lightbox Win2000) ---- */
+  dialog.visor {
+    width: 100vw;
+    height: 100svh;
+    max-width: 100vw;
+    max-height: 100svh;
+    margin: 0;
+    border: 0;
+    padding: clamp(0.5rem, 0.2rem + 2vw, 2.25rem);
+    background: transparent;
+    overscroll-behavior: contain;
+  }
+  dialog.visor::backdrop {
+    background: rgba(8, 12, 28, 0.72);
+  }
+  .visor-win {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: var(--w2k-face);
+    color: var(--w2k-text);
+    font-family: var(--w2k-font);
+    padding: 3px;
+    box-shadow:
+      inset -1px -1px 0 var(--w2k-dark),
+      inset 1px 1px 0 var(--w2k-light),
+      inset -2px -2px 0 var(--w2k-shadow),
+      inset 2px 2px 0 var(--w2k-hi),
+      var(--w2k-window-shadow);
+  }
+  .visor-titlebar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 3px 3px 3px 7px;
+    min-height: 28px;
+    background: linear-gradient(90deg, var(--w2k-title-a), var(--w2k-title-b));
+    color: var(--w2k-title-text);
+    user-select: none;
+  }
+  .visor-title {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-size: 0.84rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 1px 1px 0 rgba(0, 0, 30, 0.4);
+  }
+  .visor-wbtn {
+    width: 24px;
+    height: 22px;
+    color: var(--w2k-text);
+  }
+  .visor-wbtn svg {
+    width: 10px;
+    height: 10px;
+    display: block;
+  }
+  .visor-toolbar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 6px;
+    border-bottom: 1px solid var(--w2k-shadow);
+    box-shadow: 0 1px 0 var(--w2k-hi);
+  }
+  .visor-tbtn {
+    width: 34px;
+    height: 28px;
+  }
+  .visor-tbtn svg {
+    width: 13px;
+    height: 13px;
+    display: block;
+  }
+  .visor-count {
+    min-width: 3.6em;
+    text-align: center;
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .visor-sep {
+    align-self: stretch;
+    margin: 2px 5px;
+    border-left: 1px solid var(--w2k-shadow);
+    border-right: 1px solid var(--w2k-hi);
+  }
+  .visor-stage {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #1b1a17;
+    touch-action: none;
+    box-shadow:
+      inset -1px -1px 0 var(--w2k-hi),
+      inset 1px 1px 0 var(--w2k-shadow);
+  }
+  .visor-stage img {
+    max-width: 100%;
+    max-height: 100%;
+    transform-origin: center center;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .visor-stage.is-zoomed {
+    cursor: grab;
+  }
+  .visor-stage.is-panning {
+    cursor: grabbing;
+  }
 </style>
+
+<script>
+  /**
+   * Visor de imágenes Win2000: se abre al pulsar cualquier imagen de la
+   * ficha. Zoom (botones, rueda, pellizco, doble clic/tap), paneo con
+   * clamp, swipe para navegar y teclado (flechas, +/-, 0). Todos los
+   * listeners van delegados en document: el módulo se ejecuta una sola
+   * vez y así sobrevive a los swaps del ClientRouter.
+   */
+  let imgs: { src: string; alt: string }[] = [];
+  let idx = 0;
+  let scale = 1;
+  let tx = 0;
+  let ty = 0;
+  const pointers = new Map<number, { x: number; y: number }>();
+  let pinchBase = 0;
+  let pinchScale = 1;
+  let panning = false;
+  let panX = 0;
+  let panY = 0;
+  let baseTx = 0;
+  let baseTy = 0;
+
+  const dlg = () => document.querySelector<HTMLDialogElement>('[data-visor]');
+  const part = <T extends HTMLElement>(sel: string) => dlg()?.querySelector<T>(sel) ?? null;
+
+  /** La candidata más grande del srcset (para hacer zoom con nitidez). */
+  function largest(img: HTMLImageElement): string {
+    let best = img.currentSrc || img.src;
+    let bw = 0;
+    for (const c of (img.srcset || '').split(',')) {
+      const [u, d] = c.trim().split(/\s+/);
+      const w = d?.endsWith('w') ? parseInt(d) : 0;
+      if (u && w > bw) {
+        bw = w;
+        best = u;
+      }
+    }
+    return best;
+  }
+
+  function apply(anim = true) {
+    const stage = part('[data-visor-stage]');
+    const img = part<HTMLImageElement>('[data-visor-img]');
+    if (!stage || !img) return;
+    // Clamp del paneo: la imagen no se escapa del escenario
+    const maxX = Math.max(0, (img.offsetWidth * scale - stage.clientWidth) / 2);
+    const maxY = Math.max(0, (img.offsetHeight * scale - stage.clientHeight) / 2);
+    tx = Math.min(maxX, Math.max(-maxX, tx));
+    ty = Math.min(maxY, Math.max(-maxY, ty));
+    img.style.transition = anim ? 'transform 0.16s ease-out' : 'none';
+    img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+    stage.classList.toggle('is-zoomed', scale > 1);
+  }
+
+  /** Zoom hacia un punto (px,py relativo al centro del escenario). */
+  function zoomAt(px: number, py: number, factor: number, anim = true) {
+    const next = Math.min(8, Math.max(1, scale * factor));
+    const f = next / scale;
+    scale = next;
+    if (scale === 1) {
+      tx = 0;
+      ty = 0;
+    } else {
+      tx = px - (px - tx) * f;
+      ty = py - (py - ty) * f;
+    }
+    apply(anim);
+  }
+
+  function stagePoint(x: number, y: number) {
+    const r = part('[data-visor-stage]')!.getBoundingClientRect();
+    return { x: x - r.left - r.width / 2, y: y - r.top - r.height / 2 };
+  }
+
+  function show(i: number) {
+    const d = dlg();
+    if (!d || !imgs.length) return;
+    idx = (i + imgs.length) % imgs.length;
+    scale = 1;
+    tx = 0;
+    ty = 0;
+    apply(false);
+    const img = part<HTMLImageElement>('[data-visor-img]')!;
+    img.src = imgs[idx].src;
+    img.alt = imgs[idx].alt;
+    part('[data-visor-title]')!.textContent = imgs[idx].alt || d.dataset.defaultTitle || '';
+    part('[data-visor-count]')!.textContent = `${idx + 1} / ${imgs.length}`;
+  }
+
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+
+    // Abrir: clic en cualquier imagen de la ficha
+    const clicked = t.closest<HTMLImageElement>('.ficha figure img');
+    if (clicked && !t.closest('[data-visor]')) {
+      const d = dlg();
+      if (!d) return;
+      const all = [...document.querySelectorAll<HTMLImageElement>('.ficha figure img')];
+      imgs = all.map((im) => ({ src: largest(im), alt: im.alt }));
+      d.showModal();
+      show(all.indexOf(clicked));
+      return;
+    }
+
+    // Botones del visor
+    const act = t.closest<HTMLElement>('[data-visor-act]')?.dataset.visorAct;
+    if (act) {
+      if (act === 'close') dlg()?.close();
+      else if (act === 'prev') show(idx - 1);
+      else if (act === 'next') show(idx + 1);
+      else if (act === 'in') zoomAt(0, 0, 1.4);
+      else if (act === 'out') zoomAt(0, 0, 1 / 1.4);
+      else if (act === 'fit') {
+        scale = 1;
+        tx = 0;
+        ty = 0;
+        apply();
+      }
+      return;
+    }
+
+    // Clic en el fondo (fuera de la ventana del visor) cierra
+    if (t === dlg()) dlg()?.close();
+  });
+
+  document.addEventListener('dblclick', (e) => {
+    if (!(e.target as HTMLElement).closest('[data-visor-stage]')) return;
+    if (scale > 1) {
+      scale = 1;
+      tx = 0;
+      ty = 0;
+      apply();
+    } else {
+      const p = stagePoint(e.clientX, e.clientY);
+      zoomAt(p.x, p.y, 2.5);
+    }
+  });
+
+  document.addEventListener(
+    'wheel',
+    (e) => {
+      if (!(e.target as HTMLElement).closest('[data-visor-stage]')) return;
+      e.preventDefault();
+      const p = stagePoint(e.clientX, e.clientY);
+      zoomAt(p.x, p.y, e.deltaY < 0 ? 1.25 : 0.8);
+    },
+    { passive: false },
+  );
+
+  // Paneo (arrastrar) + pellizco (dos dedos) + swipe para pasar de imagen
+  document.addEventListener('pointerdown', (e) => {
+    const stage = (e.target as HTMLElement).closest<HTMLElement>('[data-visor-stage]');
+    if (!stage) return;
+    stage.setPointerCapture(e.pointerId);
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.size === 1) {
+      panning = true;
+      panX = e.clientX;
+      panY = e.clientY;
+      baseTx = tx;
+      baseTy = ty;
+      if (scale > 1) stage.classList.add('is-panning');
+    } else if (pointers.size === 2) {
+      const [a, b] = [...pointers.values()];
+      pinchBase = Math.hypot(a.x - b.x, a.y - b.y);
+      pinchScale = scale;
+      panning = false;
+    }
+  });
+  document.addEventListener('pointermove', (e) => {
+    if (!pointers.has(e.pointerId)) return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.size === 2 && pinchBase > 0) {
+      const [a, b] = [...pointers.values()];
+      const dist = Math.hypot(a.x - b.x, a.y - b.y);
+      const target = Math.min(8, Math.max(1, (pinchScale * dist) / pinchBase));
+      const p = stagePoint((a.x + b.x) / 2, (a.y + b.y) / 2);
+      zoomAt(p.x, p.y, target / scale, false);
+    } else if (panning && scale > 1) {
+      tx = baseTx + (e.clientX - panX);
+      ty = baseTy + (e.clientY - panY);
+      apply(false);
+    }
+  });
+  const endPointer = (e: PointerEvent) => {
+    if (!pointers.has(e.pointerId)) return;
+    pointers.delete(e.pointerId);
+    part('[data-visor-stage]')?.classList.remove('is-panning');
+    if (pointers.size < 2) pinchBase = 0;
+    // Swipe horizontal (sin zoom) → imagen anterior/siguiente
+    if (panning && scale === 1) {
+      const dx = e.clientX - panX;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(e.clientY - panY)) {
+        show(dx < 0 ? idx + 1 : idx - 1);
+      }
+    }
+    panning = false;
+  };
+  document.addEventListener('pointerup', endPointer);
+  document.addEventListener('pointercancel', endPointer);
+
+  document.addEventListener('keydown', (e) => {
+    const d = dlg();
+    if (!d?.open) return;
+    if (e.key === 'ArrowRight') show(idx + 1);
+    else if (e.key === 'ArrowLeft') show(idx - 1);
+    else if (e.key === '+' || e.key === '=') zoomAt(0, 0, 1.4);
+    else if (e.key === '-') zoomAt(0, 0, 1 / 1.4);
+    else if (e.key === '0') {
+      scale = 1;
+      tx = 0;
+      ty = 0;
+      apply();
+    }
+  });
+</script>

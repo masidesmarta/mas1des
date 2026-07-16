@@ -46,17 +46,22 @@ Brief completo y decisiones en `docs/concepto-windows.md`. Resumen:
 | `/contacto` | Ventana de correo (Para/Asunto + canales) |
 
 - **Responsive temático**: desktop = ventanas flotantes + taskbar abajo;
-  móvil (<768px) = pantalla de inicio de teléfono (status bar arriba) y ventanas
-  a pantalla completa. Nunca "Windows encogido".
+  móvil (<768px) = la misma taskbar abajo (Inicio + botón de ventana + reloj/
+  idioma, con safe-area) y ventanas a pantalla completa; "restaurar" las deja
+  flotantes con margen y minimizar se recupera desde la taskbar.
 - **Piezas**: `src/layouts/OSLayout.astro` (wallpaper + taskbar + ClientRouter),
   `src/layouts/Layout.astro` (= ventana IE del modo lectura, envuelve Header/Footer
   editoriales), `src/components/os/` (Window, Taskbar, OSIcon, DesktopIcon),
   `src/os/` (categorias.ts, types.ts).
-- **Window manager** (script en `Window.astro`, solo desktop, progressive
-  enhancement): drag desde titlebar (transform + clamp, sin persistir),
-  min/max/restore; cerrar es un `<a>` real. Los botones min/max nacen `hidden`
-  y los habilita el JS. Con ClientRouter, todo init va en `astro:page-load`
-  con guard `data-*-init`.
+- **Window manager** (script en `Window.astro`, progressive enhancement):
+  drag desde titlebar solo desktop (transform + clamp, sin persistir);
+  min/max/restore en desktop y móvil; cerrar es un `<a>` real. Los botones
+  min/max nacen `hidden` y los habilita el JS. Con ClientRouter, todo init va
+  en `astro:page-load` con guard `data-*-init`.
+- **Visor de imágenes** (lightbox Win2000 en `ProjectDetail.astro`): pulsar
+  cualquier imagen de la ficha abre un `<dialog>` con zoom (botones, rueda,
+  pellizco, doble clic), paneo, swipe y teclado. Listeners delegados en
+  `document` (los scripts de módulo corren una sola vez con ClientRouter).
 - **Iconos**: SVG a mano en `OSIcon.astro` (carpeta Win2000, "e" de IE
   geométrica, bandera de Windows para Inicio, notepad, correo…).
 - **A11y/SEO como punto fuerte** (donde las webs-OS fallan): iconos = `<a>` con

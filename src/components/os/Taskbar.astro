@@ -1,9 +1,8 @@
 ---
 /**
- * Barra del sistema, responsive temático:
- *  - Desktop (≥768px): taskbar Win2000 abajo — Inicio, botón de la ventana
- *    abierta, bandeja con idioma y reloj.
- *  - Móvil: status bar arriba (reloj + idioma), como un teléfono.
+ * Taskbar Win2000 abajo, en todos los tamaños: Inicio, botón de la
+ * ventana abierta (restaura si está minimizada) y bandeja con idioma
+ * y reloj. En móvil es la misma barra, con targets algo mayores.
  */
 import { getCollection } from 'astro:content';
 import OSIcon from './OSIcon.astro';
@@ -96,29 +95,132 @@ const carpetas = CATEGORIAS.filter((c) => all.some((p) => p.entry.data.categoria
     z-index: 100;
     left: 0;
     right: 0;
+    bottom: 0;
     display: flex;
     align-items: stretch;
     gap: 0.4rem;
     font-family: var(--w2k-font);
-    /* Móvil: status bar arriba */
-    top: 0;
-    height: var(--os-bar-h, 30px);
-    padding: 2px 0.75rem;
-    background: rgba(8, 14, 30, 0.55);
-    backdrop-filter: blur(6px);
-    color: #fff;
+    height: var(--os-bar-h, 38px);
+    padding: 3px 4px calc(3px + env(safe-area-inset-bottom, 0px));
+    background: var(--w2k-face);
+    color: var(--w2k-text);
+    box-shadow: inset 0 1px 0 var(--w2k-hi), 0 -1px 0 var(--w2k-shadow);
   }
-  .start,
+  .start {
+    position: relative;
+  }
+  .start-btn {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+    height: 100%;
+    padding: 0 0.8rem 0 0.5rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--w2k-text);
+    list-style: none;
+  }
+  .start-btn::-webkit-details-marker {
+    display: none;
+  }
+  .start[open] .start-btn {
+    box-shadow:
+      inset 1px 1px 0 var(--w2k-dark),
+      inset -1px -1px 0 var(--w2k-light),
+      inset 2px 2px 0 var(--w2k-shadow),
+      inset -2px -2px 0 var(--w2k-hi);
+  }
+
+  /* Menú Inicio Win2000: banner lateral + lista con iconos */
+  .start-menu {
+    position: absolute;
+    bottom: calc(100% + 5px);
+    left: 0;
+    display: flex;
+    min-width: 240px;
+    background: var(--w2k-face);
+    box-shadow:
+      inset -1px -1px 0 var(--w2k-dark),
+      inset 1px 1px 0 var(--w2k-light),
+      inset -2px -2px 0 var(--w2k-shadow),
+      inset 2px 2px 0 var(--w2k-hi),
+      var(--w2k-window-shadow);
+    padding: 3px;
+    z-index: 200;
+  }
+  .sm-banner {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    background: linear-gradient(0deg, var(--w2k-title-a), var(--w2k-title-b));
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    padding: 0.7rem 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    user-select: none;
+  }
+  .sm-banner b {
+    font-weight: 700;
+  }
+  .sm-list {
+    list-style: none;
+    margin: 0;
+    padding: 0.25rem 0;
+    flex: 1;
+  }
+  .sm-list a {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.5rem 1.1rem 0.5rem 0.7rem;
+    font-size: 0.83rem;
+    color: var(--w2k-text);
+    white-space: nowrap;
+  }
+  .sm-list a:hover,
+  .sm-list a:focus-visible {
+    background: var(--w2k-select);
+    color: var(--w2k-select-text);
+    outline: none;
+  }
+  .sm-sep {
+    height: 0;
+    margin: 0.25rem 0.5rem;
+    border-top: 1px solid var(--w2k-shadow);
+    border-bottom: 1px solid var(--w2k-hi);
+  }
   .tasks {
-    display: none; /* móvil: solo reloj + idioma */
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    gap: 0.3rem;
+  }
+  .task-btn {
+    max-width: 220px;
+    min-width: 0;
+    gap: 0.4rem;
+    padding: 0 0.7rem;
+    font-size: 0.8rem;
+    justify-content: flex-start;
+  }
+  .task-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .tray {
     display: flex;
     align-items: center;
-    gap: 0.9rem;
-    width: 100%;
-    justify-content: space-between;
-    font-size: 0.8rem;
+    justify-content: flex-end;
+    gap: 0.7rem;
+    padding: 0 0.7rem;
+    font-size: 0.78rem;
+    box-shadow:
+      inset 1px 1px 0 var(--w2k-shadow),
+      inset -1px -1px 0 var(--w2k-hi);
   }
   .clock {
     font-variant-numeric: tabular-nums;
@@ -126,7 +228,7 @@ const carpetas = CATEGORIAS.filter((c) => all.some((p) => p.entry.data.categoria
   }
   .langs a {
     padding: 0.15rem 0.3rem;
-    opacity: 0.65;
+    opacity: 0.55;
   }
   .langs a[aria-current] {
     opacity: 1;
@@ -135,142 +237,6 @@ const carpetas = CATEGORIAS.filter((c) => all.some((p) => p.entry.data.categoria
   .langs a:focus-visible {
     outline: 1px dotted currentColor;
     outline-offset: 1px;
-  }
-
-  /* ---- Desktop: taskbar Win2000 abajo ---- */
-  @media (min-width: 768px) {
-    .taskbar {
-      top: auto;
-      bottom: 0;
-      height: var(--os-bar-h, 38px);
-      padding: 3px 4px;
-      background: var(--w2k-face);
-      color: var(--w2k-text);
-      backdrop-filter: none;
-      box-shadow: inset 0 1px 0 var(--w2k-hi), 0 -1px 0 var(--w2k-shadow);
-    }
-    .start {
-      display: block;
-      position: relative;
-    }
-    .start-btn {
-      display: inline-flex;
-      gap: 0.4rem;
-      align-items: center;
-      height: 100%;
-      padding: 0 0.8rem 0 0.5rem;
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: var(--w2k-text);
-      list-style: none;
-    }
-    .start-btn::-webkit-details-marker {
-      display: none;
-    }
-    .start[open] .start-btn {
-      box-shadow:
-        inset 1px 1px 0 var(--w2k-dark),
-        inset -1px -1px 0 var(--w2k-light),
-        inset 2px 2px 0 var(--w2k-shadow),
-        inset -2px -2px 0 var(--w2k-hi);
-    }
-
-    /* Menú Inicio Win2000: banner lateral + lista con iconos */
-    .start-menu {
-      position: absolute;
-      bottom: calc(100% + 5px);
-      left: 0;
-      display: flex;
-      min-width: 240px;
-      background: var(--w2k-face);
-      box-shadow:
-        inset -1px -1px 0 var(--w2k-dark),
-        inset 1px 1px 0 var(--w2k-light),
-        inset -2px -2px 0 var(--w2k-shadow),
-        inset 2px 2px 0 var(--w2k-hi),
-        var(--w2k-window-shadow);
-      padding: 3px;
-      z-index: 200;
-    }
-    .sm-banner {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      background: linear-gradient(0deg, var(--w2k-title-a), var(--w2k-title-b));
-      color: #fff;
-      font-size: 1.05rem;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      padding: 0.7rem 0.3rem;
-      display: flex;
-      align-items: center;
-      gap: 0.2rem;
-      user-select: none;
-    }
-    .sm-banner b {
-      font-weight: 700;
-    }
-    .sm-list {
-      list-style: none;
-      margin: 0;
-      padding: 0.25rem 0;
-      flex: 1;
-    }
-    .sm-list a {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      padding: 0.5rem 1.1rem 0.5rem 0.7rem;
-      font-size: 0.83rem;
-      color: var(--w2k-text);
-      white-space: nowrap;
-    }
-    .sm-list a:hover,
-    .sm-list a:focus-visible {
-      background: var(--w2k-select);
-      color: var(--w2k-select-text);
-      outline: none;
-    }
-    .sm-sep {
-      height: 0;
-      margin: 0.25rem 0.5rem;
-      border-top: 1px solid var(--w2k-shadow);
-      border-bottom: 1px solid var(--w2k-hi);
-    }
-    .tasks {
-      display: flex;
-      flex: 1;
-      min-width: 0;
-      gap: 0.3rem;
-    }
-    .task-btn {
-      max-width: 220px;
-      min-width: 0;
-      gap: 0.4rem;
-      padding: 0 0.7rem;
-      font-size: 0.8rem;
-      justify-content: flex-start;
-    }
-    .task-title {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .tray {
-      width: auto;
-      justify-content: flex-end;
-      gap: 0.7rem;
-      padding: 0 0.7rem;
-      font-size: 0.78rem;
-      box-shadow:
-        inset 1px 1px 0 var(--w2k-shadow),
-        inset -1px -1px 0 var(--w2k-hi);
-    }
-    .langs a {
-      opacity: 0.55;
-    }
-    .langs a[aria-current] {
-      opacity: 1;
-    }
   }
 </style>
 

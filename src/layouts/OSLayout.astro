@@ -64,18 +64,15 @@ const wpSmall = await getImage({ src: wallpaperSrc, width: 900 });
 
     <style is:global>
       :root {
-        /* Espacio reservado por la barra del sistema (arriba en móvil,
-           abajo en desktop). Las páginas del OS lo usan para no quedar
-           tapadas por la barra. */
-        --os-bar-h: 30px;
-        --os-top: var(--os-bar-h);
-        --os-bottom: 0px;
+        /* Espacio reservado por la taskbar (abajo, también en móvil).
+           Las páginas del OS lo usan para no quedar tapadas por la barra. */
+        --os-bar-h: calc(44px + env(safe-area-inset-bottom, 0px));
+        --os-top: 0px;
+        --os-bottom: var(--os-bar-h);
       }
       @media (min-width: 768px) {
         :root {
           --os-bar-h: 38px;
-          --os-top: 0px;
-          --os-bottom: var(--os-bar-h);
         }
       }
 

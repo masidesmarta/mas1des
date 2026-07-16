@@ -91,6 +91,12 @@ export const ui = {
     'os.elementos': 'elementos',
     'os.elemento': 'elemento',
     'os.blocnotas': 'Bloc de notas',
+    'os.visor': 'Visor de imágenes',
+    'os.zoomIn': 'Acercar',
+    'os.zoomOut': 'Alejar',
+    'os.zoomFit': 'Ajustar a la ventana',
+    'os.anterior': 'Anterior',
+    'os.siguiente': 'Siguiente',
   },
   en: {
     'meta.homeDesc':
@@ -179,6 +185,12 @@ export const ui = {
     'os.elementos': 'items',
     'os.elemento': 'item',
     'os.blocnotas': 'Notepad',
+    'os.visor': 'Image viewer',
+    'os.zoomIn': 'Zoom in',
+    'os.zoomOut': 'Zoom out',
+    'os.zoomFit': 'Fit to window',
+    'os.anterior': 'Previous',
+    'os.siguiente': 'Next',
   },
 } as const;
 
