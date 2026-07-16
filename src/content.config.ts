@@ -29,6 +29,10 @@ const proyectos = defineCollection({
       tipoEn: z.string().optional(),
       rolEs: z.string().optional(),
       rolEn: z.string().optional(),
+      // Estudio o coautoría a mencionar (sin enlace). Vacío en la mayoría
+      // de fichas: solo se muestra (junto al rol) si se rellena.
+      colaboracionEs: z.string().optional(),
+      colaboracionEn: z.string().optional(),
       resumenEs: z.string().optional(),
       resumenEn: z.string().optional(),
       descripcionEs: z.string().optional(),

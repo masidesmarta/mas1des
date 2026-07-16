@@ -147,6 +147,11 @@ export default config({
         tipoEn: fields.text({ label: 'Tipo (EN)' }),
         rolEs: fields.text({ label: 'Rol (ES)' }),
         rolEn: fields.text({ label: 'Rol (EN)' }),
+        colaboracionEs: fields.text({
+          label: 'Colaboración (ES)',
+          description: 'Estudio o coautoría a mencionar (sin enlace). Si se deja vacío, no se muestra.',
+        }),
+        colaboracionEn: fields.text({ label: 'Colaboración (EN)' }),
         resumenEs: fields.text({
           label: 'Resumen (ES)',
           description: 'Una frase para el listado.',
