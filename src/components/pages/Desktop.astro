@@ -1,8 +1,8 @@
 ---
 /**
- * La home del sitio: el escritorio sin ventanas. Los iconos los pinta
- * OSLayout (capa persistente); aquí solo va la firma de esquina, que
- * es el h1 real de la página (tipo "Windows 2000 Professional").
+ * La home del sitio: el escritorio sin ventanas. Tanto los iconos como la
+ * firma de esquina (que aquí es el h1 real y el <main>) los pinta OSLayout
+ * como capas persistentes; esta página solo aporta título y descripción.
  */
 import OSLayout from '../../layouts/OSLayout.astro';
 import { useTranslations, type Lang } from '../../i18n/ui';
@@ -14,84 +14,4 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<OSLayout lang={lang} title={t('meta.arquitecta')} description={t('meta.homeDesc')}>
-  <main id="main" class="desktop-sign">
-    <h1 class="watermark">
-      Marta Masides<span class="watermark-sub">{t('os.watermarkRole')}</span>
-    </h1>
-    {/* Crédito discreto tipo watermark de build — y el enlace a ebecerra.es
-        desde la home, que es la página que más pesa para SEO. */}
-    <p class="watermark-credit">
-      <a href="https://ebecerra.es" target="_blank" rel="noopener">
-        {t('foot.credit')} · ebecerra.es
-      </a>
-    </p>
-  </main>
-</OSLayout>
-
-<style>
-  .desktop-sign {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: calc(var(--os-bottom) + 1.1rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 2;
-    pointer-events: none;
-  }
-  .watermark-credit {
-    margin: 0.3rem 0 0;
-    font-family: var(--w2k-font);
-    font-size: 0.68rem;
-    letter-spacing: 0.06em;
-  }
-  .watermark-credit a {
-    pointer-events: auto;
-    color: rgba(255, 255, 255, 0.5);
-    text-shadow: 1px 1px 0 rgba(0, 0, 20, 0.6);
-    transition: color 0.25s var(--w2k-ease);
-  }
-  .watermark-credit a:hover,
-  .watermark-credit a:focus-visible {
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  .watermark {
-    margin: 0;
-    text-align: center;
-    font-family: var(--w2k-font);
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: rgba(255, 255, 255, 0.85);
-    text-shadow: 1px 1px 0 rgba(0, 0, 20, 0.7);
-    line-height: 1.5;
-  }
-  .watermark-sub {
-    display: block;
-    font-size: 0.72rem;
-    font-weight: 400;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.62);
-  }
-
-  @media (min-width: 768px) {
-    .desktop-sign {
-      align-items: flex-end;
-      padding-right: 1.6rem;
-      bottom: calc(var(--os-bar-h) + 1.1rem);
-    }
-    .watermark {
-      text-align: right;
-    }
-    .watermark-sub {
-      letter-spacing: 0.18em;
-    }
-    .watermark-credit {
-      text-align: right;
-    }
-  }
-</style>
+<OSLayout lang={lang} title={t('meta.arquitecta')} description={t('meta.homeDesc')} />

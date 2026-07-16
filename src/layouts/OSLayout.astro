@@ -9,6 +9,7 @@ import { ClientRouter } from 'astro:transitions';
 import BaseHead from '../components/BaseHead.astro';
 import Taskbar from '../components/os/Taskbar.astro';
 import DesktopIcons from '../components/os/DesktopIcons.astro';
+import DesktopSign from '../components/os/DesktopSign.astro';
 import type { Lang } from '../i18n/ui';
 import wallpaperSrc from '../assets/hero-panel14.webp';
 // Desktop: encuadre elegido por Enrique del render original de Riotinto
@@ -57,8 +58,10 @@ const wpSmall = await getImage({ src: wallpaperSrc, width: 900 });
     {/* Wallpaper: la obra ENTERA (contain) sobre un relleno de sí misma
         desenfocada — sin huecos y con el mínimo zoom posible. */}
     <div class="wallpaper" aria-hidden="true"></div>
-    {/* Capa persistente: el escritorio sigue detrás de la ventana abierta */}
+    {/* Capa persistente: el escritorio (iconos + firma) sigue detrás de la
+        ventana abierta. En la home (sin ventana) la firma es el h1. */}
     <DesktopIcons lang={lang} />
+    <DesktopSign lang={lang} asH1={!win} />
     <slot />
     <Taskbar lang={lang} window={win} />
 

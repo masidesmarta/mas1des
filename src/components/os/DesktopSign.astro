@@ -1,0 +1,98 @@
+---
+/**
+ * Firma de esquina del escritorio (tipo "Windows 2000 Professional") +
+ * crédito, como capa PERSISTENTE del OS: se ve en todas las rutas, detrás
+ * de la ventana abierta (igual que los iconos). Solo en la home —la única
+ * ruta sin ventana— es el h1 real de la página (y su <main>).
+ */
+import { useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  /** true en la home: la firma es el h1 (y el destino del skip-link). */
+  asH1?: boolean;
+}
+const { lang, asH1 = false } = Astro.props;
+const t = useTranslations(lang);
+const Root = asH1 ? 'main' : 'div';
+const Title = asH1 ? 'h1' : 'p';
+---
+
+<Root class="desktop-sign" id={asH1 ? 'main' : undefined}>
+  <Title class="watermark">
+    Marta Masides<span class="watermark-sub">{t('os.watermarkRole')}</span>
+  </Title>
+  {/* Crédito discreto tipo watermark de build (enlace a ebecerra.es). */}
+  <p class="watermark-credit">
+    <a href="https://ebecerra.es" target="_blank" rel="noopener">
+      {t('foot.credit')} · ebecerra.es
+    </a>
+  </p>
+</Root>
+
+<style>
+  .desktop-sign {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--os-bottom) + 1.1rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .watermark-credit {
+    margin: 0.3rem 0 0;
+    font-family: var(--w2k-font);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+  }
+  .watermark-credit a {
+    pointer-events: auto;
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 1px 1px 0 rgba(0, 0, 20, 0.6);
+    transition: color 0.25s var(--w2k-ease);
+  }
+  .watermark-credit a:hover,
+  .watermark-credit a:focus-visible {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .watermark {
+    margin: 0;
+    text-align: center;
+    font-family: var(--w2k-font);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 1px 1px 0 rgba(0, 0, 20, 0.7);
+    line-height: 1.5;
+  }
+  .watermark-sub {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+  }
+
+  @media (min-width: 768px) {
+    .desktop-sign {
+      align-items: flex-end;
+      padding-right: 1.6rem;
+      bottom: calc(var(--os-bar-h) + 1.1rem);
+    }
+    .watermark {
+      text-align: right;
+    }
+    .watermark-sub {
+      letter-spacing: 0.18em;
+    }
+    .watermark-credit {
+      text-align: right;
+    }
+  }
+</style>

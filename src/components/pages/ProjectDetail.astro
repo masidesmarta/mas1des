@@ -300,6 +300,18 @@ for (let i = 0; i < galRest.length; i += 2) galRows.push(galRest.slice(i, i + 2)
     width: min(94%, 840px);
     height: auto;
   }
+  /* Pantallas muy bajas (móvil apaisado): las láminas verticales se limitan
+     a la altura visible en vez de comerse varias pantallas de scroll. */
+  @media (max-height: 520px) {
+    .cover--vertical img,
+    .gal-lead--vertical img,
+    .gal-row--solo figure.es-vertical img {
+      width: auto;
+      max-width: 94%;
+      max-height: 84vh;
+      margin-inline: auto;
+    }
+  }
 
   .body {
     padding-block: clamp(2rem, 1.2rem + 3vw, 4rem);
